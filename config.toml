@@ -2,6 +2,106 @@ baseURL = 'https://kuadrant.github.io/'
 languageCode = 'en-us'
 title = 'kuadrant.io'
 
+# Language settings
+contentDir = "content/en"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true
+# Useful when translating.
+enableMissingTranslationPlaceholders = true
+uglyurls = true
+
+[params]
+copyright = "The Kuadrant Authors"
+
+[params.links]
+# End user relevant links. These will show up on left side of footer and in the community page if you have one.
+[[params.links.user]]
+  name ="GitHub Discussions"
+  url = "https://github.com/orgs/Kuadrant/discussions"
+  icon = "fab fa-github"
+  desc = "Development Discussions"
+[[params.links.user]]
+  name ="Twitter"
+  url = "https://twitter.com/kuadrantio"
+  icon = "fab fa-twitter"
+  desc = "Follow us on Twitter to get the latest news!"
+[[params.links.user]]
+  name = "Stack Overflow"
+  url = "https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador"
+  icon = "fab fa-stack-overflow"
+  desc = "Practical questions and curated answers"
+# Developer relevant links. These will show up on right side of footer and in the community page if you have one.
+[[params.links.developer]]
+  name = "GitHub"
+  url = "https://github.com/Kuadrant"
+  icon = "fab fa-github"
+  desc = "Development takes place here!"
+[[params.links.developer]]
+  name = "Slack"
+  url = "https://join.slack.com/t/kuadrant/shared_invite/zt-16ggrm41h-z1HLYGkRxJ6l_oZVU~eQzQ"
+  icon = "fab fa-slack"
+  desc = "Chat with other project developers"
+
+[params.mermaid]
+enable = true
+theme = "default"
+
+[params.plantuml]
+enable = true
+theme = "default"
+svg_image_url = "https://www.plantuml.com/plantuml/svg/"
+svg = false
+
+[params.katex]
+enable = true
+html_dom_element = "document.body"
+
+# enable display of chemical equations and physical units via mhchem extension
+[params.katex.mhchem]
+enable = true
+
+[params.print]
+disable_toc = false
+
+[params.markmap]
+enable = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      linkifyProtocol = 'https'
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+    [markup.goldmark.parser]
+      autoHeadingID = true
+      autoHeadingIDType = 'github'
+      [markup.goldmark.parser.attribute]
+        block = false
+        title = true
+    [markup.goldmark.renderer]
+      hardWraps = false
+      unsafe = true
+      xhtml = true
+
+menu = ['Kuadrant', 'Authorino', 'Limitador']
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[languages]
+[languages.en]
+title = "Kuadrant"
+description = "The Kuadrant project website"
+languageName ="English"
+# Weight used for sorting.
+weight = 1
+
 [module]
 proxy = "direct"
 [[module.imports]]
