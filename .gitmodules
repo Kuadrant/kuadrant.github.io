@@ -1,0 +1,6 @@
+[submodule "externals/authorino"]
+	path = externals/authorino
+	url = https://github.com/Kuadrant/authorino.git
+[submodule "externals/limitador"]
+	path = externals/limitador
+	url = https://github.com/Kuadrant/limitador.git

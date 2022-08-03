@@ -10,6 +10,9 @@ defaultContentLanguageInSubdir = true
 enableMissingTranslationPlaceholders = true
 uglyurls = true
 
+[ui]
+breadcrumb_disable = true
+
 [params]
 copyright = "The Kuadrant Authors"
 
