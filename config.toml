@@ -10,11 +10,12 @@ defaultContentLanguageInSubdir = true
 enableMissingTranslationPlaceholders = true
 uglyurls = true
 
-[ui]
-breadcrumb_disable = true
-
 [params]
 copyright = "The Kuadrant Authors"
+
+[params.ui]
+breadcrumb_disable = true
+sidebar_menu_foldable = true
 
 [params.links]
 # End user relevant links. These will show up on left side of footer and in the community page if you have one.
