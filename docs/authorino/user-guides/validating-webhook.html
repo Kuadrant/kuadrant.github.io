@@ -1,0 +1,405 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=en class=no-js><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=generator content="Hugo 0.101.0"><meta name=robots content="index, follow"><link rel="shortcut icon" href=/favicons/favicon.ico><link rel=apple-touch-icon href=/favicons/apple-touch-icon-180x180.png sizes=180x180><link rel=icon type=image/png href=/favicons/favicon-16x16.png sizes=16x16><link rel=icon type=image/png href=/favicons/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=/favicons/android-36x36.png sizes=36x36><link rel=icon type=image/png href=/favicons/android-48x48.png sizes=48x48><link rel=icon type=image/png href=/favicons/android-72x72.png sizes=72x72><link rel=icon type=image/png href=/favicons/android-96x96.png sizes=96x96><link rel=icon type=image/png href=/favicons/android-144x144.png sizes=144x144><link rel=icon type=image/png href=/favicons/android-192x192.png sizes=192x192><title>Kuadrant</title><meta name=description content="User guide: Using Authorino as ValidatingWebhook service
+Authorino provides an interface for raw HTTP external authorization requests. This interface …"><meta property="og:title" content><meta property="og:description" content="User guide: Using Authorino as ValidatingWebhook service Authorino provides an interface for raw HTTP external authorization requests. This interface can be used for integrations other than the typical Envoy gRPC protocol, such as (though not limited to) using Authorino as a generic Kubernetes ValidatingWebhook service.
+The rules to validate a request to the Kubernetes API – typically a POST, PUT or DELETE request targeting a particular Kubernetes resource or collection –, according to which either the change will be deemed accepted or not, are written in an Authorino AuthConfig custom resource."><meta property="og:type" content="article"><meta property="og:url" content="https://kuadrant.github.io/docs/authorino/user-guides/validating-webhook.html"><meta property="article:section" content="docs"><meta property="og:site_name" content="Kuadrant"><meta itemprop=name content><meta itemprop=description content="User guide: Using Authorino as ValidatingWebhook service Authorino provides an interface for raw HTTP external authorization requests. This interface can be used for integrations other than the typical Envoy gRPC protocol, such as (though not limited to) using Authorino as a generic Kubernetes ValidatingWebhook service.
+The rules to validate a request to the Kubernetes API – typically a POST, PUT or DELETE request targeting a particular Kubernetes resource or collection –, according to which either the change will be deemed accepted or not, are written in an Authorino AuthConfig custom resource."><meta itemprop=wordCount content="1691"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content><meta name=twitter:description content="User guide: Using Authorino as ValidatingWebhook service Authorino provides an interface for raw HTTP external authorization requests. This interface can be used for integrations other than the typical Envoy gRPC protocol, such as (though not limited to) using Authorino as a generic Kubernetes ValidatingWebhook service.
+The rules to validate a request to the Kubernetes API – typically a POST, PUT or DELETE request targeting a particular Kubernetes resource or collection –, according to which either the change will be deemed accepted or not, are written in an Authorino AuthConfig custom resource."><link rel=preload href=/scss/main.min.376fc1fb4fb34a21ee9a9310b0883497edd6a05c782c1154405396e6b24b8ef8.css as=style><link href=/scss/main.min.376fc1fb4fb34a21ee9a9310b0883497edd6a05c782c1154405396e6b24b8ef8.css rel=stylesheet integrity><script src=https://code.jquery.com/jquery-3.6.0.min.js integrity=sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK crossorigin=anonymous></script></head><body class=td-page><header><nav class="js-navbar-scroll navbar navbar-expand navbar-dark flex-column flex-md-row td-navbar"><a class=navbar-brand href=/><span class=navbar-logo></span><span class=font-weight-bold>Kuadrant</span></a><div class="td-navbar-nav-scroll ml-md-auto" id=main_navbar><ul class="navbar-nav mt-2 mt-lg-0"></ul></div><div class="navbar-nav d-none d-lg-block"></div></nav></header><div class="container-fluid td-outer"><div class=td-main><div class="row flex-xl-nowrap"><aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none"><div id=td-sidebar-menu class=td-sidebar__inner><form class="td-sidebar__search d-flex align-items-center"><button class="btn btn-link td-sidebar__toggle d-md-none p-0 ml-3 fas fa-bars" type=button data-toggle=collapse data-target=#td-section-nav aria-controls=td-docs-nav aria-expanded=false aria-label="Toggle section navigation"></button></form><nav class="collapse td-sidebar-nav foldable-nav" id=td-section-nav><ul class="td-sidebar-nav__section pr-md-3 ul-0"><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id=m-docshtml-li><a href=/docs.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__section tree-root" id=m-docshtml><span>Kuadrant Documentation</span></a>
+<span class=td-sidebar-nav-active-item>Authorino</span><ul class=ul-foldable><li class=pl-2><a href=/docs/authorino/getting-started.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Getting started</span></a></li><li class=pl-2><a href=/docs/authorino/terminology.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Terminology</span></a></li><li class=pl-2><a href=/docs/authorino/architecture.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Architecture</span></a></li><li class=pl-2><a href=/docs/authorino/features.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Features</span></a></li><li class=pl-2><a href=/docs/authorino/contributing.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Contributing</span></a></li></ul><ul class=ul-foldable><li class="align-left pl-1 td-sidebar-link td-sidebar-link__section" id=m-docshtml><span class=td-sidebar-nav-item>User Guides</span></li><ul class=ul-foldable><li class=pl-2><a href=/docs/authorino/user-guides/hello-world.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Hello World</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/kubernetes-tokenreview.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Authentication with Kubernetes tokens (TokenReview API)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/api-key-authentication.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Authentication with API keys</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/mtls-authentication.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Authentication with X.509 certificates and mTLS</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/oidc-jwt-authentication.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>OpenID Connect Discovery and authentication with JWTs</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/oauth2-token-introspection.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>OAuth 2.0 token introspection (RFC 7662)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/passing-credentials.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Passing credentials (Authorization header, cookie headers and others)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/http-basic-authentication.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>HTTP “Basic” Authentication (RFC 7235)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/anonymous-access.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Anonymous access</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/token-normalization.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Token normalization</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/edge-authentication-architecture-festival-wristbands.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Edge Authentication Architecture (EAA)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/external-metadata.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Fetching auth metadata from external sources</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/oidc-user-info.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>OpenID Connect UserInfo</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/resource-level-authorization-uma.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Resource-level authorization with User-Managed Access (UMA) resource registry</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/json-pattern-matching-authorization.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Simple pattern-matching authorization policies</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/oidc-rbac.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Authorino and Keycloak</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/opa-authorization.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Open Policy Agent (OPA) Rego policies</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/kubernetes-subjectaccessreview.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Kubernetes RBAC for service authorization (SubjectAccessReview API)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/keycloak-authorization-services.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Authorization with Keycloak Authorization Services</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/injecting-data.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Injecting data in the request</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Authenticated rate limiting (with Envoy Dynamic Metadata)</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/deny-with-redirect-to-login.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Redirecting to a login page</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/envoy-jwt-authn-and-authorino.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Mixing Envoy built-in filter for auth and Authorino</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/host-override.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Host override via context extension</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/validating-webhook.html title="Kuadrant Documentation" class="align-left pl-0 active td-sidebar-link td-sidebar-link__page" id=m-docshtml><span class=td-sidebar-nav-active-item>Using Authorino as ValidatingWebhook service</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/sharding.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Reducing the operational space: sharding, noise and multi-tenancy</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/Caching.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>caching.md</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/metrics.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Observability</span></a></li><li class=pl-2><a href=/docs/authorino/user-guides/logging.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Logging & Tracing</span></a></li></ul></ul></li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id=m-docshtml-li><span class=td-sidebar-nav-active-item>Limitador</span><ul class=ul-foldable><li class=pl-2><a href=/docs/limitador-server/configuration.html title="Kuadrant Documentation" class="align-left pl-0 td-sidebar-link td-sidebar-link__page" id=m-docshtml><span>Environment variables</span></a></li></ul></li></ul></nav></div></aside><aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none"><div class="td-page-meta ml-2 pb-1 pt-2 mb-0"></div><div class=td-toc><nav id=TableOfContents><ul><li><a href=#requirements>Requirements</a></li><li><a href=#1-install-the-authorino-operator>1. Install the Authorino Operator</a></li><li><a href=#2-deploy-authorino>2. Deploy Authorino</a></li><li><a href=#3-create-the-authconfig-and-related-clusterrole>3. Create the <code>AuthConfig</code> and related <code>ClusterRole</code></a></li><li><a href=#4-create-the-validatingwebhookconfiguration>4. Create the <code>ValidatingWebhookConfiguration</code></a></li><li><a href=#5-try-it-out>5. Try it out</a><ul><li><a href=#with-a-valid-authconfig>With a valid <code>AuthConfig</code></a></li><li><a href=#with-forbidden-features>With forbidden features</a></li><li><a href=#with-features-that-require-additional-permissions>With features that require additional permissions</a></li></ul></li><li><a href=#with-features-that-require-specific-property-validation>With features that require specific property validation</a></li><li><a href=#cleanup>Cleanup</a></li></ul></nav></div></aside><main class="col-12 col-md-9 col-xl-8 pl-md-5" role=main><div class=td-content><h1></h1><header class=article-meta></header><h1 id=user-guide-using-authorino-as-validatingwebhook-service>User guide: Using Authorino as ValidatingWebhook service</h1><p>Authorino provides an interface for raw HTTP external authorization requests. This interface can be used for integrations other than the typical Envoy gRPC protocol, such as (though not limited to) using Authorino as a generic Kubernetes ValidatingWebhook service.</p><p>The rules to validate a request to the Kubernetes API – typically a <code>POST</code>, <code>PUT</code> or <code>DELETE</code> request targeting a particular Kubernetes resource or collection –, according to which either the change will be deemed accepted or not, are written in an Authorino <code>AuthConfig</code> custom resource. Authentication and authorization are performed by the Kubernetes API server as usual, with auth features of Authorino implementing the aditional validation within the scope of an <code>AdmissionReview</code> request.</p><p>This user guide provides an example of using Authorino as a Kubernetes ValidatingWebhook service that validates requests to <code>CREATE</code> and <code>UPDATE</code> Authorino <code>AuthConfig</code> resources. In other words, we will use Authorino as a validator inside the cluster that decides what is a valid AuthConfig for any application which wants to rely on Authorino to protect itself.</p><p><strong>The AuthConfig to validate other AuthConfigs will enforce the following rules:</strong></p><ul><li>Authorino features that cannot be used by any application in their security schemes:<ul><li>Anonymous Access</li><li>Plain identity object extracted from context</li><li>Kubernetes authentication (TokenReview)</li><li>Kubernetes authorization (SubjectAccessReview)</li><li>Festival Wristband tokens</li></ul></li><li>Authorino features that require a RoleBinding to a specific ClusterRole in the &lsquo;authorino&rsquo; namespace, to be used in a AuthConfig:<ul><li>Authorino API key authentication</li></ul></li><li>All metadata pulled from external sources must be cached for precisely 5 minutes (300 seconds)</li></ul><p>For convinience, the same instance of Authorino used to enforce the AuthConfig associated with the validating webhook will also be targeted for the sample AuthConfigs created to test the validation. For using different instances of Authorino for the validating webhook and for protecting applications behind a proxy, check out the section about
+<a href=./../architecture.html#sharding>sharding</a>
+in the docs. There is also a
+<a href=./sharding.html>user guide</a>
+on the topic, with concrete examples.</p><details><summary><strong>Authorino features in this guide:</strong><ul><li>Identity verification & authentication → <a href=./../features.md#plain-identityplain>Plain</a></li><li>Identity verification & authentication → <a href=./../features.md#kubernetes-tokenreview-identitykubernetes>Kubernetes TokenReview</a></li><li>Identity verification & authentication → <a href=./../features.md#api-key-identityapikey>API key</a></li><li>External auth metadata → <a href=./../features.md#http-getget-by-post-metadatahttp>HTTP GET/GET-by-POST</a></li><li>Authorization → <a href=./../features.md#kubernetes-subjectaccessreview-authorizationkubernetes>Kubernetes SubjectAccessReview</a></li><li>Authorization → <a href=./../features.md#open-policy-agent-opa-rego-policies-authorizationopa>Open Policy Agent (OPA) Rego policies</a></li><li>Dynamic response → <a href=./../features.md#festival-wristband-tokens-responsewristband>Festival Wristband tokens</a></li><li>Common feature → <a href=./../features.md#common-feature-conditions-when>Conditions</a></li><li>Common feature → <a href=./../features.md#common-feature-priorities>Priorities</a></li></ul></summary><p>For further details about Authorino features in general, check the
+<a href=./../features.html>docs</a>
+.</p></details><br><h2 id=requirements>Requirements</h2><ul><li>Kubernetes server</li><li><a href=https://github.com/jetstack/cert-manager target=_blank rel=noopener>cert-manager</a></li><li>Auth server / Identity Provider (IdP) that implements OpenID Connect authentication and OpenID Connect Discovery (e.g.
+<a href=https://www.keycloak.org target=_blank rel=noopener>Keycloak</a>
+)</li></ul><p>Create a containerized Kubernetes server locally using
+<a href=https://kind.sigs.k8s.io target=_blank rel=noopener>Kind</a>
+:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kind create cluster --name authorino-tutorial
+</span></span></code></pre></div><p>Install cert-manager:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
+</span></span></code></pre></div><p>Deploy a Keycloak server preloaded with all the realm settings required for this guide:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create namespace keycloak
+</span></span><span style=display:flex><span>kubectl -n keycloak apply -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/keycloak/keycloak-deploy.yaml
+</span></span></code></pre></div><h2 id=1-install-the-authorino-operator>1. Install the Authorino Operator</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl apply -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
+</span></span></code></pre></div><h2 id=2-deploy-authorino>2. Deploy Authorino</h2><p>Create the namespace:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create namespace authorino
+</span></span></code></pre></div><p>Create the TLS certificates:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>curl -sSL https://raw.githubusercontent.com/Kuadrant/authorino/main/deploy/certs.yaml | sed <span style=color:#e6db74>&#34;s/\$(AUTHORINO_INSTANCE)/authorino/g;s/\$(NAMESPACE)/authorino/g&#34;</span> | kubectl -n authorino apply -f -
+</span></span></code></pre></div><p>Create the Authorino instance:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n authorino apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: operator.authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Authorino
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authorino
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  clusterWide: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  listener:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      grpc: 50051
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      http: 5001 # for admissionreview requests sent by the kubernetes api server
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    tls:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      certSecretRef:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        name: authorino-server-cert
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  oidcServer:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    tls:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      certSecretRef:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        name: authorino-oidc-server-cert
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>The command above will deploy Authorino as a separate service (as oposed to a sidecar of the protected API and other architectures), in <code>cluster-wide</code> reconciliation mode, and with TLS termination enabled. For other variants and deployment options, check out the
+<a href=./../getting-started.html#2-deploy-an-authorino-instance>Getting Started</a>
+section of the docs, the
+<a href=./../architecture.html#topologies>Architecture</a>
+page, and the spec for the
+<a href=https://github.com/Kuadrant/authorino-operator/blob/main/config/crd/bases/operator.authorino.kuadrant.io_authorinos.yaml target=_blank rel=noopener><code>Authorino</code></a>
+CRD in the Authorino Operator repo.</p><h2 id=3-create-the-authconfig-and-related-clusterrole>3. Create the <code>AuthConfig</code> and related <code>ClusterRole</code></h2><p>Create the <code>AuthConfig</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n authorino apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authconfig-validator
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # admissionreview requests will be sent to this host name
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - authorino-authorino-authorization.authorino.svc
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # because we&#39;re using a single authorino instance for the validating webhook and to protect the user applications,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # skip operations related to this one authconfig in the &#39;authorino&#39; namespace
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  when:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - selector: context.request.http.body.@fromstr|request.object.metadata.namespace
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    operator: neq
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    value: authorino
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # kubernetes admissionreviews carry info about the authenticated user
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: k8s-userinfo
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    plain:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      authJSON: context.request.http.body.@fromstr|request.userInfo
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  authorization:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: features
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    opa:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      inlineRego: |
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        authconfig = json.unmarshal(input.context.request.http.body).request.object
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { count(object.get(authconfig.spec, &#34;identity&#34;, [])) == 0 }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { authconfig.spec.identity[_].anonymous }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { authconfig.spec.identity[_].kubernetes }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { authconfig.spec.identity[_].plain }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { authconfig.spec.authorization[_].kubernetes }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forbidden { authconfig.spec.response[_].wristband }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        apiKey { authconfig.spec.identity[_].apiKey }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        allow { count(authconfig.spec.identity) &gt; 0; not forbidden }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      allValues: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: apikey-authn-requires-k8s-role-binding
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    priority: 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    when:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    - selector: auth.authorization.features.apiKey
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      operator: eq
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      value: &#34;true&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    kubernetes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      user:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        valueFrom: { authJSON: auth.identity.username }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      resourceAttributes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        namespace: { value: authorino }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        group: { value: authorino.kuadrant.io }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        resource: { value: authconfigs-with-apikeys }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        verb: { value: create }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: metadata-cache-ttl
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    priority: 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    opa:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      inlineRego: |
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        invalid_ttl = input.auth.authorization.features.authconfig.spec.metadata[_].cache.ttl != 300
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        allow { not invalid_ttl }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>Define a <code>ClusterRole</code> to control the usage of protected features of Authorino:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: rbac.authorization.k8s.io/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: ClusterRole
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authorino-apikey
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>rules:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>- apiGroups: [&#34;authorino.kuadrant.io&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  resources: [&#34;authconfigs-with-apikeys&#34;] # not a real k8s resource
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  verbs: [&#34;create&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h2 id=4-create-the-validatingwebhookconfiguration>4. Create the <code>ValidatingWebhookConfiguration</code></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n authorino apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: admissionregistration.k8s.io/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: ValidatingWebhookConfiguration
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authconfig-authz
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  annotations:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    cert-manager.io/inject-ca-from: authorino/authorino-ca-cert
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>webhooks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>- name: check-authconfig.authorino.kuadrant.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  clientConfig:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    service:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      namespace: authorino
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      name: authorino-authorino-authorization
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      port: 5001
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      path: /check
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  rules:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - apiGroups: [&#34;authorino.kuadrant.io&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    apiVersions: [&#34;v1beta1&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    resources: [&#34;authconfigs&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    operations: [&#34;CREATE&#34;, &#34;UPDATE&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    scope: Namespaced
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  sideEffects: None
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  admissionReviewVersions: [&#34;v1&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h2 id=5-try-it-out>5. Try it out</h2><p>Create a namespace:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl create namespace myapp
+</span></span></code></pre></div><h3 id=with-a-valid-authconfig>With a valid <code>AuthConfig</code></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: keycloak
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    oidc:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># authconfig.authorino.kuadrant.io/myapp-protection created</span>
+</span></span></code></pre></div><h3 id=with-forbidden-features>With forbidden features</h3><p>Anonymous access:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:null}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: anonymous-access
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    anonymous: {}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;anonymous\&#34;:{},\&#34;name\&#34;:\&#34;anonymous-access\&#34;}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;anonymous&#34;:{},&#34;name&#34;:&#34;anonymous-access&#34;}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><p>Kuberentes TokenReview:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: k8s-tokenreview
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    kubernetes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      audiences: [&#34;myapp&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;kubernetes\&#34;:{\&#34;audiences\&#34;:[\&#34;myapp\&#34;]},\&#34;name\&#34;:\&#34;k8s-tokenreview\&#34;}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;kubernetes&#34;:{&#34;audiences&#34;:[&#34;myapp&#34;]},&#34;name&#34;:&#34;k8s-tokenreview&#34;}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><p>Plain identity extracted from context:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: envoy-jwt-authn
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    plain:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      authJSON: context.metadata_context.filter_metadata.envoy\.filters\.http\.jwt_authn|verified_jwt
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;name\&#34;:\&#34;envoy-jwt-authn\&#34;,\&#34;plain\&#34;:{\&#34;authJSON\&#34;:\&#34;context.metadata_context.filter_metadata.envoy\\\\.filters\\\\.http\\\\.jwt_authn|verified_jwt\&#34;}}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;name&#34;:&#34;envoy-jwt-authn&#34;,&#34;plain&#34;:{&#34;authJSON&#34;:&#34;context.metadata_context.filter_metadata.envoy\\.filters\\.http\\.jwt_authn|verified_jwt&#34;}}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><p>Kubernetes SubjectAccessReview:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: keycloak
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    oidc:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  authorization:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: k8s-subjectaccessreview
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    kubernetes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      user:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        valueFrom: { authJSON: auth.identity.sub }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;authorization\&#34;:[{\&#34;kubernetes\&#34;:{\&#34;user\&#34;:{\&#34;valueFrom\&#34;:{\&#34;authJSON\&#34;:\&#34;auth.identity.sub\&#34;}}},\&#34;name\&#34;:\&#34;k8s-subjectaccessreview\&#34;}],\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;name\&#34;:\&#34;keycloak\&#34;,\&#34;oidc\&#34;:{\&#34;endpoint\&#34;:\&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant\&#34;}}]}}\n&#34;}},&#34;spec&#34;:{&#34;authorization&#34;:[{&#34;kubernetes&#34;:{&#34;user&#34;:{&#34;valueFrom&#34;:{&#34;authJSON&#34;:&#34;auth.identity.sub&#34;}}},&#34;name&#34;:&#34;k8s-subjectaccessreview&#34;}],&#34;identity&#34;:[{&#34;name&#34;:&#34;keycloak&#34;,&#34;oidc&#34;:{&#34;endpoint&#34;:&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant&#34;}}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><p>Festival Wristband tokens:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Secret
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: wristband-signing-key
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>stringData:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  key.pem: |
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    -----BEGIN EC PRIVATE KEY-----
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    MHcCAQEEIDHvuf81gVlWGo0hmXGTAnA/HVxGuH8vOc7/8jewcVvqoAoGCCqGSM49
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    AwEHoUQDQgAETJf5NLVKplSYp95TOfhVPqvxvEibRyjrUZwwtpDuQZxJKDysoGwn
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    cnUvHIu23SgW+Ee9lxSmZGhO4eTdQeKxMA==
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    -----END EC PRIVATE KEY-----
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>type: Opaque
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>---
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: keycloak
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    oidc:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  response:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: wristband
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    wristband:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      issuer: http://authorino-authorino-oidc.authorino.svc.cluster.local:8083/myapp/myapp-protection/wristband
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      signingKeyRefs:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - algorithm: ES256
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        name: wristband-signing-key
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># secret/wristband-signing-key created</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;name\&#34;:\&#34;keycloak\&#34;,\&#34;oidc\&#34;:{\&#34;endpoint\&#34;:\&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant\&#34;}}],\&#34;response\&#34;:[{\&#34;name\&#34;:\&#34;wristband\&#34;,\&#34;wristband\&#34;:{\&#34;issuer\&#34;:\&#34;http://authorino-authorino-oidc.authorino.svc.cluster.local:8083/myapp/myapp-protection/wristband\&#34;,\&#34;signingKeyRefs\&#34;:[{\&#34;algorithm\&#34;:\&#34;ES256\&#34;,\&#34;name\&#34;:\&#34;wristband-signing-key\&#34;}]}}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;name&#34;:&#34;keycloak&#34;,&#34;oidc&#34;:{&#34;endpoint&#34;:&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant&#34;}}],&#34;response&#34;:[{&#34;name&#34;:&#34;wristband&#34;,&#34;wristband&#34;:{&#34;issuer&#34;:&#34;http://authorino-authorino-oidc.authorino.svc.cluster.local:8083/myapp/myapp-protection/wristband&#34;,&#34;signingKeyRefs&#34;:[{&#34;algorithm&#34;:&#34;ES256&#34;,&#34;name&#34;:&#34;wristband-signing-key&#34;}]}}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><h3 id=with-features-that-require-additional-permissions>With features that require additional permissions</h3><p>Before adding the required permissions:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: api-key
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    apiKey:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      labelSelectors: { app: myapp }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;apiKey\&#34;:{\&#34;labelSelectors\&#34;:{\&#34;app\&#34;:\&#34;myapp\&#34;}},\&#34;name\&#34;:\&#34;api-key\&#34;}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;apiKey&#34;:{&#34;labelSelectors&#34;:{&#34;app&#34;:&#34;myapp&#34;}},&#34;name&#34;:&#34;api-key&#34;}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Not authorized: unknown reason</span>
+</span></span></code></pre></div><p>Add the required permissions:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n authorino apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: rbac.authorization.k8s.io/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: RoleBinding
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authorino-apikey
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>roleRef:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  apiGroup: rbac.authorization.k8s.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  kind: ClusterRole
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: authorino-apikey
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>subjects:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>- kind: User
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: kubernetes-admin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rolebinding.rbac.authorization.k8s.io/authorino-apikey created</span>
+</span></span></code></pre></div><p>After adding the required permissions:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: api-key
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    apiKey:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      labelSelectors: { app: myapp }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># authconfig.authorino.kuadrant.io/myapp-protection configured</span>
+</span></span></code></pre></div><h2 id=with-features-that-require-specific-property-validation>With features that require specific property validation</h2><p>Invalid:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: keycloak
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    oidc:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: external-source
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    http:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://metadata.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      method: GET
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    cache:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      key: { value: global }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      ttl: 60
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Error from server: error when applying patch:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># {&#34;metadata&#34;:{&#34;annotations&#34;:{&#34;kubectl.kubernetes.io/last-applied-configuration&#34;:&#34;{\&#34;apiVersion\&#34;:\&#34;authorino.kuadrant.io/v1beta1\&#34;,\&#34;kind\&#34;:\&#34;AuthConfig\&#34;,\&#34;metadata\&#34;:{\&#34;annotations\&#34;:{},\&#34;name\&#34;:\&#34;myapp-protection\&#34;,\&#34;namespace\&#34;:\&#34;myapp\&#34;},\&#34;spec\&#34;:{\&#34;hosts\&#34;:[\&#34;myapp.io\&#34;],\&#34;identity\&#34;:[{\&#34;name\&#34;:\&#34;keycloak\&#34;,\&#34;oidc\&#34;:{\&#34;endpoint\&#34;:\&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant\&#34;}}],\&#34;metadata\&#34;:[{\&#34;cache\&#34;:{\&#34;key\&#34;:{\&#34;value\&#34;:\&#34;global\&#34;},\&#34;ttl\&#34;:60},\&#34;http\&#34;:{\&#34;endpoint\&#34;:\&#34;http://metadata.io\&#34;,\&#34;method\&#34;:\&#34;GET\&#34;},\&#34;name\&#34;:\&#34;external-source\&#34;}]}}\n&#34;}},&#34;spec&#34;:{&#34;identity&#34;:[{&#34;name&#34;:&#34;keycloak&#34;,&#34;oidc&#34;:{&#34;endpoint&#34;:&#34;http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant&#34;}}],&#34;metadata&#34;:[{&#34;cache&#34;:{&#34;key&#34;:{&#34;value&#34;:&#34;global&#34;},&#34;ttl&#34;:60},&#34;http&#34;:{&#34;endpoint&#34;:&#34;http://metadata.io&#34;,&#34;method&#34;:&#34;GET&#34;},&#34;name&#34;:&#34;external-source&#34;}]}}</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># to:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Resource: &#34;authorino.kuadrant.io/v1beta1, Resource=authconfigs&#34;, GroupVersionKind: &#34;authorino.kuadrant.io/v1beta1, Kind=AuthConfig&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Name: &#34;myapp-protection&#34;, Namespace: &#34;myapp&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># for: &#34;STDIN&#34;: admission webhook &#34;check-authconfig.authorino.kuadrant.io&#34; denied the request: Unauthorized</span>
+</span></span></code></pre></div><p>Valid:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl -n myapp apply -f -<span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: authorino.kuadrant.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: AuthConfig
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: myapp-protection
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  hosts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - myapp.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  identity:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: keycloak
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    oidc:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/kuadrant
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: external-source
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    http:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      endpoint: http://metadata.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      method: GET
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    cache:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      key: { value: global }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      ttl: 300
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># authconfig.authorino.kuadrant.io/myapp-protection configured</span>
+</span></span></code></pre></div><h2 id=cleanup>Cleanup</h2><p>If you have started a Kubernetes cluster locally with Kind to try this user guide, delete it by running:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kind delete cluster --name authorino-tutorial
+</span></span></code></pre></div><p>Otherwise, delete the resources created in each step:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete namespace myapp
+</span></span><span style=display:flex><span>kubectl delete namespace authorino
+</span></span><span style=display:flex><span>kubectl delete namespace clusterrole/authorino-apikey
+</span></span><span style=display:flex><span>kubectl delete namespace keycloak
+</span></span></code></pre></div><p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
+</span></span></code></pre></div></div></main></div></div><footer class="bg-dark py-5 row d-print-none"><div class="container-fluid mx-sm-5"><div class=row><div class="col-6 col-sm-4 text-xs-center order-sm-2"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="GitHub Discussions" aria-label="GitHub Discussions"><a class=text-white target=_blank rel=noopener href=https://github.com/orgs/Kuadrant/discussions aria-label="GitHub Discussions"><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Twitter aria-label=Twitter><a class=text-white target=_blank rel=noopener href=https://twitter.com/kuadrantio aria-label=Twitter><i class="fab fa-twitter"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title="Stack Overflow" aria-label="Stack Overflow"><a class=text-white target=_blank rel=noopener href=https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador aria-label="Stack Overflow"><i class="fab fa-stack-overflow"></i></a></li></ul></div><div class="col-6 col-sm-4 text-right text-xs-center order-sm-3"><ul class="list-inline mb-0"><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=GitHub aria-label=GitHub><a class=text-white target=_blank rel=noopener href=https://github.com/Kuadrant aria-label=GitHub><i class="fab fa-github"></i></a></li><li class="list-inline-item mx-2 h3" data-toggle=tooltip data-placement=top title=Slack aria-label=Slack><a class=text-white target=_blank rel=noopener href=https://join.slack.com/t/kuadrant/shared_invite/zt-16ggrm41h-z1HLYGkRxJ6l_oZVU~eQzQ aria-label=Slack><i class="fab fa-slack"></i></a></li></ul></div><div class="col-12 col-sm-4 text-center py-2 order-sm-2"><small class=text-white>&copy; 2022 The Kuadrant Authors All Rights Reserved</small></div></div></div></footer></div><script src=https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js integrity=sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/mermaid@8.13.4/dist/mermaid.min.js integrity="sha512-JERecFUBbsm75UpkVheAuDOE8NdHjQBrPACfEQYPwvPG+fjgCpHAz1Jw2ci9EXmd3DdfiWth3O3CQvcfEg8gsA==" crossorigin=anonymous></script><style>.markmap>svg{width:100%;height:300px}</style><script>window.markmap={autoLoader:{manual:!0}}</script><script src=https://cdn.jsdelivr.net/npm/markmap-autoloader></script>
+<script src=/js/tabpane-persist.js></script>
+<script src=/js/deflate.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity="sha512-vJqxkZ+Sugf/6WRlpcxN01qVfX/29hF6qc33eHF1va3NgoV+U+wCi+uTAsQ10sDoGyBxHLdaHvGwDlV3yVYboA==" crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity="sha512-5ufNcHqOYgilGEHPfuRIQ5B/vDS1M8+UC+DESZ5CwVgGTg+b2Ol/15rYL/GiCWJ/Sx8oVo0FPFok1dPk8U9INQ==" crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mhchem.min.js integrity="sha512-HWb6LyQhO6UkmYLjdSblpgiOvvbdkoMRjln0POPhOVbZu3l4QdqwZnMJ/cuwKScU5pWARejB495TAAAz0WNsXQ==" crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity='sha512-ZA/RPrAo88DlwRnnoNVqKINnQNcWERzRK03PDaA4GIJiVZvGFIWQbdWCsUebMZfkWohnfngsDjXzU6PokO4jGw==' crossorigin=anonymous onload=renderMathInElement(document.body,null)></script>
+<script src=/js/main.min.39c43f07a87366d6d6594ca779f6290ed90246710167fd21caf04e404c68adbd.js integrity="sha256-OcQ/B6hzZtbWWUynefYpDtkCRnEBZ/0hyvBOQExorb0=" crossorigin=anonymous></script></body></html>
