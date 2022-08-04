@@ -1,0 +1,145 @@
+[hello-world]
+file = "hello-world.md"
+title.en = "Hello World"
+weight = 10
+
+[kubernetes-tokenreview]
+file = "kubernetes-tokenreview.md"
+title.en = "Authentication with Kubernetes tokens (TokenReview API)"
+weight = 20
+
+[api-key-authentication]
+file = "api-key-authentication.md"
+title.en = "Authentication with API keys"
+weight = 30
+
+[mtls-authentication]
+file = "mtls-authentication.md"
+title.en = "Authentication with X.509 certificates and mTLS"
+weight = 40
+
+[oidc-jwt-authentication]
+file = "oidc-jwt-authentication.md"
+title.en = "OpenID Connect Discovery and authentication with JWTs"
+weight = 50
+
+[oauth2-token-introspection]
+file = "oauth2-token-introspection.md"
+title.en = "OAuth 2.0 token introspection (RFC 7662)"
+weight = 60
+
+[passing-credentials]
+file = "passing-credentials.md"
+title.en = "Passing credentials (Authorization header, cookie headers and others)"
+weight = 70
+
+[http-basic-authentication]
+file = "http-basic-authentication.md"
+title.en = "HTTP “Basic” Authentication (RFC 7235)"
+weight = 80
+
+[anonymous-access]
+file = "anonymous-access.md"
+title.en = "Anonymous access"
+weight = 90
+
+[token-normalization]
+file = "token-normalization.md"
+title.en = "Token normalization"
+weight = 100
+
+[edge-authentication-architecture-festival-wristbands]
+file = "edge-authentication-architecture-festival-wristbands.md"
+title.en = "Edge Authentication Architecture (EAA)"
+weight = 110
+
+[external-metadata]
+file = "external-metadata.md"
+title.en = "Fetching auth metadata from external sources"
+weight = 120
+
+[oidc-user-info]
+file = "oidc-user-info.md"
+title.en = "OpenID Connect UserInfo"
+weight = 130
+
+[resource-level-authorization-uma]
+file = "resource-level-authorization-uma.md"
+title.en = "Resource-level authorization with User-Managed Access (UMA) resource registry"
+weight = 140
+
+[json-pattern-matching-authorization]
+file = "json-pattern-matching-authorization.md"
+title.en = "Simple pattern-matching authorization policies"
+weight = 150
+
+[oidc-rbac]
+file = "oidc-rbac.md"
+title.en = "OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Authorino and Keycloak"
+weight = 160
+
+[opa-authorization]
+file = "opa-authorization.md"
+title.en = "Open Policy Agent (OPA) Rego policies"
+weight = 170
+
+[kubernetes-subjectaccessreview]
+file = "kubernetes-subjectaccessreview.md"
+title.en = "Kubernetes RBAC for service authorization (SubjectAccessReview API)"
+weight = 180
+
+[keycloak-authorization-services]
+file = "keycloak-authorization-services.md"
+title.en = "Authorization with Keycloak Authorization Services"
+weight = 190
+
+[injecting-data]
+file = "injecting-data.md"
+title.en = "Injecting data in the request"
+weight = 200
+
+[authenticated-rate-limiting-envoy-dynamic-metadata]
+file = "authenticated-rate-limiting-envoy-dynamic-metadata.md"
+title.en = "Authenticated rate limiting (with Envoy Dynamic Metadata)"
+weight = 210
+
+[deny-with-redirect-to-login]
+file = "deny-with-redirect-to-login.md"
+title.en = "Redirecting to a login page"
+weight = 220
+
+[envoy-jwt-authn-and-authorino]
+file = "envoy-jwt-authn-and-authorino.md"
+title.en = "Mixing Envoy built-in filter for auth and Authorino"
+weight = 230
+
+[host-override]
+file = "host-override.md"
+title.en = "Host override via context extension"
+weight = 240
+
+[validating-webhook]
+file = "validating-webhook.md"
+title.en = "Using Authorino as ValidatingWebhook service"
+weight = 250
+
+[sharding]
+file = "sharding.md"
+title.en = "Reducing the operational space: sharding, noise and multi-tenancy"
+weight = 260
+
+[caching]
+file = "Caching"
+title.en = "caching.md"
+weight = 270
+
+[metrics]
+file = "metrics.md"
+title.en = "Observability"
+weight = 280
+
+[logging]
+file = "logging.md"
+title.en = "Logging & Tracing"
+weight = 290
+

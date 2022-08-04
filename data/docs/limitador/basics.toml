@@ -1,0 +1,4 @@
+[configuration]
+file = "configuration.md"
+title.en = "Environment variables"
+weight = 200
