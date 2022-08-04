@@ -129,8 +129,8 @@ title.en = "Reducing the operational space: sharding, noise and multi-tenancy"
 weight = 260
 
 [caching]
-file = "Caching"
-title.en = "caching.md"
+file = "caching.md"
+title.en = "Caching"
 weight = 270
 
 [metrics]
