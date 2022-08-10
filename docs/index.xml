@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kuadrant – Kuadrant Documentation</title><link>https://kuadrant.io/docs.html</link><description>Recent content in Kuadrant Documentation on Kuadrant</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://kuadrant.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/architecture.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/architecture.html</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kuadrant – Kuadrant Documentation</title><link>https://kuadrant.github.io/docs.html</link><description>Recent content in Kuadrant Documentation on Kuadrant</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://kuadrant.github.io/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/architecture.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/architecture.html</guid><description>
 &lt;h1 id="architecture">Architecture&lt;/h1>
 &lt;ul>
 &lt;li>
@@ -199,7 +199,7 @@ to the Kubernetes cluster running Authorino.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">value&lt;/span>: &lt;span style="color:#ae81ff">https://my-app.io/login&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">unauthorized&lt;/span>: {&lt;span style="color:#ae81ff">…}&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Check out the
-&lt;a href="https://kuadrant.io/install/crd/authorino.kuadrant.io_authconfigs.yaml">OAS&lt;/a>
+&lt;a href="https://kuadrant.github.io/install/crd/authorino.kuadrant.io_authconfigs.yaml">OAS&lt;/a>
 of the &lt;code>AuthConfig&lt;/code> CRD for a formal specification of the options for &lt;code>identity&lt;/code> verification, external &lt;code>metadata&lt;/code> fetching, &lt;code>authorization&lt;/code> policies, and dynamic &lt;code>response&lt;/code>, as well as any other host protection capability implemented by Authorino.&lt;/p>
 &lt;p>You can also read the specification from the CLI using the
 &lt;a href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#explain" target="_blank" rel="noopener">&lt;code>kubectl explain&lt;/code>&lt;/a>
@@ -469,7 +469,7 @@ AUTH_CONFIG_LABEL_SELECTOR=&amp;#34;!disabled&amp;#34;
 &lt;a href="./user-guides/metrics.html"> Metrics &amp;amp; Observability&lt;/a>
 and
 &lt;a href="./user-guides/logging.html"> Logging &amp;amp; Tracing&lt;/a>
-.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/code_of_conduct.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/code_of_conduct.html</guid><description>
+.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/code_of_conduct.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/code_of_conduct.html</guid><description>
 &lt;h2 id="authorino-code-of-conduct-v10">Authorino Code of Conduct v1.0&lt;/h2>
 &lt;p>This document provides community guidelines for a safe, respectful, productive, and collaborative place for any person who is willing to contribute to Authorino.&lt;/p>
 &lt;ul>
@@ -480,7 +480,7 @@ and
 &lt;/ul>
 &lt;p>This Code of Conduct is adapted from the
 &lt;a href="https://www.ruby-lang.org/en/conduct/" target="_blank" rel="noopener">The Ruby Community Conduct Guideline&lt;/a>
-&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/contributing.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/contributing.html</guid><description>
+&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/contributing.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/contributing.html</guid><description>
 &lt;h1 id="developers-guide">Developer&amp;rsquo;s Guide&lt;/h1>
 &lt;ul>
 &lt;li>
@@ -792,7 +792,7 @@ architecture and policy regarding log levels, log modes, tracing IDs, etc.&lt;/l
 &lt;h2 id="reach-out">Reach out&lt;/h2>
 &lt;p>
 &lt;a href="https://kuadrant.slack.com" target="_blank" rel="noopener">kuadrant.slack.com&lt;/a>
-&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/features.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/features.html</guid><description>
+&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/features.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/features.html</guid><description>
 &lt;h1 id="features">Features&lt;/h1>
 &lt;ul>
 &lt;li>
@@ -1884,7 +1884,7 @@ can be cached &amp;ldquo;in-memory&amp;rdquo;, and avoided being evaluated again
 &lt;p>Metrics at the level of the evaluators can also be enforced to an entire Authorino instance, by setting the &lt;code>DEEP_METRICS_ENABLED=true&lt;/code> environment variable. In this case, regardless of the value of the field &lt;code>spec.(identity|metadata|authorization|response).metrics&lt;/code> in the AuthConfigs, individual metrics for all evaluators of all AuthConfigs will be exported.&lt;/p>
 &lt;p>For more information about observability metrics in Authorino, see the user guide
 &lt;a href="./user-guides/metrics.html"> Observability&lt;/a>
-.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/getting-started.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/getting-started.html</guid><description>
+.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/getting-started.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/getting-started.html</guid><description>
 &lt;h1 id="getting-started">Getting started&lt;/h1>
 &lt;p>This page covers requirements and instructions to deploy Authorino on a Kubernetes cluster, as well as the steps to declare, apply and try out a protection layer of authentication and authorization over your service, clean-up and complete uninstall.&lt;/p>
 &lt;p>If you prefer learning with an example, check out our
@@ -2255,7 +2255,7 @@ page are good starting points to learn more about how Authorino works and its fu
 &lt;li>Check out the
 &lt;a href="./user-guides.html"> User guides&lt;/a>
 for several examples of &lt;code>AuthConfig&lt;/code>s based on specific use-cases&lt;/li>
-&lt;/ol></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/readme.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/readme.html</guid><description>
+&lt;/ol></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/readme.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/readme.html</guid><description>
 &lt;h1 id="documentation">Documentation&lt;/h1>
 &lt;h2 id="getting-startedgetting-startedmd">
 &lt;a href="./getting-started.html"> Getting started&lt;/a>
@@ -2274,7 +2274,7 @@ for several examples of &lt;code>AuthConfig&lt;/code>s based on specific use-cas
 &lt;/h2>
 &lt;h2 id="developers-guidecontributingmd">
 &lt;a href="./contributing.html"> Developer’s guide&lt;/a>
-&lt;/h2></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/terminology.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/terminology.html</guid><description>
+&lt;/h2></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/terminology.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/terminology.html</guid><description>
 &lt;h1 id="terminology">Terminology&lt;/h1>
 &lt;p>Here we define some terms that are used in the project, with the goal of avoiding confusion and facilitating more
 accurate conversations related to &lt;code>Authorino&lt;/code>.&lt;/p>
@@ -2400,7 +2400,7 @@ Authorization model that grants/denies access to resources based on claims of th
 &lt;p>&lt;strong>
 &lt;a href="https://en.wikipedia.org/wiki/User-Managed_Access" target="_blank" rel="noopener">User-Managed Access (UMA)&lt;/a>
 &lt;/strong>&lt;br/>
-OAuth2-based access management protocol, used for users of an auth server to control the authorization process, i.e. directly granting/denying access to user-owned resources to other requesting parties.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides.html</guid><description>
+OAuth2-based access management protocol, used for users of an auth server to control the authorization process, i.e. directly granting/denying access to user-owned resources to other requesting parties.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides.html</guid><description>
 &lt;h1 id="user-guides">User guides&lt;/h1>
 &lt;ul>
 &lt;li>
@@ -2583,7 +2583,7 @@ Parse Authorino&amp;rsquo;s structured JSON log messages; activate debug log lev
 &lt;/strong>&lt;br/>
 Trace authorization requests deep across the stack.&lt;/p>
 &lt;/li>
-&lt;/ul></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/anonymous-access.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/anonymous-access.html</guid><description>
+&lt;/ul></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/anonymous-access.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/anonymous-access.html</guid><description>
 &lt;h1 id="user-guide-anonymous-access">User guide: Anonymous access&lt;/h1>
 &lt;p>Bypass identity verification or fall back to anonymous access when credentials fail to validate&lt;/p>
 &lt;details>
@@ -2679,7 +2679,7 @@ feature for an example of an &lt;code>AuthConfig&lt;/code> that falls back to an
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/api-key-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/api-key-authentication.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/api-key-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/api-key-authentication.html</guid><description>
 &lt;h1 id="user-guide-authentication-with-api-keys">User guide: Authentication with API keys&lt;/h1>
 &lt;p>Issue API keys stored in Kubernetes &lt;code>Secret&lt;/code>s for clients to authenticate with your protected hosts.&lt;/p>
 &lt;details>
@@ -2794,7 +2794,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/authenticated-rate-limiting-envoy-dynamic-metadata.html</guid><description>
 &lt;h1 id="user-guide-authenticated-rate-limiting-with-envoy-dynamic-metadata">User guide: Authenticated rate limiting (with Envoy Dynamic Metadata)&lt;/h1>
 &lt;p>Provide Envoy with dynamic metadata about the external authorization process to be injected into the rate limiting filter.&lt;/p>
 &lt;details>
@@ -2954,7 +2954,7 @@ for reading from the
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/limitador/limitador-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/caching.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/caching.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/caching.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/caching.html</guid><description>
 &lt;h1 id="user-guide-caching">User guide: Caching&lt;/h1>
 &lt;p>Cache auth objects resolved at runtime for any configuration bit of an AuthConfig (i.e. any evaluator), of any phase (identity, metadata, authorization and dynamic response), for easy access in subsequent requests, whenever an arbitrary (user-defined) cache key repeats, until the cache entry expires.&lt;/p>
 &lt;p>This is particularly useful for configuration bits whose evaluation is significantly more expensive than accessing the cache. E.g.:&lt;/p>
@@ -3115,7 +3115,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/deny-with-redirect-to-login.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/deny-with-redirect-to-login.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/deny-with-redirect-to-login.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/deny-with-redirect-to-login.html</guid><description>
 &lt;h1 id="user-guide-redirecting-to-a-login-page">User guide: Redirecting to a login page&lt;/h1>
 &lt;p>Customize response status code and headers on failed requests to redirect users of a web application protected with Authorino to a login page instead of a &lt;code>401 Unauthorized&lt;/code>.&lt;/p>
 &lt;details>
@@ -3310,7 +3310,7 @@ for reading from the
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/keycloak/keycloak-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/edge-authentication-architecture-festival-wristbands.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/edge-authentication-architecture-festival-wristbands.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/edge-authentication-architecture-festival-wristbands.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/edge-authentication-architecture-festival-wristbands.html</guid><description>
 &lt;h1 id="user-guide-edge-authentication-architecture-eaa">User guide: Edge Authentication Architecture (EAA)&lt;/h1>
 &lt;p>Edge Authentication Architecture (EAA) is a pattern where more than extracting authentication logics and specifics from the application codebase to a proper authN/authZ layer, this is pushed to the edge of your cloud network, without violating the Zero Trust principle nevertheless.&lt;/p>
 &lt;p>The very definition of &amp;ldquo;edge&amp;rdquo; is subject to discussion, but the underlying idea is that clients (e.g. API clients, IoT devices, etc) authenticate with a layer that, before moving traffic to inside the network:&lt;/p>
@@ -3582,7 +3582,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino and Authorino Operator manifests, run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/envoy-jwt-authn-and-authorino.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/envoy-jwt-authn-and-authorino.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/envoy-jwt-authn-and-authorino.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/envoy-jwt-authn-and-authorino.html</guid><description>
 &lt;h1 id="user-guide-mixing-envoy-built-in-filter-for-auth-and-authorino">User guide: Mixing Envoy built-in filter for auth and Authorino&lt;/h1>
 &lt;p>Have JWT validation handled by Envoy beforehand and the JWT payload injected into the request to Authorino, to be used in custom authorization policies defined in a AuthConfig.&lt;/p>
 &lt;p>In this user guide, we will set up Envoy and Authorino to protect a service called the &lt;em>Talker API&lt;/em> service, with JWT authentication handled in Envoy and a more complex authorization policy enforced in Authorino.&lt;/p>
@@ -3946,7 +3946,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/external-metadata.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/external-metadata.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/external-metadata.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/external-metadata.html</guid><description>
 &lt;h1 id="user-guide-fetching-auth-metadata-from-external-sources">User guide: Fetching auth metadata from external sources&lt;/h1>
 &lt;p>Get online data from remote HTTP services to enhance authorization rules.&lt;/p>
 &lt;details>
@@ -4105,7 +4105,7 @@ for reading from the
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/hello-world.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/hello-world.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/hello-world.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/hello-world.html</guid><description>
 &lt;h1 id="user-guide-hello-world">User guide: Hello World&lt;/h1>
 &lt;br/>
 &lt;h2 id="requirements">Requirements&lt;/h2>
@@ -4198,7 +4198,7 @@ for several AuthN/AuthZ use-cases and instructions to implement them using Autho
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace authorino-operator
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/host-override.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/host-override.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/host-override.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/host-override.html</guid><description>
 &lt;h1 id="host-override-via-context-extension">Host override via context extension&lt;/h1>
 &lt;p>By default, Authorino uses the host information of the HTTP request (
 &lt;a href="https://www.envoyproxy.io/docs/envoy/latest/api-v3/service/auth/v3/attribute_context.proto#service-auth-v3-attributecontext-httprequest" target="_blank" rel="noopener">&lt;code>Attributes.Http.Host&lt;/code>&lt;/a>
@@ -4301,7 +4301,7 @@ for several AuthN/AuthZ use-cases and instructions to implement them using Autho
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">pets.com&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">identity&lt;/span>: [&lt;span style="color:#ae81ff">...]&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Notice that requests to &lt;code>dogs.pets.com&lt;/code> and to &lt;code>cats.pets.com&lt;/code> are all routed by Envoy to the same API, with same external authorization configuration. in all the cases, Authorino will lookup for the cached AuthConfig associated with &lt;code>pets.com&lt;/code>. The same is valid for a request sent, e.g., to &lt;code>birds.pets.com&lt;/code>.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/http-basic-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/http-basic-authentication.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Notice that requests to &lt;code>dogs.pets.com&lt;/code> and to &lt;code>cats.pets.com&lt;/code> are all routed by Envoy to the same API, with same external authorization configuration. in all the cases, Authorino will lookup for the cached AuthConfig associated with &lt;code>pets.com&lt;/code>. The same is valid for a request sent, e.g., to &lt;code>birds.pets.com&lt;/code>.&lt;/p></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/http-basic-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/http-basic-authentication.html</guid><description>
 &lt;h1 id="user-guide-http-basic-authentication-rfc-7235">User guide: HTTP &amp;ldquo;Basic&amp;rdquo; Authentication (RFC 7235)&lt;/h1>
 &lt;p>Turn Authorino API key &lt;code>Secret&lt;/code>s settings into HTTP basic auth.&lt;/p>
 &lt;details>
@@ -4464,7 +4464,7 @@ about skipping parts of an &lt;code>AuthConfig&lt;/code> in the auth pipeline ba
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/injecting-data.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/injecting-data.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/injecting-data.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/injecting-data.html</guid><description>
 &lt;h1 id="user-guide-injecting-data-in-the-request">User guide: Injecting data in the request&lt;/h1>
 &lt;p>Inject HTTP headers with serialized JSON content.&lt;/p>
 &lt;details>
@@ -4610,7 +4610,7 @@ for reading from the
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/json-pattern-matching-authorization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/json-pattern-matching-authorization.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/json-pattern-matching-authorization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/json-pattern-matching-authorization.html</guid><description>
 &lt;h1 id="user-guide-simple-pattern-matching-authorization-policies">User guide: Simple pattern-matching authorization policies&lt;/h1>
 &lt;p>Write simple authorization rules based on JSON patterns matched against Authorino&amp;rsquo;s Authorization JSON; check contextual information of the request, validate JWT claims, cross metadata fetched from external sources, etc.&lt;/p>
 &lt;details>
@@ -4770,7 +4770,7 @@ about skipping parts of an &lt;code>AuthConfig&lt;/code> in the auth pipeline ba
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/keycloak-authorization-services.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/keycloak-authorization-services.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/keycloak-authorization-services.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/keycloak-authorization-services.html</guid><description>
 &lt;h1 id="user-guide-authorization-with-keycloak-authorization-services">User guide: Authorization with Keycloak Authorization Services&lt;/h1>
 &lt;p>Keycloak provides a powerful set of tools (REST endpoints and administrative UIs), also known as
 &lt;a href="https://www.keycloak.org/docs/latest/authorization_services/index.html" target="_blank" rel="noopener">Keycloak Authorization Services&lt;/a>
@@ -4927,7 +4927,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/kubernetes-subjectaccessreview.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/kubernetes-subjectaccessreview.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/kubernetes-subjectaccessreview.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/kubernetes-subjectaccessreview.html</guid><description>
 &lt;h1 id="user-guide-kubernetes-rbac-for-service-authorization-subjectaccessreview-api">User guide: Kubernetes RBAC for service authorization (SubjectAccessReview API)&lt;/h1>
 &lt;p>Manage permissions in the Kubernetes RBAC and let Authorino to check them in request-time with the authorization system of the cluster.&lt;/p>
 &lt;details>
@@ -5163,7 +5163,7 @@ for the Authorino Kubernetes SubjectAccessReview authorization feature, for reso
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/kubernetes-tokenreview.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/kubernetes-tokenreview.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/kubernetes-tokenreview.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/kubernetes-tokenreview.html</guid><description>
 &lt;h1 id="user-guide-authentication-with-kubernetes-tokens-tokenreview-api">User guide: Authentication with Kubernetes tokens (TokenReview API)&lt;/h1>
 &lt;p>Validate Kubernetes Service Account tokens to authenticate requests to your protected hosts.&lt;/p>
 &lt;details>
@@ -5316,7 +5316,7 @@ to authenticate.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/logging.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/logging.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/logging.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/logging.html</guid><description>
 &lt;h1 id="logging">Logging&lt;/h1>
 &lt;p>Master Authorino log messages and learn how to trace authorization requests.&lt;/p>
 &lt;h2 id="1-log-levels-and-log-modes">1. Log levels and log modes&lt;/h2>
@@ -5963,7 +5963,7 @@ CRD (&lt;code>LOG_MODE&lt;/code> environment variable in the Authorino deploymen
 {&amp;#34;level&amp;#34;:&amp;#34;info&amp;#34;,&amp;#34;ts&amp;#34;:1634675390.101609,&amp;#34;logger&amp;#34;:&amp;#34;authorino.controller-runtime.manager.controller.secret&amp;#34;,&amp;#34;msg&amp;#34;:&amp;#34;All workers finished&amp;#34;,&amp;#34;reconciler group&amp;#34;:&amp;#34;&amp;#34;,&amp;#34;reconciler kind&amp;#34;:&amp;#34;Secret&amp;#34;}
 {&amp;#34;level&amp;#34;:&amp;#34;info&amp;#34;,&amp;#34;ts&amp;#34;:1634675390.10166,&amp;#34;logger&amp;#34;:&amp;#34;authorino.controller-runtime.manager.controller.authconfig&amp;#34;,&amp;#34;msg&amp;#34;:&amp;#34;All workers finished&amp;#34;,&amp;#34;reconciler group&amp;#34;:&amp;#34;authorino.kuadrant.io&amp;#34;,&amp;#34;reconciler kind&amp;#34;:&amp;#34;AuthConfig&amp;#34;}
 {&amp;#34;level&amp;#34;:&amp;#34;info&amp;#34;,&amp;#34;ts&amp;#34;:1634675390.1017516,&amp;#34;logger&amp;#34;:&amp;#34;authorino.controller-runtime.manager.controller.authconfig&amp;#34;,&amp;#34;msg&amp;#34;:&amp;#34;All workers finished&amp;#34;,&amp;#34;reconciler group&amp;#34;:&amp;#34;authorino.kuadrant.io&amp;#34;,&amp;#34;reconciler kind&amp;#34;:&amp;#34;AuthConfig&amp;#34;}
-&lt;/code>&lt;/pre></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/metrics.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/metrics.html</guid><description>
+&lt;/code>&lt;/pre></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/metrics.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/metrics.html</guid><description>
 &lt;h1 id="observability">Observability&lt;/h1>
 &lt;p>Authorino exports metrics in 2 endpoints:&lt;/p>
 &lt;table>
@@ -7018,7 +7018,7 @@ creates a Service named &lt;code>&amp;lt;authorino-cr-name&amp;gt;-controller-me
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">promhttp_metric_handler_requests_total{code&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;200&amp;#34;} 1&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">promhttp_metric_handler_requests_total{code&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;500&amp;#34;} 0&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">promhttp_metric_handler_requests_total{code&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;503&amp;#34;} 0&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/mtls-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/mtls-authentication.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/mtls-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/mtls-authentication.html</guid><description>
 &lt;h1 id="user-guide-authentication-with-x509-certificates-and-mutual-transport-layer-security-mtls">User guide: Authentication with X.509 certificates and Mutual Transport Layer Security (mTLS)&lt;/h1>
 &lt;p>Verify client X.509 certificates against trusted root CAs stored in Kubernetes &lt;code>Secret&lt;/code>s to authenticate access to APIs protected with Authorino.&lt;/p>
 &lt;details>
@@ -7347,7 +7347,7 @@ CRD in the Authorino Operator repo.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the cert-manager, run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/oauth2-token-introspection.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/oauth2-token-introspection.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/oauth2-token-introspection.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/oauth2-token-introspection.html</guid><description>
 &lt;h1 id="user-guide-oauth-20-token-introspection-rfc-7662">User guide: OAuth 2.0 token introspection (RFC 7662)&lt;/h1>
 &lt;p>Introspect OAuth 2.0 access tokens (e.g. opaque tokens) for online user data and token validation in request-time.&lt;/p>
 &lt;details>
@@ -7554,7 +7554,7 @@ about skipping parts of an &lt;code>AuthConfig&lt;/code> in the auth pipeline ba
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace a12-server
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/oidc-jwt-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/oidc-jwt-authentication.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/oidc-jwt-authentication.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/oidc-jwt-authentication.html</guid><description>
 &lt;h1 id="user-guide-openid-connect-discovery-and-authentication-with-jwts">User guide: OpenID Connect Discovery and authentication with JWTs&lt;/h1>
 &lt;p>Validate JSON Web Tokens (JWT) issued and signed by an OpenID Connect server; leverage OpenID Connect Discovery to automatically fetch JSON Web Key Sets (JWKS).&lt;/p>
 &lt;details>
@@ -7669,7 +7669,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/oidc-rbac.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/oidc-rbac.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/oidc-rbac.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/oidc-rbac.html</guid><description>
 &lt;h1 id="user-guide-openid-connect-oidc-and-role-based-access-control-rbac-with-authorino-and-keycloak">User guide: OpenID Connect (OIDC) and Role-Based Access Control (RBAC) with Authorino and Keycloak&lt;/h1>
 &lt;p>Combine OpenID Connect (OIDC) authentication and Role-Based Access Control (RBAC) authorization rules leveraging Keycloak and Authorino working together.&lt;/p>
 &lt;p>In this user guide, you will learn via example how to implement a simple Role-Based Access Control (RBAC) system to protect endpoints of an API, with roles assigned to users of an Identity Provider (Keycloak) and carried within the access tokens as JSON Web Token (JWT) claims. Users authenticate with the IdP via OAuth2/OIDC flow and get their access tokens verified and validated by Authorino on every request. Moreover, Authorino reads the role bindings of the user and enforces the proper RBAC rules based upon the context.&lt;/p>
@@ -7872,7 +7872,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/oidc-user-info.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/oidc-user-info.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/oidc-user-info.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/oidc-user-info.html</guid><description>
 &lt;h1 id="user-guide-openid-connect-userinfo">User guide: OpenID Connect UserInfo&lt;/h1>
 &lt;p>Fetch user info for OpenID Connect ID tokens in request-time for extra metadata for your policies and online verification of token validity.&lt;/p>
 &lt;details>
@@ -7999,7 +7999,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/opa-authorization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/opa-authorization.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/opa-authorization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/opa-authorization.html</guid><description>
 &lt;h1 id="user-guide-open-policy-agent-opa-rego-policies">User guide: Open Policy Agent (OPA) Rego policies&lt;/h1>
 &lt;p>Leverage the power of Open Policy Agent (OPA) policies, evaluated against Authorino&amp;rsquo;s Authorization JSON in a built-in runtime compiled together with Authorino; pre-cache policies defined in Rego language inline or fetched from an external policy registry.&lt;/p>
 &lt;details>
@@ -8150,7 +8150,7 @@ HTTP header, which can be used to simplify the read-only policy in remote enviro
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/passing-credentials.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/passing-credentials.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/passing-credentials.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/passing-credentials.html</guid><description>
 &lt;h1 id="user-guide-passing-credentials-authorization-header-cookie-headers-and-others">User guide: Passing credentials (&lt;code>Authorization&lt;/code> header, cookie headers and others)&lt;/h1>
 &lt;p>Customize where credentials are supplied in the request by each trusted source of identity.&lt;/p>
 &lt;details>
@@ -8329,7 +8329,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/kuadrant/authorino-examples/main/talker-api/talker-api-deploy.yaml
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/resource-level-authorization-uma.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/resource-level-authorization-uma.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/resource-level-authorization-uma.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/resource-level-authorization-uma.html</guid><description>
 &lt;h1 id="user-guide-resource-level-authorization-with-user-managed-access-uma-resource-registry">User guide: Resource-level authorization with User-Managed Access (UMA) resource registry&lt;/h1>
 &lt;p>Fetch resource metadata relevant for your authorization policies from Keycloak authorization clients, unsing User-Managed Access (UMA) protocol.&lt;/p>
 &lt;details>
@@ -8549,7 +8549,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/sharding.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/sharding.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/sharding.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/sharding.html</guid><description>
 &lt;h1 id="user-guide-reducing-the-operational-space">User guide: Reducing the operational space&lt;/h1>
 &lt;p>By default, Authorino will watch events related to all &lt;code>AuthConfig&lt;/code> custom resources in the reconciliation space (namespace or entire cluster). Instances can be configured though to only watch a subset of the resources, thus allowing such as:&lt;/p>
 &lt;ul>
@@ -8718,7 +8718,7 @@ CRD in the Authorino Operator repo.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace myapp
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/token-normalization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/token-normalization.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/token-normalization.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/token-normalization.html</guid><description>
 &lt;h1 id="user-guide-token-normalization">User guide: Token normalization&lt;/h1>
 &lt;p>Broadly, the term token normalization in authentication systems usually implies the exchange of an authentication token, as provided by the user in a given format, and/or its associated identity claims, for another freshly issued token/set of claims, of a given (normalized) structure or format.&lt;/p>
 &lt;p>The most typical use-case for token normalization envolves accepting tokens issued by multiple trusted sources and of often varied authentication protocols, while ensuring that the eventual different data structures adopted by each of those sources are normalized, thus allowing to simplify policies and authorization checks that depend on those values. In general, however, any modification to the identity claims can be for the purpose of normalization.&lt;/p>
@@ -8889,7 +8889,7 @@ page. For a simpler and straighforward way to manage an API, without having to m
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/authorino/user-guides/validating-webhook.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/authorino/user-guides/validating-webhook.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/authorino/user-guides/validating-webhook.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/authorino/user-guides/validating-webhook.html</guid><description>
 &lt;h1 id="user-guide-using-authorino-as-validatingwebhook-service">User guide: Using Authorino as ValidatingWebhook service&lt;/h1>
 &lt;p>Authorino provides an interface for raw HTTP external authorization requests. This interface can be used for integrations other than the typical Envoy gRPC protocol, such as (though not limited to) using Authorino as a generic Kubernetes ValidatingWebhook service.&lt;/p>
 &lt;p>The rules to validate a request to the Kubernetes API – typically a &lt;code>POST&lt;/code>, &lt;code>PUT&lt;/code> or &lt;code>DELETE&lt;/code> request targeting a particular Kubernetes resource or collection –, according to which either the change will be deemed accepted or not, are written in an Authorino &lt;code>AuthConfig&lt;/code> custom resource. Authentication and authorization are performed by the Kubernetes API server as usual, with auth features of Authorino implementing the aditional validation within the scope of an &lt;code>AdmissionReview&lt;/code> request.&lt;/p>
@@ -9363,7 +9363,7 @@ CRD in the Authorino Operator repo.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>kubectl delete namespace keycloak
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To uninstall the Authorino Operator and manifests (CRDs, RBAC, etc), run:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>kubectl delete -f https://raw.githubusercontent.com/Kuadrant/authorino-operator/main/config/deploy/manifests.yaml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/limitador-server/configuration.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/limitador-server/configuration.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/limitador-server/configuration.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/limitador-server/configuration.html</guid><description>
 &lt;h1 id="configuration">CONFIGURATION&lt;/h1>
 &lt;p>The Limitador server has some options that can be configured with environment
 variables:&lt;/p>
@@ -9521,7 +9521,7 @@ require Redis.&lt;/li>
 &lt;li>Defines the log level.&lt;/li>
 &lt;li>Optional. Defaults to &amp;ldquo;error&amp;rdquo;.&lt;/li>
 &lt;li>Format: &amp;ldquo;debug&amp;rdquo;, &amp;ldquo;error&amp;rdquo;, &amp;ldquo;info&amp;rdquo;, &amp;ldquo;warn&amp;rdquo;, or &amp;ldquo;trace&amp;rdquo;.&lt;/li>
-&lt;/ul></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/limitador-server/sandbox.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/limitador-server/sandbox.html</guid><description>
+&lt;/ul></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/limitador-server/sandbox.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/limitador-server/sandbox.html</guid><description>
 &lt;h2 id="testing-environment">Testing Environment&lt;/h2>
 &lt;h3 id="requirements">Requirements&lt;/h3>
 &lt;ul>
@@ -9583,7 +9583,7 @@ require Redis.&lt;/li>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>make deploy-in-memory LIMITADOR_IMAGE&lt;span style="color:#f92672">=&lt;/span>quay.io/3scale/limitador:latest
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="tear-down">Tear Down&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>make tear-down
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.io/docs/limitador/redis_active_active.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.io/docs/limitador/redis_active_active.html</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs:</title><link>https://kuadrant.github.io/docs/limitador/redis_active_active.html</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://kuadrant.github.io/docs/limitador/redis_active_active.html</guid><description>
 &lt;h1 id="redis-active-active-storage">Redis active-active storage&lt;/h1>
 &lt;p>The RedisLabs version of Redis supports
 &lt;a href="https://docs.redislabs.com/latest/rs/concepts/intercluster-replication/" target="_blank" rel="noopener">active-active
