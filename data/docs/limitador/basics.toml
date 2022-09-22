@@ -1,4 +1,14 @@
 [configuration]
-file = "configuration.md"
-title.en = "Environment variables"
+file = "server/configuration.md"
+title.en = "Configuration"
 weight = 200
+
+[howto]
+file = "how-it-works.md"
+title.en = "How it works"
+weight = 100
+
+[topologies]
+file = "topologies.md"
+title.en = "Deployment topologies"
+weight = 300

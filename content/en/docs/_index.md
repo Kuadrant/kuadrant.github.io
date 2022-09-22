@@ -13,6 +13,6 @@ linkTitle: "Docs"
 
 ## Limitador
 
- - [Server configuration](/docs/limitador-server/configuration.html)
+ - [Server configuration](/docs/server/configuration.html)
  - [Redis](/docs/limitador/redis_active_active.html)
  
