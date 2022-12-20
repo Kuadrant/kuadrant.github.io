@@ -3,76 +3,47 @@ title: "Kuadrant"
 linkTitle: "Welcome to Kuadrant!"
 ---
 
-{{< blocks/cover title="Welcome to the Kuadrant Project!" image_anchor="top" height="full" color="orange" >}}
+{{< blocks/cover title="Securely expose & consume k8s services with Kuadrant" image_anchor="top" height="full" >}}
 <div class="mx-auto">
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Learn More <i class="fas fa-arrow-alt-circle-right ml-2"></i>
 	</a>
-	<a class="btn btn-lg btn-secondary mr-3 mb-4" href="https://github.com/Kuadrant">
-		Download <i class="fab fa-github ml-2 "></i>
+	<a class="btn btn-lg btn-secondary mr-3 mb-4" href="https://operatorhub.io/operator/kuadrant-operator">
+		Install <i class="fas fa-bolt ml-2 "></i>
 	</a>
-	<p class="lead mt-5">Kubernetes Native stuff that you want to use!</p>
-	{{< blocks/link-down color="primary" >}}
+	<p class="lead mt-10">Kuadrant bundles <a href="https://github.com/Kuadrant/limitador">Limitador</a>, the rate limiting service, and <a href="https://github.com/Kuadrant/authorino">Authorino</a>, our lightweight authorization server. The Kuadrant Operator, available from <a href="https://operatorhub.io/operator/kuadrant-operator">Operator Hub</a>, will take care of all the wiring and deployments of the services required for applying Rate Limits and Authorization Policies to your infrastructure.</p><p>Once installed, Policy Custom Resource Definitions let cluster operators apply a cluster-wide Rate Limit policy to protect the infrastructure from DDoS attacks; while application developers can use advanced features to control usages of their API endpoints based on API keys handed out to their users. Kuadrant supports a wide range of use cases, from simple Rate Limiting to ones that span across authorization and identity-based Rate Limits. Kuadrant leverages the <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a></p>
 </div>
 {{< /blocks/cover >}}
 
 
-{{% blocks/lead color="primary" %}}
-Kuadrant enables hybrid cloud application developers to securely expose & consume k8s services. Think AuthN/AuthZ, rate limiting, and OAS.
 
-{{% /blocks/lead %}}
 
 {{< blocks/section color="secondary" >}}
-{{% blocks/feature icon="fa-newspaper" title="Authorino!" url="https://github.com/Kuadrant/authorino" %}}
-We do a [Pull Request](https://github.com/Kuadrant/authorino/pulls) contributions workflow on **GitHub**. New users are always welcome!
+
+
+{{% blocks/feature icon="fa-ban" title="Limitador" url="https://github.com/Kuadrant/limitador" %}}
+Limitador is a generic rate-limiter written in Rust. It can be used as a library, or as a service. The service exposes HTTP endpoints to apply and observe limits. Limitador can be used with Envoy because it also exposes a grpc service, on a different port, that implements the Envoy Rate Limit protocol (v3).
+{{% /blocks/feature %}}
+
+{{% blocks/feature icon="fa-lock" title="Authorino" url="https://github.com/Kuadrant/authorino" %}}
+A lightweight Envoy external authorization server fully manageable via Kubernetes Custom Resources.
+JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K8s RBAC, external metadata fetching, and more, with minimum to no coding at all, no rebuilding of your applications.
+
 {{% /blocks/feature %}}
 
 {{% blocks/feature icon="fa-lightbulb" title="New stuff!" %}}
-We're about to add new stuff!
+Stay tuned for more.
 
-Please follow this space for updates!
+
 {{% /blocks/feature %}}
 
 
-{{% blocks/feature icon="fa-newspaper" title="Limitador!" url="https://github.com/Kuadrant/limitador" %}}
-We do a [Pull Request](https://github.com/Kuadrant/limitador/pulls) contributions workflow on **GitHub**. New users are always welcome!
-{{% /blocks/feature %}}
 
 
 {{< /blocks/section >}}
 
 
-{{< blocks/section color="primary" >}}
-<div class="col">
-<h1 class="text-center">This is the second Section</h1>
-</div>
-
-{{< /blocks/section >}}
 
 
 
-{{< blocks/section >}}
-{{% blocks/feature icon="fa-cloud" title="Cloud **native**" %}}
-This actually works on Kubernetes
-{{% /blocks/feature %}}
 
-
-{{% blocks/feature icon="fab fa-github" title="Contributions welcome!" url="https://github.com/Kuadrant" %}}
-We do a Pull Request contributions workflow on **GitHub**. New users are always welcome!
-{{% /blocks/feature %}}
-
-
-{{% blocks/feature icon="fab fa-twitter" title="Follow us on Twitter!" url="https://twitter.com/kuadrantio" %}}
-For announcement of latest features etc.
-{{% /blocks/feature %}}
-
-
-{{< /blocks/section >}}
-
-{{< blocks/section >}}
-
-<div class="col-12">
-<h1 class="text-center">Showcase more cool stuff!</h1>
-</div>
-
-{{< /blocks/section >}}

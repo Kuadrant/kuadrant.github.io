@@ -11,7 +11,7 @@ enableMissingTranslationPlaceholders = true
 uglyurls = true
 
 [params]
-copyright = "The Kuadrant Authors"
+copyright = "Kuadrant - "
 
 [params.ui]
 breadcrumb_disable = true
@@ -20,11 +20,7 @@ navbar_logo = true
 
 [params.links]
 # End user relevant links. These will show up on left side of footer and in the community page if you have one.
-[[params.links.user]]
-  name ="GitHub Discussions"
-  url = "https://github.com/orgs/Kuadrant/discussions"
-  icon = "fab fa-github"
-  desc = "Development Discussions"
+
 [[params.links.user]]
   name ="Twitter"
   url = "https://twitter.com/kuadrantio"
