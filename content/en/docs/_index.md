@@ -3,20 +3,28 @@ title: "Kuadrant Documentation"
 linkTitle: "Docs"
 ---
 
-## Control plane
+## Architecture
 
-### User guides
- - [Simple Rate Limit For API Owners](/docs/kuadrant-operator/user-guides/simple-rl-for-api-owners.md)
- - [Authenticated Rate Limit For API Owners](/docs/kuadrant-operator/user-guides/authenticated-rl-for-api-owners.md)
- - [Gateway Rate Limit For Cluster Operators](/docs/kuadrant-operator/user-guides/gateway-rl-for-cluster-operators.md)
- - [Rate-limiting and protecting an API with JSON Web Tokens (JWTs) and Kubernetes authnz using Kuadrant](/docs/kuadrant-operator/user-guides/authenticated-rl-with-jwt-and-k8s-authnz.md)
+Kuadrant build on top of Kubernetes [Gateway API](https://gateway-api.sigs.k8s.io/) and [Istio](https://istio.io/) to operate cluster ingress gateways to apply rate limits and authorization policies.
+
+![Architecture](/docs/kuadrant-operator/images/kuadrant-architecture.svg)
+
+## Use cases
+  - [Simple rate limiting for API owners](/docs/kuadrant-operator/user-guides/simple-rl-for-api-owners.md)
+  - [Authenticated rate limiting for API owners](/docs/kuadrant-operator/user-guides/authenticated-rl-for-api-owners.md)
+  - [Gateway rate limiting for cluster operators](/docs/kuadrant-operator/user-guides/gateway-rl-for-cluster-operators.md)
+  - [Authenticated rate limiting with JWTs and Kubernetes authnz](/docs/kuadrant-operator/user-guides/authenticated-rl-with-jwt-and-k8s-authnz.md)
 
 ## Authorino
-
- - [Getting started](/docs/authorino/getting-started.html)
- - [User guides](/docs/authorino/user-guides.html)
+  - [Getting started](/docs/authorino/getting-started.html)
+  - [Architecture](/docs/authorino/architecture.md)
+  - [Features](/docs/authorino/features.md)
+  - [Terminology](/docs/authorino/terminology.md)
+  - [User guides](/docs/authorino/user-guides.html)
+  - [Contributing to Authorino](/docs/authorino/contributing.md)
 
 ## Limitador
+  - [Server configuration](/docs/limitador-server/configuration.html)
 
- - [Server configuration](/docs/limitador-server/configuration.html)
- - [Redis](/docs/limitador/redis_active_active.html)
+## Contributing to Kuadrant
+  - [Developer's Guide](/docs/kuadrant-operator/development.md)
