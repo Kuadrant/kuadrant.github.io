@@ -57,11 +57,10 @@
   {{ else -}}
   <a href="{{ $manualLink }}"{{ if ne $s.LinkTitle $manualLinkTitle }} title="{{ $manualLinkTitle }}"{{ end }}{{ with $s.Params.manualLinkTarget }} target="{{ . }}"{{ if eq . "_blank" }} rel="noopener"{{ end }}{{ end }} class="align-left pl-0{{ if $active}} active{{ end }} td-sidebar-link{{ if $s.IsPage }} td-sidebar-link__page{{ else }} td-sidebar-link__section{{ end }}{{ if $treeRoot }} tree-root{{ end }}" id="{{ $mid }}">{{ with $s.Params.Icon}}<i class="{{ . }}"></i>{{ end }}<span class="{{ if $active }}td-sidebar-nav-active-item{{ end }}">{{  $s.Title | default $s.File.BaseFileName }}</span></a>
   {{- end }}
-  <span class="td-sidebar-nav-active-item">Control plane</span>
   {{- if $withChild }}
   {{- $ulNr := add $ulNr 1 }}
   <ul class="ul-foldable">
-    <li class="align-left pl-1 td-sidebar-link td-sidebar-link__section" id="m-docshtml"><span class="td-sidebar-nav-item">User Guides</span></li>
+    <li class="align-left pl-1 td-sidebar-link td-sidebar-link__section" id="m-docshtml"><span class="td-sidebar-nav-item">Use cases</span></li>
     {{ range sort (index .data "docs" "kuadrant-operator" "guides") "weight" -}}
     {{ $active := and (not $shouldDelayActive) (eq $p.File.LogicalName (index . "file")) -}}
     <li class="pl-2"><a href="/docs/kuadrant-operator/user-guides/{{ strings.TrimSuffix ".md" (index . "file") }}.html"{{ if ne $s.LinkTitle $manualLinkTitle }} title="{{ $manualLinkTitle }}"{{ end }}{{ with $s.Params.manualLinkTarget }} target="{{ . }}"{{ if eq . "_blank" }} rel="noopener"{{ end }}{{ end }} class="align-left pl-0{{ if $active}} active{{ end }} td-sidebar-link td-sidebar-link__page" id="{{ $mid }}">{{ with $s.Params.Icon}}<i class="{{ . }}"></i>{{ end }}<span class="{{ if $active }}td-sidebar-nav-active-item{{ end }}">{{ index . "title" "en"}}</span></a></li>
@@ -78,15 +77,6 @@
     {{ $active := and (not $shouldDelayActive) (eq $p.File.LogicalName (index . "file")) -}}
     <li class="pl-2"><a href="/docs/authorino/{{ strings.TrimSuffix ".md" (index . "file") }}.html"{{ if ne $s.LinkTitle $manualLinkTitle }} title="{{ $manualLinkTitle }}"{{ end }}{{ with $s.Params.manualLinkTarget }} target="{{ . }}"{{ if eq . "_blank" }} rel="noopener"{{ end }}{{ end }} class="align-left pl-0{{ if $active}} active{{ end }} td-sidebar-link td-sidebar-link__page" id="{{ $mid }}">{{ with $s.Params.Icon}}<i class="{{ . }}"></i>{{ end }}<span class="{{ if $active }}td-sidebar-nav-active-item{{ end }}">{{ index . "title" "en"}}</span></a></li>
     {{- end }}
-  </ul>
-  <ul class="ul-foldable">
-    <li class="align-left pl-1 td-sidebar-link td-sidebar-link__section" id="m-docshtml"><span class="td-sidebar-nav-item">User Guides</span></li>
-    <ul class="ul-foldable">
-        {{ range sort (index .data "docs" "authorino" "guides") "weight" -}}
-        {{ $active := and (not $shouldDelayActive) (eq $p.File.LogicalName (index . "file")) -}}
-        <li class="pl-2"><a href="/docs/authorino/user-guides/{{ strings.TrimSuffix ".md" (index . "file") }}.html"{{ if ne $s.LinkTitle $manualLinkTitle }} title="{{ $manualLinkTitle }}"{{ end }}{{ with $s.Params.manualLinkTarget }} target="{{ . }}"{{ if eq . "_blank" }} rel="noopener"{{ end }}{{ end }} class="align-left pl-0{{ if $active}} active{{ end }} td-sidebar-link td-sidebar-link__page" id="{{ $mid }}">{{ with $s.Params.Icon}}<i class="{{ . }}"></i>{{ end }}<span class="{{ if $active }}td-sidebar-nav-active-item{{ end }}">{{ index . "title" "en"}}</span></a></li>
-        {{- end }}
-    </ul>
   </ul>
   {{- end }}
 </li>

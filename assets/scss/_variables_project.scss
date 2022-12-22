@@ -138,7 +138,7 @@ $yiq-contrasted-threshold: 200 !default;
 }
 
 .td-box .text-center {
-    text-align: left !important; 
+    text-align: left !important;
 }
 header .td-navbar-cover {
     position: absolute !important;
@@ -171,6 +171,10 @@ header .td-navbar-cover.flex-column {
     //padding-top: 1em;
 }
 
+.td-sidebar-nav .td-sidebar-nav__section {
+    margin-bottom: 1em !important;
+}
+
 .td-box--secondary p > a,
 .-bg-dark p > a {
     color: #ffffff !important;
@@ -178,4 +182,8 @@ header .td-navbar-cover.flex-column {
     &:hover {
         color: $link-hover-color !important;
     }
+}
+
+a {
+    text-decoration: none !important;
 }

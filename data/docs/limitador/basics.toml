@@ -1,4 +1,4 @@
 [configuration]
 file = "configuration.md"
-title.en = "Environment variables"
+title.en = "Configuration"
 weight = 200
