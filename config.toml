@@ -43,6 +43,9 @@ navbar_logo = true
   icon = "fab fa-slack"
   desc = "Chat with other project developers"
 
+[permalinks]
+  blog = '/blog/:filename/'
+
 [params.mermaid]
 enable = true
 theme = "default"
@@ -89,11 +92,25 @@ enable = true
       unsafe = true
       xhtml = true
 
-menu = ['Kuadrant', 'Authorino', 'Limitador']
+[[menu.main]]
+    name = "GitHub"
+    weight = 50
+    url = "https://github.com/Kuadrant/"
+
+[[menu.main]]
+    name = "Docs"
+    weight = 250
+    url = "/docs.html"
+
+[[menu.main]]
+    name = "Releases"
+    weight = 250
+    url = "/releases.html"
 
 [taxonomies]
 tag = "tags"
 category = "categories"
+release = "releases"
 
 [languages]
 [languages.en]

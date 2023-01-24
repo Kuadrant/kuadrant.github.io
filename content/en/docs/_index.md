@@ -1,6 +1,7 @@
 ---
 title: "Kuadrant Documentation"
 linkTitle: "Docs"
+slug: "docs"
 ---
 
 ## Architecture

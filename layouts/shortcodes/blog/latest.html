@@ -1,0 +1,11 @@
+{{- range ( where site.RegularPages "Section" "blog" | first 1 ) }}
+<h4>NEW: {{ .Title }}!</h4>
+<div class="mb-0">
+    <p class="summary">
+        {{ .Summary }}
+    </p>    
+</div>
+<p>
+    <a href="{{ .Permalink }}">Read more…</a>
+</p>
+{{ end }}

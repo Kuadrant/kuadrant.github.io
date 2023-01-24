@@ -1,0 +1,18 @@
+{{ define "main" }}
+<div class="td-content">
+  <main class="taxonomy-terms-page">
+    <h1>{{ .Title }}</h1>
+    {{ if eq .Type "releases" }}
+      {{ range $name, $taxonomy := .Site.Taxonomies.releases }}
+        {{ with (index $taxonomy) }}
+          {{ range .Pages.Reverse }}
+          <li><a href="{{ .RelPermalink }}">{{ .Params.LinkTitle }}</a></li>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ partial "taxonomy_terms_cloud.html" (dict "context" . "taxo" ( lower .Title ) ) }}
+    {{ end }}
+  </main>
+</div>
+{{ end }}
