@@ -52,7 +52,7 @@ As of today, but will be addressed in the near future
  
 ### Diagram of what we'll be doing
 
-![diagram with architecture of demo](https://i.imgur.com/A1cLSJg.png)
+![diagram with architecture of demo](/img/blog/releases/v0.2.0/deployment.png)
 
 
 ### Prepare your service mesh
@@ -139,7 +139,7 @@ EOF
 **1. Install the Kuadrant Operator**
 [Install Kuadrant](https://docs.openshift.com/container-platform/4.11/operators/user/olm-installing-operators-in-namespace.html#olm-installing-from-operatorhub-using-web-console_olm-installing-operators-in-namespace) from the your OpenShift cluster UI
 
-![](https://i.imgur.com/ogFyppY.png)
+![](/img/blog/releases/v0.2.0/operatorhub.png)
 
 **2. Request a Kuadrant instance**
 
