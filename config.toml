@@ -91,6 +91,9 @@ enable = true
       hardWraps = false
       unsafe = true
       xhtml = true
+  [markup.highlight]
+    lineNos = false
+    lineNumbersInTable = true
 
 [[menu.main]]
     name = "GitHub"

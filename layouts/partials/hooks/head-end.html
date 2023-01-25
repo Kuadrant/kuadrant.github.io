@@ -1,0 +1,42 @@
+
+{{ if (findRE "<pre" .Content 1) }}
+<script src="/js/copy-button.js" defer></script>
+{{ end }}
+<style>
+
+button.copy-code {
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    border: 0;
+    border-radius: 4px;
+    padding: 1px;
+    font-size: .7em;
+    line-height: 1.8;
+    color: #fff;
+    background-color: #777;
+    opacity: .6;
+    min-width: 55px;
+    text-align: center;
+}
+
+button.copy-code:hover {
+    cursor: pointer;
+    background-color: #F2F2F2;
+}
+
+button.copy-code:focus {
+    /* Avoid an ugly focus outline on click in Chrome,
+       but darken the button for accessibility.
+       See https://stackoverflow.com/a/25298082/1481479 */
+    background-color: #E6E6E6;
+    outline: 0;
+}
+
+button.copy-code:active {
+    background-color: #D9D9D9;
+}
+
+div.highlight button.copy-code { display: none; }
+div.highlight:hover button.copy-code { display: block; }
+</style>
