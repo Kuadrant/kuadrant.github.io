@@ -14,3 +14,6 @@ You will need:
 
 # Serving
 `npx @11ty/eleventy --serve`
+
+# Publishing
+Published via GH action, see `.github/workflows/eleventy_build.yml`
