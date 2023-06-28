@@ -3,16 +3,16 @@ on: [push]
 
 jobs:
   build_deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master
       - name: Build
         uses: TartanLlama/actions-eleventy@master
         with:
           install_dependencies: true
-      - name: 'Deploy'
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
+          publish_dir: _site 
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          allow_empty_commit: true
