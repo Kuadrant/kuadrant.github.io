@@ -45,9 +45,8 @@
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
           <li><a class="nav-link scrollto" href="#features">Features</a></li>
           <li><a class="nav-link scrollto" href="#components">Components</a></li>
-          <li><a class="nav-link scrollto" href="#why-kuadrant">Why Kuadrant?</a></li>
           <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
-          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.org"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
           <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -65,10 +64,10 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-        <h1>App Connectivity for Kubernetes</h1>
-        <h2>A multi-cluster Control Plane for defining, configuring and deploying Ingress Gateways, based on Gateway API</h2>
+        <h1>Multi-Cluster Gateways with policy based connectivity, security and access APIs</h1>
+        <h2>Central control plane that works with the kubernetes Gateway API to provide distributed, connected and secure ingress gateways alongside data plane policy and enforcement to protect and secure access.</h2>
         <div class="d-flex justify-content-center justify-content-lg-start">
-          <a href="https://github.com/kuadrant" class="btn-get-started">Get Started</a>
+          <a href="https://github.com/Kuadrant/multicluster-gateway-controller/blob/main/docs/how-to/ocm-control-plane-walkthrough.md" class="btn-get-started">Get Started</a>
           <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
         </div>
       </div>
@@ -85,39 +84,39 @@
   <div class="container" data-aos="fade-up">
 
     <div class="section-title">
-      <h2>Features</h2>
-      <p>Explore the wide range of features that Kuadrant offers for both <b>Gateway Administrators</b> and <b>Application Developers</b></p>
+      <h2>Feature Overview</h2>
+      <p>Explore the wide range of features that Kuadrant offers to enable and empower <b>cluster operators</b> and <b>application developers</b> to provide and use secure, powerful and flexible application connectivity underpinned by the concepts of <a href="https://gateway-api.sigs.k8s.io/">Gateway API.</a>
     </div>
 
     <div class="row">
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-globe"></i></div>
-          <h4><a href="">Multi-Cluster Ingress with DNS</a></h4>
-          <p>Establish seamless connectivity and advanced DNS management for workloads in multi-cluster deployment models with Kuadrant.</p>
+          <h4><a href="">Multi-Cluster Gateways connectivity and Load Balancing</a></h4>
+          <p>Connect users to and balance traffic across your gateway instances using the kuadrant DNSPolicy API that supports advanced strategies such as GEO and Weighted without needing to manage the individual records and integrates with multiple DNS Providers.</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-lock"></i></div>
-          <h4><a href="">Robust Access Management</a></h4>
-          <p>Secure your services with Kuadrant's powerful <a href="https://github.com/Kuadrant/limitador">rate limiting</a> and <a href="https://github.com/Kuadrant/authorino">authentication/authorization</a>, ensuring safe and policy-controlled access.</p>
+          <h4><a href="">Secure Access</a></h4>
+          <p>Secure your Gateways with automatic ACME based TLS integration. Protect your Gateways and HTTPRoutes with Kuadrant's powerful policy based APIs for rate limiting and auth that integrate directly with the Gateway.</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-shield"></i></div>
-          <h4><a href="">Advanced Security Controls</a></h4>
-          <p>Protect your applications with Kuadrant's comprehensive security features, encompassing adaptive, multi-cluster rate limiting and sophisticated authentication/authorization capabilities.</p>
+          <h4><a href="">Seamless E/W connectivity integration</a></h4>
+          <p>Leverage and integrate with existing E/W connectivity providers with your multi-cluster gateways to provide a full connectivity solution.</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-analyse"></i></div>
-          <h4><a href="">In-Depth Observability</a></h4>
+          <h4><a href="">In-Depth Observability (coming soon)</a></h4>
           <p>Gain valuable insights into application performance with Kuadrant's extensive observability tooling, including metrics, monitoring, and OpenTelemetry support.</p>
         </div>
       </div>
@@ -126,26 +125,30 @@
 
     <br><br>
 
-    <div class="section-title">
-      <h3>In-Depth</h3>
-    </div>
+    
 
     <div class="row content about">
       <div class="col-lg-6">
+        <div class="section-title">
+          <h3>Multi-Cluster</h3>
+        </div>
         <ul>
-          <li><i class="ri-check-double-line"></i> <b>Multi-cluster Ingress:</b> Simplify and streamline multi-cluster ingress management, including defining domains, clusters, and namespace utilization.</li>
-          <li><i class="ri-check-double-line"></i> <b>Advanced DNS Configurations:</b> Manage intricate DNS configurations, allowing for direct integration and coexistence with existing solutions.</li>
-          <li><i class="ri-check-double-line"></i> <b>Robust Access Management:</b> Enhance security with robust access management, providing rate limiting and role-based access controls.</li>
-          <li><i class="ri-check-double-line"></i> <b>Integrated Security Measures:</b> Ensure safe operation with integrated security measures including in-built authentication and authorization functionality.</li>
-          <li><i class="ri-check-double-line"></i> <b>In-depth Observability:</b> Achieve improved network oversight with in-depth observability, including detailed logs and real-time metrics.</li>
+          <li><i class="ri-check-double-line"></i> <b>Multi-cluster Ingress:</b> Streamline multi-cluster ingress by using the multi-cluster control plane to define which clusters a gateway should be deployed to. Then using the Gateway API Gateway spec, specify from the the multi-cluster control plane which listeners and which namespaces within those clusters can use the gateway to provide access to their services.</li>
+          <li><i class="ri-check-double-line"></i> <b>Advanced DNS Based Load Balancing:</b> Express complex traffic load balancing requirements such as GEO based and Weighted DNS responses without the complexity of managing and maintaining the individual record sets. The DNSPolicy API powers direct integration with existing DNS Providers including (AWS Route53, Azure, Google DNS).
+          </li>
+          <li><i class="ri-check-double-line"></i> <b>Health Checks:</b> Define a health check policy that is applied to each listener defined within a gateway that specifies an endpoint that must be present and return a healthy response and if it is not define what action to take.
+          </li>
+          <li><i class="ri-check-double-line"></i> <b>Integrated Multi-Cluster TLS:</b> Secure your Gateways with automatic ACME based TLS integration that are distributed with your gateways and managed at the control plane level. Use a TLSPolicy (coming soon) to decide which provider and what renewal policy to use with a given gateway</li>
+          <li><i class="ri-check-double-line"></i> <b>In-depth Observability:</b> Achieve improved network oversight with in-depth observability, including detailed logs and metrics. With our integrations with systems such as Thanos (coming soon)</li>
         </ul>
       </div>
       <div class="col-lg-6 pt-4 pt-lg-0">
+        <div class="section-title">
+          <h3>Data Plane API Gateway</h3>
+        </div>
         <ul>
-          <li><i class="ri-check-double-line"></i> <b>Rate Limiting:</b> Control traffic flow and prevent system overloading with customizable rate limiting rules.</li>
-          <li><i class="ri-check-double-line"></i> <b>Authentication and Authorization:</b> Secure network access with robust authentication and authorization mechanisms.</li>
-          <li><i class="ri-check-double-line"></i> <b>Service Mesh Integration:</b> Seamlessly integrate with existing service mesh infrastructures to offer consistent policy enforcement.</li>
-          <li><i class="ri-check-double-line"></i> <b>Cloud and Kubernetes Compatibility:</b> Remain flexible and adaptable with broad compatibility for various cloud environments and Kubernetes distributions.</li>
+          <li><i class="ri-check-double-line"></i> <b>Rate Limiting:</b> Control traffic flow and prevent system overloading with customizable rate limiting rules. Express your policy and requirement and have them enforced at the gateway or HTTPRoute level</li>
+          <li><i class="ri-check-double-line"></i> <b>Authentication and Authorization:</b> Secure access with robust and flexible auth policies that can be used to target both Gateways and HTTPRoutes.</li>
           <li><i class="ri-check-double-line"></i> <b>High Performance:</b> Maintain high levels of performance and reliability across your distributed systems.</li>
           <li><a href="#" class="btn-learn-more">Learn More</a></li>
         </ul>
@@ -162,10 +165,27 @@
   <div class="container" data-aos="fade-up">
     <div class="section-title">
       <h2>Components</h2>
-      <p>Kuadrant has several components - most of which can be used standalone</p>
+      <p>Kuadrant has several components - that work with Istio provided Gateways and Open Cluster Management <a href="https://open-cluster-management.io/">(OCM)</a> multi-cluster control plane</p>
     </div>
 
+     
+
     <div class="row">
+      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-transfer"></i></div>
+          <h4><a href="">Multi-Cluster Gateway Controller</a></h4>
+          <p>Multi-cluster Gateway Controller, manages multi-cluster gateways, integrates with DNS providers, TLS providers and OCM (open cluster management)</p>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-cog"></i></div>
+          <h4><a href="https://github.com/Kuadrant/kuadrant-operator">Kuadrant Operator</a></h4>
+          <p>Operator to install and manage the lifecycle of the Kuadrant components deployments. Provides the core Kuadrant policy APIs</p>
+        </div>
+      </div>
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-key"></i></div>
@@ -182,100 +202,10 @@
           <p>Limitador is a generic rate-limiter written in Rust. It can be used as a library, or as a service. The service exposes HTTP endpoints to apply and observe limits. Limitador can be used with Envoy because it also exposes a grpc service, on a different port, that implements the Envoy Rate Limit protocol (v3).</p>
         </div>
       </div>
-
-      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
-        <div class="icon-box">
-          <div class="icon"><i class="bx bx-transfer"></i></div>
-          <h4><a href="">Multi-Cluster Gateway Controller</a></h4>
-          <p>Multi-cluster Gateway Controller, manages multi-cluster gateways</p>
-        </div>
-      </div>
-
-      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
-        <div class="icon-box">
-          <div class="icon"><i class="bx bx-cog"></i></div>
-          <h4><a href="https://github.com/Kuadrant/kuadrant-operator">Kuadrant Operator</a></h4>
-          <p>Operator to install and manage the lifecycle of the Kuadrant components deployments</p>
-        </div>
-      </div>
     </div>
 
   </div>
 </section><!-- End Components Section -->
-
-<!-- ======= Why Kuadrant Section ======= -->
-<section id="why-kuadrant" class="why-kuadrant section-bg">
-  <div class="container-fluid" data-aos="fade-up">
-
-    <div class="row">
-
-      <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch  order-2 order-lg-1">
-
-        <div class="content">
-          <h3>Why use <strong>Kuadrant?</strong></h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-          </p>
-        </div>
-
-        <div class="accordion-list">
-          <ul>
-
-            <li>
-              <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-1"><span>01</span> Simplified Ingress Management <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="accordion-list-1" class="collapse show" data-bs-parent=".accordion-list">
-                <p>
-                  As an application developer or gateway administrator, handling multi-cluster ingress can be a complex task. Kuadrant offers a streamlined solution to manage ingress across multiple clusters, providing an easy-to-use interface for defining domains, clusters, and namespace utilization. This allows you to focus more on your application development and less on intricate ingress configurations.
-                </p>
-              </div>
-            </li>
-
-            <li>
-              <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-2"><span>02</span> Integrated Security Features <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="accordion-list-2" class="collapse" data-bs-parent=".accordion-list">
-                <p>
-                  Security is a crucial aspect of any application. Kuadrant integrates robust security measures such as rate limiting, and role-based access controls directly into the system. This not only enhances the security of your applications but also simplifies the task of managing security, making Kuadrant an indispensable tool for any gateway administrator.
-                </p>
-              </div>
-            </li>
-
-            <li>
-              <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-3"><span>03</span> Comprehensive Observability <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="accordion-list-3" class="collapse" data-bs-parent=".accordion-list">
-                <p>
-                  Monitoring the health and performance of your applications can be challenging. Kuadrant offers in-depth observability features, including detailed logs and real-time metrics. This means you can easily monitor your applications and quickly address any issues, improving the overall reliability and performance of your systems.
-                </p>
-              </div>
-            </li>
-
-            <li>
-              <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-4"><span>04</span> Wide Compatibility <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="accordion-list-4" class="collapse" data-bs-parent=".accordion-list">
-                <p>
-                  With the diversity of cloud environments and Kubernetes distributions, flexibility is key. Kuadrant is compatible with a wide variety of cloud environments and Kubernetes distributions, making it a versatile tool for any application developer or gateway administrator.
-                </p>
-              </div>
-            </li>
-
-            <li>
-              <a data-bs-toggle="collapse" class="collapse" data-bs-target="#accordion-list-5"><span>05</span> Ease of Configuration and Deployment <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="accordion-list-5" class="collapse" data-bs-parent=".accordion-list">
-                <p>
-                  Setting up and configuring Kuadrant is a breeze, with intuitive interfaces and clear documentation. Whether you're a seasoned developer or a newcomer to the world of microservices, you'll find that deploying Kuadrant is a straightforward process. Its design is centered around user-friendly experiences, making it a favorite among application developers and gateway administrators.
-                </p>
-              </div>
-            </li>
-
-          </ul>
-        </div>
-
-      </div>
-
-      <div class="col-lg-5 align-items-stretch order-1 order-lg-2 img" style='background-image: url("static/img/why-us.png");' data-aos="zoom-in" data-aos-delay="150">&nbsp;</div>
-    </div>
-
-  </div>
-</section><!-- End Why Kuadrant Section -->
 
 
 <!-- ======= Cta Section ======= -->
@@ -384,7 +314,6 @@
               <li><i class="bx bx-chevron-right"></i> <a href="#hero">Home</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#features">Features</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#components">Components</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#why-kuadrant">Why Kuadrant?</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#faq">FAQs</a></li>
             </ul>
           </div>
