@@ -11,12 +11,11 @@ jobs:
         with:
           install_dependencies: true
           args: --output _site
+      - name: Find
+        run: find .
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           publish_dir: _site 
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
-
