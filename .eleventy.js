@@ -1,5 +1,6 @@
 const markdownIt = require("markdown-it");
 const eleventyAsciidoc = require("eleventy-plugin-asciidoc");
+const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
 
 
 module.exports = function(eleventyConfig) {
@@ -16,5 +17,5 @@ module.exports = function(eleventyConfig) {
   };
 
   eleventyConfig.setLibrary("md", markdownIt(options));
-
+  eleventyConfig.addPlugin(eleventyNavigationPlugin);
 };

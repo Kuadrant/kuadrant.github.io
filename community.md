@@ -1,6 +1,8 @@
 ---
 layout: layout.njk
 title: Community
+eleventyNavigation:
+  key: Community
 ---
 # Kuadrant Community
 

@@ -45,11 +45,16 @@ title: Kuadrant.io
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#features">Features</a></li>
-          <li><a class="nav-link scrollto" href="#components">Components</a></li>
-          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
-          <li><a class="nav-link" href="/community">Community</a></li>
+          <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="/#features">Features</a></li>
+          <li><a class="nav-link scrollto" href="/#components">Components</a></li>
+          <li><a class="nav-link scrollto" href="/#faq">FAQs</a></li>
+          {% set navPages = collections.all | eleventyNavigation %}
+          {%- for entry in navPages %}
+            <li>
+              <a class="nav-link {% if entry.url == page.url %}active{% endif %}" href="{{ entry.url }}">{{ entry.title }}</a>
+            </li>
+          {%- endfor %}
           <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
           <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
         </ul>
