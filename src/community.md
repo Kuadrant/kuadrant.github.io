@@ -6,7 +6,7 @@ eleventyNavigation:
 ---
 # Kuadrant Community
 
-Welcome to the Kuadrant community!
+Welcome to the Kuadrant community, where we're working to bring together Gateway API and Open Cluster Management to help you manage, scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in a single cluster or the multi-cluster Kubernetes environments.
 
 ### Source Code
 
@@ -32,7 +32,6 @@ We welcome new contributors to the project, be you a seasoned multi-cluster netw
 
 Consider fixing some bugs, trying Kuadrant and telling us about your experience or helping us hone our documentation.
 
-
 ### Social Media
 
 You can find us on:
@@ -44,6 +43,6 @@ You can find us on:
 * [Twitter](https://twitter.com/kuadrantio)
 
 ### Security Disclosures
-TODO: add security.txt
-
 If you wish to make a responsible security disclosure, please email kuadrant-security@googlegroups.com.
+
+See also [security.txt](/.well-known/security.txt).
