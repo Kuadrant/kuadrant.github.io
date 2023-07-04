@@ -8,8 +8,13 @@ eleventyNavigation:
 
 Welcome to the Kuadrant community, where we're working to bring together Gateway API and Open Cluster Management to help you manage, scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in a single cluster or the multi-cluster Kubernetes environments.
 
-### Source Code
+### Events and Meetings Calendar
 
+We hold community meetings periodically, the details of which can be viewed below:
+
+<iframe src="https://calendar.google.com/calendar/embed?src=kuadrantdev%40gmail.com&ctz=Europe%2FDublin" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+### Source Code
 Kuadrant is an Open Source project, licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). Source can be found on the [Kuadrant GitHub organisation](https://github.com/Kuadrant).
 
 ### Mailing List
