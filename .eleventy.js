@@ -18,4 +18,11 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.setLibrary("md", markdownIt(options));
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
+
+  return {
+    dir: {
+      input: "src",
+      output: "_site"
+    }
+  }
 };

@@ -13,8 +13,6 @@ Welcome to the Kuadrant community!
 Kuadrant is an Open Source project, licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). Source can be found on the [Kuadrant GitHub organisation](https://github.com/Kuadrant).
 
 ### Mailing List
-TODO: Create a mailing list.
-
 We use a mailing list hosted by Google Groups to communicate as a community, answer questions, exchange ideas and make announcements about the project. Once subscribed, you can email the mailing list by sending an email to kuadrant@googlegroups.com.
 
 To subscribe, send an email to kuadrant+subscribe@googlegroups.com
@@ -48,5 +46,4 @@ You can find us on:
 ### Security Disclosures
 TODO: add security.txt
 
-If you wish to make a responsible security disclosure, please email xxx
-
+If you wish to make a responsible security disclosure, please email kuadrant-security@googlegroups.com.
