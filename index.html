@@ -38,14 +38,18 @@
 
       <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
       <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="index.html" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#features">Features</a></li>
-          <li><a class="nav-link scrollto" href="#components">Components</a></li>
-          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
+          <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="/#features">Features</a></li>
+          <li><a class="nav-link scrollto" href="/#components">Components</a></li>
+          <li><a class="nav-link scrollto" href="/#faq">FAQs</a></li>
+          
+            <li>
+              <a class="nav-link " href="/community/">Community</a>
+            </li>
           <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
           <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
         </ul>
@@ -55,9 +59,10 @@
     </div>
   </header><!-- End Header -->
 
-  <main id="main">
+  <main id="main" class="index-page">
 
     
+      
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
 
@@ -65,7 +70,7 @@
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
         <h1>Gateway Policies for Kubernetes</h1>
-        <h2>Bringing together Gateway API and Open Cluster Management to help you manage, scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in a single cluster or in the multi-cluster environment.</h2>
+        <h2>Bringing together Gateway API and Open Cluster Management to help you manage, scale, load-balance and secure your Ingress Gateways as a key part of your application connectivity, in a single cluster or multi-cluster Kubernetes environments.</h2>
         <div class="d-flex justify-content-center justify-content-lg-start">
           <a href="http://docs.kuadrant.io/multicluster-gateway-controller/how-to/ocm-control-plane-walkthrough/" class="btn-get-started">Get Started</a>
           <a href="https://youtu.be/pXT6mBMk1UQ" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
@@ -80,7 +85,7 @@
 </section><!-- End Hero -->
 
 <!-- ======= Features Section ======= -->
-<section id="features" class="features section-bg about">
+<section id="features" class="features section-bg about light">
   <div class="container" data-aos="fade-up">
 
     <div class="section-title">
@@ -289,13 +294,14 @@
   </div>
 </section><!-- End Frequently Asked Questions Section -->
 
+    
+    
+    
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
-
-    
 
     <div class="footer-top">
       <div class="container">
@@ -304,7 +310,7 @@
           <div class="col-lg-3 col-md-6 footer-contact">
             <h3>Kuadrant</h3>
             <p>
-              Sponsored by: <img src="/static/img/clients/redhat.png" class="img-fluid img-125" alt="">
+              Sponsored by: <a href="https://www.redhat.com"><img src="/static/img/clients/redhat.png" class="img-fluid img-125" alt=""></a
             </p>
           </div>
 
@@ -321,6 +327,7 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Social Networks</h4>
             <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
               <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
               <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
               <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
