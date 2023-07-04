@@ -9,6 +9,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("js");
   eleventyConfig.addPlugin(eleventyAsciidoc);
 
+  eleventyConfig.addPassthroughCopy("src/.well-known");
 
   let options = {
     html: true,
