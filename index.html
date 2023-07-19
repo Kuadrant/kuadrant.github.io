@@ -38,14 +38,18 @@
 
       <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
       <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="index.html" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#features">Features</a></li>
-          <li><a class="nav-link scrollto" href="#components">Components</a></li>
-          <li><a class="nav-link scrollto" href="#faq">FAQs</a></li>
+          <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="/#features">Features</a></li>
+          <li><a class="nav-link scrollto" href="/#components">Components</a></li>
+          <li><a class="nav-link scrollto" href="/#faq">FAQs</a></li>
+          
+            <li>
+              <a class="nav-link " href="/community/">Community</a>
+            </li>
           <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
           <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
         </ul>
@@ -55,17 +59,18 @@
     </div>
   </header><!-- End Header -->
 
-  <main id="main">
+  <main id="main" class="index-page">
 
     
+      
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center">
 
   <div class="container">
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-        <h1>Multi-Cluster API Gateways for Kubernetes </h1>
-        <h2>Gateways are a key part of application connectivity. Kuadrant helps you Scale, load-balance and protect your Ingress Gateways.  </h2>
+        <h1>Gateway Policies for Kubernetes</h1>
+        <h2>Gateways are a key part of application connectivity. Kuadrant helps you scale, load-balance and protect your Ingress Gateways via it's powerful policy APIs.</h2>
         <div class="d-flex justify-content-center justify-content-lg-start">
           <a href="http://docs.kuadrant.io/multicluster-gateway-controller/how-to/ocm-control-plane-walkthrough/" class="btn-get-started">Get Started</a>
           <a href="https://youtu.be/pXT6mBMk1UQ" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
@@ -80,12 +85,12 @@
 </section><!-- End Hero -->
 
 <!-- ======= Features Section ======= -->
-<section id="features" class="features section-bg about">
-  <div class="container" data-aos="fade-up">
+<section id="features" class="features section-bg about light">
+  <div class="container">
 
     <div class="section-title">
-      <h2>Overview</h2>
-      <p>Leveraging the emerging ingress standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a>, Kuadrant's features enable and empower <b>cluster operators</b> and <b>application developers</b> to work together to securely connect users with their services. Kuadrant empowers cluster administrators to deploy, manage, observe and protect gateways at scale giving them the confidence to allow application developers to self service knowing that endpoints exposed via these gateways are compliant, secure, visible and resilient. 
+      <h2>Feature Overview</h2>
+      <p>Leveraging the emerging ingress standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API </a>, Kuadrant's features enable and empower cluster operators and application developers to work together to securely connect users with their services. Kuadrant empowers cluster administrators to deploy, manage, observe and protect gateways at scale giving them the confidence to allow application developers to self service knowing that endpoints exposed via these gateways are compliant, secure, visible and resilient.</p>
     </div>
 
     <div class="row">
@@ -125,7 +130,7 @@
 
     <br><br>
 
-    
+
 
     <div class="row content about">
       <div class="col-lg-6">
@@ -168,13 +173,13 @@
       <p>Kuadrant has several components - that work with Istio provided Gateways and Open Cluster Management <a href="https://open-cluster-management.io/">(OCM)</a> multi-cluster control plane</p>
     </div>
 
-     
+
 
     <div class="row">
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-transfer"></i></div>
-          <h4><a href="">Multi-Cluster Gateway Controller</a></h4>
+          <h4><a href="https://github.com/Kuadrant/multicluster-gateway-controller">Multi-Cluster Gateway Controller</a></h4>
           <p>Multi-cluster Gateway Controller, manages multi-cluster gateways, integrates with DNS providers, TLS providers and OCM (open cluster management)</p>
         </div>
       </div>
@@ -246,7 +251,7 @@
             </p>
           </div>
         </li>
-        
+
         <li data-aos="fade-up" data-aos-delay="200">
           <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-2">How does Kuadrant handle security? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
           <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
@@ -255,7 +260,7 @@
             </p>
           </div>
         </li>
-        
+
         <li data-aos="fade-up" data-aos-delay="300">
           <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-3">How do I get started with Kuadrant? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
           <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
@@ -264,7 +269,7 @@
             </p>
           </div>
         </li>
-        
+
         <li data-aos="fade-up" data-aos-delay="400">
           <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-4">Can I integrate Kuadrant with my existing applications and infrastructure? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
           <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
@@ -273,7 +278,7 @@
             </p>
           </div>
         </li>
-        
+
         <li data-aos="fade-up" data-aos-delay="500">
           <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-5">Is Kuadrant suitable for large-scale applications? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
           <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
@@ -281,7 +286,7 @@
               Absolutely. Kuadrant is designed to handle the demands of both small and large-scale applications. Its features such as multi-cluster ingress management, scalability, and advanced observability make it a suitable choice for managing APIs at any scale.
             </p>
           </div>
-        </li>        
+        </li>
 
       </ul>
     </div>
@@ -289,13 +294,14 @@
   </div>
 </section><!-- End Frequently Asked Questions Section -->
 
+    
+    
+    
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
-
-    
 
     <div class="footer-top">
       <div class="container">
@@ -304,7 +310,7 @@
           <div class="col-lg-3 col-md-6 footer-contact">
             <h3>Kuadrant</h3>
             <p>
-              Sponsored by: <img src="/static/img/clients/redhat.png" class="img-fluid img-125" alt="">
+              Sponsored by: <a href="https://www.redhat.com"><img src="/static/img/clients/redhat.png" class="img-fluid img-125" alt=""></a
             </p>
           </div>
 
@@ -321,6 +327,7 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Our Social Networks</h4>
             <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
               <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
               <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
               <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
