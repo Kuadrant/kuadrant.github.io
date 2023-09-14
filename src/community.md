@@ -41,7 +41,7 @@ Consider fixing some bugs, trying Kuadrant and telling us about your experience 
 
 You can find us on:
 
-* [Slack](https://join.slack.com/t/kuadrant/shared_invite/zt-16ggrm41h-z1HLYGkRxJ6l_oZVU~eQzQ)
+* [Slack](https://kubernetes.slack.com/archives/C05J0D0V525)
 * [YouTube](https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w)
 * [GitHub](https://github.com/Kuadrant/)
 * [Stack Overflow](https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador)
