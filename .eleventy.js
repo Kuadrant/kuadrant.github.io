@@ -1,4 +1,7 @@
-const markdownIt = require("markdown-it");
+const markdownIt = require('markdown-it');
+const markdownItAnchor = require('markdown-it-anchor');
+const string = require('string')
+const slugify = s => string(s).slugify().toString()
 const eleventyAsciidoc = require("eleventy-plugin-asciidoc");
 const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
 
@@ -11,13 +14,19 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("src/.well-known");
 
-  let options = {
+  let markdownItOptions = {
     html: true,
     breaks: true,
     linkify: true
   };
 
-  eleventyConfig.setLibrary("md", markdownIt(options));
+  eleventyConfig.setLibrary(
+    'md',
+    markdownIt(markdownItOptions).use(markdownItAnchor, {
+      slugify: s => slugify(s),
+      permalink: markdownItAnchor.permalink.headerLink()
+    })
+  );
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
 
   return {

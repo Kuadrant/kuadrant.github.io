@@ -19,8 +19,7 @@ As you get started, you are in the best position to give us feedback on areas of
 
 If anything doesn't make sense, or doesn't work when you run it, please feel free to either open a Github issue against the relevant component repository or reach out to us directly on [Slack][SlackChannelURL] or via the Kuadrant [mailing list][MailingList].
 
-<!--- Need to add html for headings as markdown does not have native support for creating a heading with an anchor--->
-<h2 id="ways-to-contribute"><a href="#ways-to-contribute">Ways to Contribute</a></h2>
+## Ways to Contribute
 
 We welcome many different types of contributions covering areas such as:
 
@@ -30,24 +29,24 @@ We welcome many different types of contributions covering areas such as:
 * Release management
 * Discussions, feedback and/or guidance on [Slack][SlackChannelURL]/[Mailing List][MailingList]
 
-<h3 id="community-calls"><a href="#community-calls">Community Calls</a></h3>
+### Community Calls
 
 Each week we host a Kuadrant Community call which provides an open forum to discuss all things Kuadrant. Anyone is welcome to come along to this meeting to propose a topic, join in on discussions or just listen in to gain some context into what's going on in the project. For further details on how to join the call, see the Events and Meetings section on the website community [page](https://kuadrant.io/community/#events-and-meetings-calendar). 
 
 Missed a meeting? Don't worry! All of our Community calls are recorded and available from our [YouTube channel](https://www.youtube.com/playlist?list=PL2UsztbUdPcffkAukDbPJBLppSG6JUa2Q).
 
-<h2 id="ask-for-help"><a href="#ask-for-help">Ask for Help</a></h2>
+## Ask for Help
 
 The best way to reach us with a question when contributing is to ask on:
 
 * Our [Public Slack channel][SlackChannelURL]
 * The Kuadrant [mailing list][MailingList]
 
-<h2 id="reporting-issues"><a href="#reporting-issues">Reporting Issues</a></h2>
+## Reporting Issues
 
 To report an issue in the Kuadrant project, you can create a Github issue in the relevant component repository e.g. [Limitador](https://github.com/Kuadrant/limitador), [Kuadrant Operator](https://github.com/Kuadrant/kuadrant-operator), [Authorino](https://github.com/Kuadrant/authorino) etc. If you are unsure of which component to log against, reach out via [Slack](SlackChannelURL) or [email](MailingList). The more information you can provide the easier it will be to help resolve the issue, so please don't be shy on details.
 
-<h2 id="find-an-issue"><a href="#find-an-issue">Find an Issue</a></h2>
+## Find an Issue
 
 A list of good first issues can be found from the Kuadrant Github [projects board](https://github.com/orgs/Kuadrant/projects/18/views/7). These issues are categorised per component. If you see an issue you're interested in progressing mark yourself as an assignee and update the issue status to `In Progress`
 
