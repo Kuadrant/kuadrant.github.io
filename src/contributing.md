@@ -44,7 +44,7 @@ The best way to reach us with a question when contributing is to ask on:
 
 ## Reporting Issues
 
-To report an issue in the Kuadrant project, you can create a Github issue in the relevant component repository e.g. [Limitador](https://github.com/Kuadrant/limitador), [Kuadrant Operator](https://github.com/Kuadrant/kuadrant-operator), [Authorino](https://github.com/Kuadrant/authorino) etc. If you are unsure of which component to log against, reach out via [Slack](SlackChannelURL) or [email](MailingList). The more information you can provide the easier it will be to help resolve the issue, so please don't be shy on details.
+To report an issue in the Kuadrant project, you can create a Github issue in the relevant component repository e.g. [Limitador](https://github.com/Kuadrant/limitador), [Kuadrant Operator](https://github.com/Kuadrant/kuadrant-operator), [Authorino](https://github.com/Kuadrant/authorino) etc. If you are unsure of which component to log against, reach out via [Slack][SlackChannelURL] or [mail][MailingList]. The more information you can provide the easier it will be to help resolve the issue, so please don't be shy on details.
 
 ## Find an Issue
 
