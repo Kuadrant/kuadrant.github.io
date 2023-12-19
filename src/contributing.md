@@ -52,6 +52,18 @@ A list of good first issues can be found from the Kuadrant Github [projects boar
 
 On the rare occasion that there are no good first issues available, that’s OK! There is likely still something for you to work on. If you want to contribute but you don’t know where to start or can't find a suitable issue, you can reach out via the [Public Slack channel][SlackChannelURL] for suggestions and/or guidance.
 
+## Submitting Pull Requests
+
+When submitting a pull request against one of the Kuadrant component repositories, should the PR address a particular Github issue please make sure to reference it in the PR description. That said, it is not mandatory for a PR to have an associated issue referenced. In the event of a standalone PR that doesn't have an associated issue, please add a detailed description of the changes included. Adding *What* and *Why* sections is a good start. For example, *What* is the purpose of this change and *Why* is it required and/or being implemented in this way?
+
+The Kuadrant project owners and maintainers strive to review and/or respond to all newly submitted PRs in a timely manner, however, if you're finding it difficult to get someone to review your PR, please reach out directly on [Slack][SlackChannelURL] or [mail][MailingList]
+
+Finally, it is recommended that you squash your changes into a single commit where possible. If this is not feasible please ensure that your commits are representing a logical piece of work that can be reviewed independently within the PR.
+
+## Signing Commits
+
+All commits to be accepted to Kuadrant component codebases are required to be signed. Refer to [this page](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) about signing your commits.
+
 <!--- WIP
 ## Pull Request Lifecycle
 
