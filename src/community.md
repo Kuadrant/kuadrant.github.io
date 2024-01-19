@@ -51,3 +51,6 @@ You can find us on:
 If you wish to make a responsible security disclosure, please email kuadrant-security@googlegroups.com.
 
 See also [security.txt](/.well-known/security.txt).
+
+### Code of Conduct
+The Kuadrant Community code of conduct is available from the following [link](https://github.com/Kuadrant/governance/blob/main/CODE_OF_CONDUCT.md).
