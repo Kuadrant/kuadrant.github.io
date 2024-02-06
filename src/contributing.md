@@ -14,7 +14,7 @@ Welcome to the Kuadrant contributors guide! We are delighted that you are intere
 
 As you get started, you are in the best position to give us feedback on areas of our project that we need help with such as:
 
-* Gaps or inaccuracies in our [getting started](https://docs.kuadrant.io/getting-started/) guide or [documentation](https://docs.kuadrant.io/)
+* Gaps or inaccuracies in our [getting started](https://docs.kuadrant.io/getting-started-single-cluster/) guide or [documentation](https://docs.kuadrant.io/)
 * Problems found while setting up your local development environment
 
 If anything doesn't make sense, or doesn't work when you run it, please feel free to either open a Github issue against the relevant component repository or reach out to us directly on [Slack][SlackChannelURL] or via the Kuadrant [mailing list][MailingList].
