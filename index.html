@@ -73,7 +73,7 @@
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
         <h1>Gateway Policies for Kubernetes</h1>
-        <h2>Gateways play a pivotal role in application connectivity. With Kuadrant, platform engineers and application developers can easily scale, load-balance, and protect their services and infrastructure using its powerful policy APIs.</h2>
+        <h2>Gateways play a pivotal role in application connectivity. With Kuadrant, platform engineers and application developers can easily connect, secure and protect their services and infrastructure using its powerful policy APIs.</h2>
         <div class="d-flex justify-content-center justify-content-lg-start">
           <a href="https://docs.kuadrant.io/getting-started-single-cluster/" class="btn-get-started">Get Started</a>
           <a href="https://youtu.be/TyhpIQXiPUo" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
@@ -93,39 +93,39 @@
 
     <div class="section-title">
       <h2>Feature Overview</h2>
-      <p>Leveraging the emerging ingress standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API </a>, Kuadrant's features enable and empower cluster operators and application developers to work together to securely connect users with their services. Kuadrant empowers cluster administrators to deploy, manage, observe and protect services exposed via their gateways at scale giving them the confidence to allow application developers to self-service knowing that endpoints exposed via these gateways are compliant, secure, visible and resilient.</p>
+      <p>Leveraging the emerging ingress and connectivity standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API </a>, Kuadrant's features enable and empower cluster operators and application developers to work together to securely connect users with their services. Kuadrant empowers cluster administrators to connect, secure, observe and protect services exposed via their gateways at scale giving them the confidence to allow application developers to self-service knowing that endpoints exposed via these gateways are compliant, secure, visible and resilient.</p>
     </div>
 
     <div class="row">
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-globe"></i></div>
-          <h4><a href="">Multi-Cluster Gateways, Connectivity and Load Balancing</a></h4>
-          <p>Connect users to and balance traffic across your gateway instances using the kuadrant DNSPolicy API that supports advanced strategies such as GEO and Weighted without needing to manage the individual records and integrates with multiple DNS Providers.</p>
+          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/dnspolicy/dnspolicy/">Connectivity and Load Balancing</a></h4>
+          <p>Connect users to and balance traffic across your gateway instances using the kuadrant DNSPolicy API. Leverage advanced DNS strategies such as GEO and Weighted responses without needing to manage the individual records. Integrate with multiple cloud DNS Providers.</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-lock"></i></div>
-          <h4><a href="">Secure Access</a></h4>
-          <p>Secure your Gateways with automatic ACME based TLS integration. Protect your Gateways and HTTPRoutes with Kuadrant's powerful policy based APIs for rate limiting and auth that integrate directly with the Gateway.</p>
+          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/tlspolicy/tls-policy/">Secure Access</a></h4>
+          <p>Secure traffic to your Gateways with automatic ACME based TLS integration that supports all the main ACME providers including lets encrypt</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-shield"></i></div>
-          <h4><a href="">Seamless East-West Connectivity Integration</a></h4>
-          <p>Leverage and integrate existing East-West connectivity providers with your multi-cluster gateways to provide a full application connectivity solution.</p>
+          <h4><a href="https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/">Service Protection</a></h4>
+          <p>Protect your services with our flexible and powerful <a href="https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/">AuthPolicy</a> that integrates Authentication and Authorization at the Gateway or HTTPRoute level. Control and restrict traffic to your service endpoints both at the Gateway and HTTPRoute level by leveraging our <a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/simple-ratelimitpolicy-for-app-developers/">RateLimitPolicy</a>.  </p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-analyse"></i></div>
-          <h4><a href="">In-Depth Observability (coming soon)</a></h4>
-          <p>Gain valuable insights into application performance with Kuadrant's extensive observability tooling, including metrics, monitoring, and OpenTelemetry support.</p>
+          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/metrics-walkthrough/">In-Depth Observability (coming soon)</a></h4>
+          <p>Gain valuable insights into application performance, API usage, API health etc with Kuadrant's extensive observability tooling, including metrics, monitoring, and OpenTelemetry support.</p>
         </div>
       </div>
 
