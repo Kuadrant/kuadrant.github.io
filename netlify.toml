@@ -1,0 +1,5 @@
+[build]
+publish = "_site/"
+
+# Install deps and build the site
+command = "eleventy"
