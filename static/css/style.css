@@ -417,15 +417,15 @@ h6 {
   font-size: 24px;
 }
 
-.navbar a.btn-get-started {
+.navbar a.btn-get-started, .navbar a.btn-slack {
   padding: 7px 14px;
   margin-left: 10px;
 }
-.navbar a.btn-get-started i {
+.navbar a.btn-get-started i, .navbar a.btn-slack i {
   font-size: 18px
 }
 
-.btn-get-started {
+.btn-get-started, .btn-slack {
   font-family: "Jost", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -439,8 +439,23 @@ h6 {
   background: #47b2e4;
 }
 
-.btn-get-started:hover {
+.btn-slack:hover {
   background: #209dd8;
+}
+
+.btn-slack img {
+  height: 16px;
+}
+
+.btn-slack {
+  margin: 10px 0 0 10px;
+  color: #fff;
+  background: #4A154B;
+}
+
+.btn-slack:hover {
+  background: #290c29;
+  color: #fff;
 }
 
 #hero .btn-watch-video {
