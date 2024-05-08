@@ -94,75 +94,43 @@
 
     <div class="section-title">
       <h2>Feature Overview</h2>
-      <p>Leveraging the emerging ingress and connectivity standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API </a>, Kuadrant's features enable and empower cluster operators and application developers to work together to securely connect users with their services. Kuadrant empowers cluster administrators to connect, secure, observe and protect services exposed via their gateways at scale giving them the confidence to allow application developers to self-service knowing that endpoints exposed via these gateways are compliant, secure, visible and resilient.</p>
+      <p>Leveraging the emerging ingress and connectivity standard <a href="https://gateway-api.sigs.k8s.io/">Gateway API </a>, Kuadrant's features enable and empower cluster operators and application developers to work collaboratively to connect, secure, protect and observe their service endpoints.</p>
     </div>
 
     <div class="row">
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-globe"></i></div>
-          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/dnspolicy/dnspolicy/">Connectivity and Load Balancing</a></h4>
-          <p>Connect users to and balance traffic across your gateway instances using the kuadrant DNSPolicy API. Leverage advanced DNS strategies such as GEO and Weighted responses without needing to manage the individual records. Integrate with multiple cloud DNS Providers.</p>
+          <h4><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/dnspolicy/">Connect: DNSPolicy</a></h4>
+          <p>Bring traffic to your Gateway(s). Balance and distribute traffic across your different gateway instances, leveraging advanced DNS strategies such as geo and weighted responses without needing to manage individual records. Integrate with multiple cloud DNS Providers including AWS Route 53 and Google Cloud DNS</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-lock"></i></div>
-          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/tlspolicy/tls-policy/">Secure Access</a></h4>
-          <p>Secure traffic to your Gateways with automatic ACME based TLS integration that supports all the main ACME providers including lets encrypt</p>
+          <h4><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/tlspolicy/">Secure: TLSPolicy</a></h4>
+          <p>Automatically secure traffic to your Gateways with automatic ACME-based TLS integration that supports all of the main ACME providers, including Let's Encrypt</p>
         </div>
       </div>
 
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-shield"></i></div>
-          <h4><a href="https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/">Service Protection</a></h4>
-          <p>Protect your services with our flexible and powerful <a href="https://docs.kuadrant.io/kuadrant-operator/doc/user-guides/auth-for-app-devs-and-platform-engineers/">AuthPolicy</a> that integrates Authentication and Authorization at the Gateway or HTTPRoute level. Control and restrict traffic to your service endpoints both at the Gateway and HTTPRoute level by leveraging our <a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/simple-ratelimitpolicy-for-app-developers/">RateLimitPolicy</a>.  </p>
+          <h4><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/authpolicy/">Protect: AuthPolicy</a></h4>
+          <p>Protect your services with our flexible and powerful [AuthPolicy API](https://docs.kuadrant.io/latest/kuadrant-operator/doc/auth/) that integrates Authentication and Authorization at the Gateway or HTTPRoute level.</p>
         </div>
       </div>
-
-      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
+     <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="icon-box">
-          <div class="icon"><i class="bx bx-analyse"></i></div>
-          <h4><a href="https://docs.kuadrant.io/multicluster-gateway-controller/docs/how-to/metrics-walkthrough/">In-Depth Observability (coming soon)</a></h4>
-          <p>Gain valuable insights into application performance, API usage, API health etc with Kuadrant's extensive observability tooling, including metrics, monitoring, and OpenTelemetry support.</p>
+          <div class="icon"><i class="bx bx-shield"></i></div>
+          <h4><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/ratelimitpolicy/">Protect: RateLimitPolicy</a></h4>
+          <p>Protect your services with our flexible and powerful <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/rate-limiting/">RateLimitPolicy</a> that integrates rate limiting at the Gateway or HTTPRoute level.</p>
         </div>
-      </div>
-
+      </div> 
     </div>
 
     <br><br>
-
-
-
-    <div class="row content about">
-      <div class="col-lg-6">
-        <div class="section-title">
-          <h3>Multi-Cluster</h3>
-        </div>
-        <ul>
-          <li><i class="ri-check-double-line"></i> <b>Multi-cluster Ingress:</b> Streamline multi-cluster ingress by using the multi-cluster control plane to define which clusters a gateway should be deployed to. Then using the Gateway API Gateway spec, specify from the the multi-cluster control plane which listeners and which namespaces within those clusters can use the gateway to provide access to their services.</li>
-          <li><i class="ri-check-double-line"></i> <b>Advanced DNS Based Load Balancing:</b> Express complex traffic load balancing requirements such as GEO based and Weighted DNS responses without the complexity of managing and maintaining the individual record sets. The DNSPolicy API powers direct integration with existing DNS Providers including (AWS Route53, Azure, Google DNS).
-          </li>
-          <li><i class="ri-check-double-line"></i> <b>Health Checks:</b> Define a health check policy that is applied to each listener defined within a gateway that specifies an endpoint that must be present and return a healthy response and if it is not define what action to take.
-          </li>
-          <li><i class="ri-check-double-line"></i> <b>Integrated Multi-Cluster TLS:</b> Secure your Gateways with automatic ACME based TLS integration that are distributed with your gateways and managed at the control plane level. Use a TLSPolicy (coming soon) to decide which provider and what renewal policy to use with a given gateway</li>
-          <li><i class="ri-check-double-line"></i> <b>In-depth Observability:</b> Achieve improved network oversight with in-depth observability, including detailed logs and metrics. With our integrations with systems such as Thanos (coming soon)</li>
-        </ul>
-      </div>
-      <div class="col-lg-6 pt-4 pt-lg-0">
-        <div class="section-title">
-          <h3>Data Plane API Gateway</h3>
-        </div>
-        <ul>
-          <li><i class="ri-check-double-line"></i> <b>Rate Limiting:</b> Control traffic flow and prevent system overloading with customizable rate limiting rules. Express your policy and requirement and have them enforced at the gateway or HTTPRoute level</li>
-          <li><i class="ri-check-double-line"></i> <b>Authentication and Authorization:</b> Secure access with robust and flexible auth policies that can be used to target both Gateways and HTTPRoutes.</li>
-          <li><i class="ri-check-double-line"></i> <b>High Performance:</b> Maintain high levels of performance and reliability across your distributed systems.</li>
-          <li><a href="https://docs.kuadrant.io/" class="btn-learn-more">Learn More</a></li>
-        </ul>
-      </div>
-    </div>
 
   </div>
 </section><!-- End Features Section -->
@@ -170,36 +138,31 @@
 
 <!-- ======= Components Section ======= -->
 <section id="components" class="components">
-
   <div class="container" data-aos="fade-up">
     <div class="section-title">
       <h2>Components</h2>
-      <p>Kuadrant has several components - that work with Istio provided Gateways and Open Cluster Management <a href="https://open-cluster-management.io/">(OCM)</a> multi-cluster control plane</p>
+      <p>Below are some of the main components that come as part of Kuadrant. For a more detail, take a look at our <a href="https://docs.kuadrant.io/latest/architecture/docs/design/architectural-overview-v1/">Architectural Overview</a></p>
     </div>
-
-
-
     <div class="row">
-      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
-        <div class="icon-box">
-          <div class="icon"><i class="bx bx-transfer"></i></div>
-          <h4><a href="https://github.com/Kuadrant/multicluster-gateway-controller">Multi-Cluster Gateway Controller</a></h4>
-          <p>Multi-cluster Gateway Controller, manages multi-cluster gateways, integrates with DNS providers, TLS providers and OCM (open cluster management)</p>
-        </div>
-      </div>
-
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="400">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-cog"></i></div>
           <h4><a href="https://github.com/Kuadrant/kuadrant-operator">Kuadrant Operator</a></h4>
-          <p>Operator to install and manage the lifecycle of the Kuadrant components deployments. Provides the core Kuadrant policy APIs  </p>
+          <p>Operator to install and manage the lifecycle of the Kuadrant components deployments. Provides the core Kuadrant policy APIs that are enforced by the Kuadrant components.  </p>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
+        <div class="icon-box">
+          <div class="icon"><i class="bx bx-transfer"></i></div>
+          <h4><a href="https://github.com/Kuadrant/dns-operator">DNS Operator</a></h4>
+          <p>The DNS Operator integrates with cloud DNS providers to configure DNS connectivity based on DNS Record resources defined by DNSPolicy.</p>
         </div>
       </div>
       <div class="col-xl-3 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="icon-box">
           <div class="icon"><i class="bx bx-key"></i></div>
           <h4><a href="https://github.com/Kuadrant/authorino">Authorino</a></h4>
-          <p>Authorino is lightweight Envoy external authorization server fully manageable via Kubernetes Custom Resources. JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K8s RBAC, external metadata fetching, and more, with minimum to no coding at all, no rebuilding of your applications.
+          <p>Authorino is lightweight Envoy external authorization server fully manageable via Kubernetes Custom Resources. Kuadrant's AuthPolicy defines how Auth requirements should be enforced by Authorino via its AuthConfig API that provides JWT authentication, API key, mTLS, pattern-matching authz, OPA, K8s SA tokens, K8s RBAC, external metadata fetching, and more, with minimum to no coding at all, no rebuilding of your applications.
           </p>
         </div>
       </div>
@@ -208,11 +171,9 @@
         <div class="icon-box">
           <div class="icon"><i class="bx bx-sort-down"></i></div>
           <h4><a href="https://github.com/Kuadrant/limitador">Limitador</a></h4>
-          <p>Limitador is a generic rate-limiter written in Rust. It can be used as a library, or as a service. The service exposes HTTP endpoints to apply and observe limits. Limitador can be used with Envoy because it also exposes a grpc service, on a different port, that implements the Envoy Rate Limit protocol (v3).</p>
+          <p>Limitador is a generic rate-limiter written in Rust. Limits are defined by Kuadrant's RateLimitPolicy and enforced by Lmitador.  Limitador can be used as a library, or as a service. The service exposes HTTP endpoints to apply and observe limits. Limitador can be used with Envoy because it also exposes a gRPC service, on a different port, that implements the Envoy Rate Limit protocol (v3).</p>
         </div>
       </div>
-    </div>
-
   </div>
 </section><!-- End Components Section -->
 
