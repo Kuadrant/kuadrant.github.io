@@ -31,11 +31,7 @@ The [Kuadrant project](https://github.com/Kuadrant/) is made up of a range of co
 
 ### Getting Involved
 
-We welcome new contributors to the project, be you a seasoned multi-cluster networking expert, or someone new who is looking to improve some wonky documentation you come across. Many of our respositories include variants of a `good-first-issue` label for issues that might be good to start with. 
-
-#### Thinking about some initial contributions? 
-
-Consider fixing some bugs, trying Kuadrant and telling us about your experience or helping us hone our documentation.
+Check out the [Contributors Guide](/contributing) for ways you can get involved in the Kuadrant project.
 
 ### Social Media
 
