@@ -40,6 +40,23 @@ module.exports = function(eleventyConfig) {
 		return DateTime.fromJSDate(dateObj, {zone: 'utc'}).toFormat('yyyy-LL-dd');
 	});
 
+  eleventyConfig.addFilter("groupByYear", (posts) => {
+    const groupedPosts = {};
+
+    posts.forEach(post => {
+      const year = DateTime.fromJSDate(post.date).year;
+      if (!groupedPosts[year]) {
+        groupedPosts[year] = [];
+      }
+      groupedPosts[year].push(post);
+    });
+
+    return Object.keys(groupedPosts).sort((a, b) => b - a).map(year => ({
+      year: year,
+      posts: groupedPosts[year]
+    }));
+  });
+
   return {
     dir: {
       input: "src",
