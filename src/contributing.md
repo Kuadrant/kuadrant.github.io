@@ -62,22 +62,6 @@ Finally, it is recommended that you squash your changes into a single commit whe
 
 ## Signing Commits
 
-All commits to be accepted to Kuadrant component codebases are required to be signed. Refer to [this page](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits) about signing your commits.
-
-<!--- WIP
-## Pull Request Lifecycle
-
-[Instructions](https://contribute.cncf.io/maintainers/github/templates/required/contributing/#pull-request-lifecycle)
-
-⚠️ **Explain your pull request process**
-
-## Sign Your Commits
-
-[Instructions](https://contribute.cncf.io/maintainers/github/templates/required/contributing/#sign-your-commits)
-
-⚠️ **Keep either the DCO or CLA section depending on which you use**
-
-### DCO
 Licensing is important to open source projects. It provides some assurances that
 the software will continue to be available based under the terms that the
 author(s) desired. We require that contributors sign off on commits submitted to
@@ -100,4 +84,12 @@ If you forgot to do this and have not yet pushed your changes to the remote
 repository, you can amend your commit with the sign-off by running 
 
     git commit --amend -s 
+
+<!--- WIP
+## Pull Request Lifecycle
+
+[Instructions](https://contribute.cncf.io/maintainers/github/templates/required/contributing/#pull-request-lifecycle)
+
+⚠️ **Explain your pull request process**
+
 --->
