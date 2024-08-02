@@ -45,14 +45,11 @@ title: Kuadrant.io
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="/#features">Features</a></li>
-          <li><a class="nav-link scrollto" href="/#components">Components</a></li>
-          <li><a class="nav-link scrollto" href="/#faq">FAQs</a></li>
+          <li><a class="nav-link {% if "/" == page.url %}active{% endif %}" href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
           {% set navPages = collections.all | eleventyNavigation %}
           {%- for entry in navPages %}
             <li>
-              <a class="nav-link {% if entry.url == page.url %}active{% endif %}" href="{{ entry.url }}">{{ entry.title }}</a>
+              <a class="nav-link {% if entry.url == page.url %}active{% endif %}" href="{{ entry.url }}"><i class="bx {{ entry.icon }}"></i> &nbsp;{{ entry.title }}</a>
             </li>
           {%- endfor %}
           <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
@@ -97,10 +94,12 @@ title: Kuadrant.io
           <div class="col-lg-4 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="/#hero">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/#features">Features</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/#components">Components</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="/#faq">FAQs</a></li>
+              {% set navPages = collections.all | eleventyNavigation %}
+              {%- for entry in navPages %}
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="{{ entry.url }}">{{ entry.title }}</a>
+                </li>
+              {%- endfor %}
             </ul>
           </div>
 

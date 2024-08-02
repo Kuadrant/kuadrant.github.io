@@ -3,6 +3,8 @@ layout: layout.njk
 title: Contributing Guide
 eleventyNavigation:
   key: Contributing
+  order: 3
+  icon: bx-user-plus
 ---
 # Contributors Guide
 
