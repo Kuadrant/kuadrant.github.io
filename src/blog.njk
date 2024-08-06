@@ -1,0 +1,13 @@
+---
+layout: layout.njk
+tags: blog-page # Note: This adds a custom class to layout.njk
+title: Blog
+eleventyNavigation:
+  key: Blog
+  order: 1
+  icon: bx-notepad
+numberOfLatestPostsToShow: 5
+---
+
+{% set postslist = collections.posts %}
+{% include "postslist.njk" %}

@@ -3,6 +3,8 @@ layout: layout.njk
 title: Community
 eleventyNavigation:
   key: Community
+  order: 2
+  icon: bx-user-circle
 ---
 # Kuadrant Community
 
