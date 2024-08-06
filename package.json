@@ -5,6 +5,7 @@
     "@11ty/eleventy-navigation": "^0.3.5"
   },
   "dependencies": {
+    "@11ty/eleventy-img": "^4.0.2",
     "eleventy-plugin-asciidoc": "^2.0.0",
     "markdown-it": "^13.0.1",
     "markdown-it-anchor": "^8.6.7",
