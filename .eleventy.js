@@ -5,6 +5,7 @@ const string = require('string')
 const slugify = s => string(s).slugify().toString()
 const eleventyAsciidoc = require("eleventy-plugin-asciidoc");
 const eleventyNavigationPlugin = require("@11ty/eleventy-navigation");
+const pluginImages = require("./eleventy.config.images.js");
 
 
 module.exports = function(eleventyConfig) {
@@ -21,6 +22,9 @@ module.exports = function(eleventyConfig) {
     linkify: true
   };
 
+  // Watch content images for the image pipeline.
+eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg}");
+
   eleventyConfig.setLibrary(
     'md',
     markdownIt(markdownItOptions).use(markdownItAnchor, {
@@ -29,6 +33,7 @@ module.exports = function(eleventyConfig) {
     })
   );
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
+	eleventyConfig.addPlugin(pluginImages);
 
   eleventyConfig.addFilter("readableDate", (dateObj, format, zone) => {
 		// Formatting tokens for Luxon: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
