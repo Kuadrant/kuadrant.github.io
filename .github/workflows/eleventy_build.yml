@@ -6,19 +6,22 @@ on:
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-node@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '18'
           cache: 'npm'
+      
+      - name: Install Dependencies
+        run: npm install
+
       - name: Build
-        uses: TartanLlama/actions-eleventy@master
-        with:
-          install_dependencies: true
-          args: --output _site
-      - name: Find
-        run: find .
+        run: npx @11ty/eleventy --input src --output _site
+      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
