@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Introducing the Kuadrant Roadmap and Process</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Introducing the Kuadrant Roadmap and Process</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Craig Brookes, David Martin | <time datetime="2024-08-20">20 August 2024</time></li>
+</ul>
+</h4>
+<p><strong>Disclaimer:</strong> This is not intended to be a perfect system but just an evolution and iteration. It can and should be improved over time.</p>
+<p>The <a href="https://github.com/orgs/Kuadrant/projects/18/views/22">Kuadrant Backlog</a> gives us a sorted view of all backlog items across the different repositories, areas, and features. These terms are explained in detail below.<br>
+Here's an example of what the backlog looks like:</p>
+<p><picture><source type="image/avif" srcset="/img/H1n-om3YRW-900.avif 900w"><source type="image/webp" srcset="/img/H1n-om3YRW-900.webp 900w"><img alt="Kuadrant backlog view in github" loading="lazy" decoding="async" src="/img/H1n-om3YRW-900.png" width="900" height="383"></picture></p>
+<p>For releases, like the <a href="https://github.com/orgs/Kuadrant/projects/18/views/23">Kuadrant v1 milestone release</a>, a board view, grouped by area is available.<br>
+Here's what that looks like:</p>
+<p><picture><source type="image/avif" srcset="/img/R9LqI-CVIi-900.avif 900w"><source type="image/webp" srcset="/img/R9LqI-CVIi-900.webp 900w"><img alt="Kuadrant release view in github" loading="lazy" decoding="async" src="/img/R9LqI-CVIi-900.png" width="900" height="402"></picture></p>
+<h2 id="key-concepts" tabindex="-1"><a class="header-anchor" href="#key-concepts">Key Concepts</a></h2>
+<h3 id="areas" tabindex="-1"><a class="header-anchor" href="#areas">Areas</a></h3>
+<p>An area is broad by design and can contain many features. Areas are a defined set and should remain as small as possible. The idea is to make things more consumable from a community/external perspective.<br>
+e.g. I am interested in rate limiting. I see rate limiting as an area and within that area I see multiple logically grouped pieces of work.</p>
+<p>This can be visualised in github using a <a href="https://github.com/orgs/Kuadrant/projects/18/views/22?sliceBy%5Bvalue%5D=Rate+Limiting">filter of the backlog project view</a>.</p>
+<p><em>What if something could go into more than one area?</em></p>
+<p>Don’t overthink it. Choose an area and put it there. It can be changed later if need be. We don’t have 3 dimensional boards yet 😀</p>
+<p><em>Why are there features that are also areas?</em></p>
+<p>Observability is a good example of this. The DNS area needs observability features. Observability is a feature of most components and areas. Observability is also something that we are “generally delivering to persona use cases” and so there are some things that fit better into an area to be focused on independently (API focused observability, Alert and dashboard templates etc that may be fed from the observability features in the other areas).</p>
+<h3 id="features" tabindex="-1"><a class="header-anchor" href="#features">Features</a></h3>
+<p>A feature is a tightly coupled set of issues that deliver a certain “thing” for the project and at some point will be considered “done”. Feature may be a contentious term, but I didn’t have a better term at this point. Technically there can be a large number of features. The feature option is just a string.<br>
+Here's an example of a feature <a href="https://github.com/orgs/Kuadrant/projects/18/views/22?sliceBy%5BcolumnId%5D=73323580&amp;sliceBy%5Bvalue%5D=Azure+Support">filtered view of the backlog for Azure Support</a>.</p>
+<p><em>Where does this leave Epics?</em></p>
+<p>Still valuable ….</p>
+<h3 id="iterations" tabindex="-1"><a class="header-anchor" href="#iterations">Iterations</a></h3>
+<p>An iteration in GitHub is the name given to identify a period of time. It is a useful tool for understanding what is happening within a given period of time and also what we have committed to and planned and will ideally make it in the next iteration (or release) of the project.<br>
+Why use an iteration?</p>
+<ul>
+<li>Allows a shared timebox for the next iteration of the project. Everyone is working with the same iteration to the same date and knows there will be a release at the end of the iteration.</li>
+<li>Improves visibility into what is happening within a given time frame</li>
+<li>Breaks down a large period of time (months until November) into smaller easier chunks that us humans can get our heads around.</li>
+<li>We work in 3-week interactions. This gives us a total of 5 iterations between now and KubeCon NA 2024</li>
+</ul>
+<h3 id="estimates" tabindex="-1"><a class="header-anchor" href="#estimates">Estimates</a></h3>
+<ul>
+<li>Estimates are exactly that. No one will come chasing you if you get an estimate wrong.</li>
+<li>Estimates will help us gauge how much we can complete in a given iteration and also in a given large period of time.</li>
+<li>Suggested Estimate Values to keep things simple:
+<ul>
+<li>5:  1-2 days effort</li>
+<li>8:  3-5 days effort</li>
+<li>13: anything from 5 days to 2 weeks effort</li>
+</ul>
+</li>
+<li>If an issue is larger than a 13 and can’t be completed within an iteration, then really it should be looked at closely to see if it can be broken down further. A 13 point issue should also probably be looked carefully to see can it be broken down further</li>
+</ul>
+<h3 id="releases" tabindex="-1"><a class="header-anchor" href="#releases">Releases</a></h3>
+<p>While we release an increment with the end of each iteration. The release field is more of a milestone release. e.g v1. This release version should be added to any work that is a “must do” for v1.</p>
+<h2 id="using-the-views" tabindex="-1"><a class="header-anchor" href="#using-the-views">Using The Views</a></h2>
+<h3 id="adding-new-stuff" tabindex="-1"><a class="header-anchor" href="#adding-new-stuff">Adding New Stuff</a></h3>
+<h4 id="areas-1" tabindex="-1"><a class="header-anchor" href="#areas-1">Areas</a></h4>
+<p>If a new area is discovered, it can be discussed on Slack or community call as to why it is big enough for a new area all of its own. That said it won't be a heavy-weight process to add a new area.</p>
+<h4 id="features-1" tabindex="-1"><a class="header-anchor" href="#features-1">Features</a></h4>
+<p>The expectation is that these will naturally occur as work is planned and outlined. It is just a string so there is no real limitation on it.</p>
+<h4 id="adding-new-issues" tabindex="-1"><a class="header-anchor" href="#adding-new-issues">Adding New Issues</a></h4>
+<p>It's important that the right area, feature and version is assigned. This is just a suggestion. If you are adding a new issue, it can be helpful to go to the feature option on the view and then click the “add new issue” at the bottom of the list as this will auto fill the feature and area.</p>
+<h3 id="an-iteration" tabindex="-1"><a class="header-anchor" href="#an-iteration">An Iteration</a></h3>
+<p>An iteration is 3 weeks long. It can be broken down into a weekly cycle like below.<br>
+The goal at the end of each iteration is to do a release of the project.</p>
+<table>
+<thead>
+<tr>
+<th>Week 1</th>
+<th>Week 2</th>
+<th>Week 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Refine/ Prioritise / Estimate</td>
+<td>Refine/ Prioritise / Estimate</td>
+<td>Refine/ Prioritise / Release</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prioritisation" tabindex="-1"><a class="header-anchor" href="#prioritisation">Prioritisation</a></h3>
+<p>The backlog view allows you to drag items up and down the list. I find it useful to add <code>area:DNS,TLS</code> so the areas are limited down to those I want to focus on.</p>
+<p><em>How do I decide what should be prioritised?</em></p>
+<p>If unsure, ask. Generally use common sense. Is this an item that is in the scope of v1?</p>
+<h3 id="refinement" tabindex="-1"><a class="header-anchor" href="#refinement">Refinement</a></h3>
+<p>Refinement calls should focus on refining the understanding on an issue and focus on its definition so that at the end of the discussion you can set its status to TODO as this means it is ready to be worked on.<br>
+So when doing a refinement in a particular area you can use the following query:<br>
+<code>area:DNS,TLS no:status</code> It will keep the order and grouping but filter down to specific areas. Some teams find it useful at this stage to also estimate the issue. Some do the estimate during the planning stage</p>
+<h3 id="workflow" tabindex="-1"><a class="header-anchor" href="#workflow">Workflow</a></h3>
+<p>We don’t plan for an iteration. Instead the continuous refinement and prioritisation will ensure the most important items are at the top of the backlog. When you take on a piece of work, you take it from the top (or as close as possible to the top depending on feature)</p>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/cncf-sandbox/">Kuadrant Accepted as Cloud Native Computing Foundation (CNCF) Sandbox Project</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
