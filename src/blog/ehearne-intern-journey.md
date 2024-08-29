@@ -1,6 +1,6 @@
 ---
 title: How Kuadrant has made my internship journey unique at Red Hat. 
-date: 2024-08-20
+date: 2024-09-01
 author: Evan Hearne
 ---
 
