@@ -1,0 +1,31 @@
+---
+title: How Kuadrant has made my internship journey unique at Red Hat. 
+date: 2024-09-01
+author: Evan Hearne
+---
+
+### Prelude
+Being an intern at Red Hat has been a goal of mine for a very long time, something that I aimed towards since I was in secondary school (also know as high school in other domains). To understand why this was, I need to take a step back in time to give you all context. 
+
+### Going Back in Time
+I attended Mount Sion Secondary School, located in the heart of Waterford City in the Republic of Ireland. I was always a fan of technology since I was quite young, and this continued in school. Red Hat's Waterford Office started forming ties with Mount Sion Secondary School, where two cohorts of students came to Red Hat to learn web development and software management principles the open source way! With these newly formed skills they began working on a school website, of which that project lies [here](https://github.com/MountSionCBSSecondary/SchoolWebsite) . You can see in the contributors my previous mentor, [Laura Fitzgerald](https://github.com/laurafitzgerald) (she is also on Kuadrant) , who guided me throughout the internship, but also was there afterwards as someone to talk to within Red Hat. She always had time for me, and I was alway grateful for her interest in my journey since then. This would mark my first interactions with Red Hat and the open source world. 
+
+I was recommended by the people of Red Hat to study Applied Computing (now recently known as Computer Science) in Cloud & Networks at WIT (now known as SETU) so I applied there and got in, yay ! There has been a lot of tough aspects of the course, in particular the mathematical elements, but overall I find it to be an enjoyable course. Come third year, all the students are now applying for their internships to complete as part of their course. Since I have been waiting to apply to Red Hat for quite some time since they are an open source company and I was inspired to get involved as soon as possible, I waited until their internship program opened up and applied straight away. Thankfully, I got in again, double yay ! I was told I would be part of the [Kuadrant](https://kuadrant.io/) team, of whom I knew nothing about, so I was excited to learn more. 
+
+### And So It Begins
+Then comes day one of the internship program, we (the interns) all rock up to the office, become wow'd by the coffee machine, multi function water dispenser, and snack bar, and were soon on our way to getting a tour of the entire office, all led by Becky, the Waterford office receptionist who knows all and will continue to know all for the end of time. In Becky, we trust ! We also had a lot of onboarding items, talks and meetings with various people until things calm down a bit. Then, came our team onboarding process. I met my current mentor, [Rachel Lawton](https://github.com/R-Lawton), who has been there for me since for all of my questions and thoughts I had, and continue to have. She has played a huge role in my journey here today, and I am grateful for her assistance so far.
+
+I learned over time that Kuadrant was a community project aiming towards v1 with various components which work together to manage gateway policies for network traffic. A lot of these were operators that managed components such as Managed Zones, policies, traffic routing and authorisation. As an intern with little to no experience in operators, this project was a little overwhelming. 
+
+### Life as a Kuadrant Intern
+Enter [Kuadra](https://github.com/Kuadrant/kuadra), a project designed to help onboard new team members with some of the technologies used in Kuadrant, such as GoLang and Kubernetes. It was a great way for myself and Daniel Lawton (another intern on the Kuadrant team) to become accustomed with the tech stack. It wasn't too soon after this that I started working on the real deal...
+
+There I was, doing more software engineer things as the days go by - taking on tickets, asking for help, asking for PR reviews, attending meetings. All the things that software engineers do, I began doing little by little which allowed me to understand, at least in some part, what the team does. I've worked on several components so far but the stack is so vast that even senior people haven't touched some of it. Needless to say, I have grown quite accustomed to my team and how they operate over the past eight months being here. I have done a lot of things, and have grown my knowledge in this area a lot since I began.
+
+### Bringing It Full Circle
+There was also a period in my internship where I got to be at the other side of the transition year programme, where myself and all the other interns spent the week with the students hosting workshops which gave the students software engineering skills and insight into the software industry. It was one of the highlights of my time here, being able to support young students and watch them grow throughout the week, and I am proud of each and every one of them. Working in Kuadrant helped me immensely as the project uses GitHub for project management, allowing me to show them software development principles the open source way !
+
+### What has made my journey unique as a Kuadrant Intern
+I believe my journey is unique because you have much more flexibility in the work and your impact because the systems in place are changing all the time as we are aiming towards v1. For example, I have [added our dashboards to Grafana's Community Platform](https://grafana.com/orgs/kuadrantdev), [automated uploading dashboards to Grafana](https://github.com/Kuadrant/kuadrant-operator/pull/641),  [written up documentation for the site](https://github.com/Kuadrant/kuadrant-operator/pull/663) and have [pushed changes to the docs site](https://github.com/Kuadrant/docs.kuadrant.io/actions/runs/9990867148/job/27612453163), all of which will probably still be there once I leave. 
+
+In fact, this is the one of the first blog postings for Kuadrant. This is all to say that as an intern in the Kuadrant team, you have much more freedom to make this impact at its current stage of aiming towards v1, which empowers you to keep going throughout the internship. Plus, since the team is reasonably small (but mighty!) it makes reaching out to people for guidance much easier. 
