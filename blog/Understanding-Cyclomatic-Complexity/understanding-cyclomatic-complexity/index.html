@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Understanding Cyclomatic Complexity</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Understanding Cyclomatic Complexity</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Jim Fitzpatrick | <time datetime="2024-10-31">31 October 2024</time></li>
+</ul>
+</h4>
+<h1 id="introduction" tabindex="-1"><a class="header-anchor" href="#introduction">Introduction</a></h1>
+<p>This blog looks at cyclomatic complexity in the <a href="https://github.com/Kuadrant/">kuadrant project</a>. Cyclomatic complexity is a metric design to indicate the complexity of an application. In this post we recap the research outlined in the paper of the same name, the paper can be found <a href="https://github.com/Boomatang/cyclomatic-complexity/releases/tag/V1">here</a>. The main goal is to learn what cyclomatic complexity is and how best to apply it to a project.</p>
+<h1 id="understanding-cyclomatic-complexity" tabindex="-1"><a class="header-anchor" href="#understanding-cyclomatic-complexity">Understanding Cyclomatic Complexity</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic complexity</a> is a measurement created from the control flow of an application. The simplest understanding of how to calculate this metric is every time the function makes a choice, 1 gets added to complexity score and a function has a base level of complexity of one.</p>
+<p>Code readability has no effect on the complexity score and that means the style of a language or the styled opinions of a team will not affect the score. Scores across different language should not be compared with each other, as some language features will shift the score between languages. For example Golang has errors as values while Python uses a try catch block. While those approaches try to achieve the same results it can affect the cyclomatic complexity.</p>
+<h2 id="classifying-cyclomatic-complexity" tabindex="-1"><a class="header-anchor" href="#classifying-cyclomatic-complexity">Classifying Cyclomatic Complexity</a></h2>
+<p>The metric itself is a single number but when looking a project it is better when the metric is bucketed into categories. The bucket classification used is from <a href="https://radon.readthedocs.io">radon.readthedocs.io</a>, it gives a good range at both ends of the spectrum. These classifications are in the table below.</p>
+<table>
+<thead>
+<tr>
+<th>CC Score</th>
+<th>Rank</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 - 5</td>
+<td>A</td>
+<td>Low - simple block</td>
+</tr>
+<tr>
+<td>6 - 10</td>
+<td>B</td>
+<td>Low - well-structured and stable block</td>
+</tr>
+<tr>
+<td>11 - 20</td>
+<td>C</td>
+<td>Moderate - slightly complex block</td>
+</tr>
+<tr>
+<td>21 - 30</td>
+<td>D</td>
+<td>More than moderate - more complex block</td>
+</tr>
+<tr>
+<td>31 - 40</td>
+<td>E</td>
+<td>High - complex block, alarming</td>
+</tr>
+<tr>
+<td>40+</td>
+<td>F</td>
+<td>Very high - error-prone, unstable block</td>
+</tr>
+</tbody>
+</table>
+<h1 id="data-collection-and-analysis" tabindex="-1"><a class="header-anchor" href="#data-collection-and-analysis">Data Collection and Analysis</a></h1>
+<p>The analysis was done on all public repositories in the Kuadrant GitHub organization using <a href="https://jupyter.org/">Jupyter Notebooks</a>, these notebooks can be found <a href="https://github.com/Boomatang/cyclomatic-complexity">here</a>. A number of steps where taken to clean up the data including the exclusion of vendored or generated code. The temporal data points were base of the merge commits or standard commit depending on the project.</p>
+<h1 id="diving-into-the-complexity" tabindex="-1"><a class="header-anchor" href="#diving-into-the-complexity">Diving Into The Complexity</a></h1>
+<h2 id="kurdrant-project" tabindex="-1"><a class="header-anchor" href="#kurdrant-project">Kurdrant Project</a></h2>
+<p>One of the very first stand out points when looking at the graph of the cyclomatic complexity over time for the kuadrant project as a whole nearly doubles in complexity each year. This is expected as the project is very much in its growth stage. What should be highlighted is any new user wishing to contribute will have a far greater learning curve than someone that joined the project the year before. The next point is from the shear scale of Rank A functions in the project. Remember Rank A are simple blocks. While these are not hard to understand, new contributors will need to understand how to tie all these functions together. Low ranked functions add a mental complexity on the developer.</p>
+<p><picture><source type="image/avif" srcset="/img/QCge10FjVE-900.avif 900w"><source type="image/webp" srcset="/img/QCge10FjVE-900.webp 900w"><img alt="Kuadrant organization cyclomatic complexity over time" loading="lazy" decoding="async" src="/img/QCge10FjVE-900.png" width="900" height="270"></picture></p>
+<h2 id="projects-evolving-over-time" tabindex="-1"><a class="header-anchor" href="#projects-evolving-over-time">Projects Evolving Over Time</a></h2>
+<p>The wasm shim is a very good example of the cyclomatic complexity of a project evolving over time. The graph below shows how in the earlier stages of the project there was some very complex functions with bands of functions with a Rank D and Rank E. Over time with refactoring these complex blocks where rewritten to give simpler code blocks but also didn't drastically reduce the over all complexity of the project.</p>
+<p>This gives reason to believe CICD checks based on cyclomatic complexity may be a hindrance and harm productivity on projects that have a good culture of being able to refactor complex code at later dates. This pattern of highly complex code being added to a project and then later refactored out can be seen within all the kuadrant projects.</p>
+<p><picture><source type="image/avif" srcset="/img/IBcwLxugTB-900.avif 900w"><source type="image/webp" srcset="/img/IBcwLxugTB-900.webp 900w"><img alt="Wasm shim cyclomatic complexity over time" loading="lazy" decoding="async" src="/img/IBcwLxugTB-900.png" width="900" height="270"></picture></p>
+<h2 id="change-of-personnel" tabindex="-1"><a class="header-anchor" href="#change-of-personnel">Change Of Personnel</a></h2>
+<p>The beliefs of a team can effect how the cyclomatic complexity is grouped into the different ranks. In limitador around July 2022, there was a new lead maintainer added to the project. With talking to this maintainer, they have a strong belief that APIs should be simplified for consumers of the API at the expense of the library maintainers. This would mean if the consumers normal calls function A and function B at the same time those function should be combined into a function AB. This leads to higher complexity in functions but simpler interfaces for consumers.</p>
+<p>While showing that the cyclomatic complexity is as much affected by team culture and design philosophy as language and project complexity. Also, that over time as teams change so will the design philosophy which should not be seen as inherently a bad thing.</p>
+<p><picture><source type="image/avif" srcset="/img/dPJTyA5JPq-900.avif 900w"><source type="image/webp" srcset="/img/dPJTyA5JPq-900.webp 900w"><img alt="Limitador cyclomatic complexity over time" loading="lazy" decoding="async" src="/img/dPJTyA5JPq-900.png" width="900" height="270"></picture></p>
+<h2 id="runtimes-and-tooling" tabindex="-1"><a class="header-anchor" href="#runtimes-and-tooling">Runtimes And Tooling</a></h2>
+<p>The testsuite repository showed an interesting flaw with using cyclomatic complexity and the surrounding tooling. Nearly 90% of all functions are in the rank A grouping. While it was expected the repository would have a higher number in this group because of some of the Python language features. The high number of rank A scoring functions was due to the use of the assert keyword. As this was a test suite it made use of the Pytest framework which overrides the build in assert keyword and the created test make heavy use of the assert keyword. In the Python language the execution of the asserts can be turned off, because of this the tool used to scan and calculate the cyclomatic complexity score of a function did not count assert as part of the complexity. Meaning the scores for the testsuite were underreported.</p>
+<p>The takeaway from this is how there you need to have an understanding of the language features, frameworks being used and calculation rules of the scan tools. As when the three are combined the results maybe misleading.</p>
+<p><picture><source type="image/avif" srcset="/img/TbUTWr3GX9-900.avif 900w"><source type="image/webp" srcset="/img/TbUTWr3GX9-900.webp 900w"><img alt="Pie chart of cyclomatic complexity in the testsuite" loading="lazy" decoding="async" src="/img/TbUTWr3GX9-900.png" width="900" height="432"></picture></p>
+<h2 id="historical-events" tabindex="-1"><a class="header-anchor" href="#historical-events">Historical Events</a></h2>
+<p>Apart from the normal growth of a project, historical events can be detected. This can be events where large features are added or removed. These events normally show as jumps in the graphs over being a spike in the graph. No project shows a better example of this than the multicluster-gateway-controller, as seen in the below graph. This relates to the removal of two controllers from the project. These controllers were refactored into the kuadrant-operator project.</p>
+<p>In this case, it was a massive change that is easy to spot. In every project, you can see a number of jumps that would be the result of new features being merged into the project. An interesting way to look at these jumps is from the agile methodology and continuous delivery. If these processes are working correctly there should be limited large upwards jumps, as code should always add in small chunks.</p>
+<p><picture><source type="image/avif" srcset="/img/u-51_BEttD-900.avif 900w"><source type="image/webp" srcset="/img/u-51_BEttD-900.webp 900w"><img alt="multicluster-gateway-controller cyclomatic complexity over time" loading="lazy" decoding="async" src="/img/u-51_BEttD-900.png" width="900" height="270"></picture></p>
+<h1 id="using-the-cyclomatic-complexity-metric" tabindex="-1"><a class="header-anchor" href="#using-the-cyclomatic-complexity-metric">Using the cyclomatic complexity metric</a></h1>
+<p>The metric should be used as a guide to aid in decision-making but should not be tracked as a sign of code quality.</p>
+<h2 id="guide-for-testing" tabindex="-1"><a class="header-anchor" href="#guide-for-testing">Guide for testing</a></h2>
+<p>The cyclomatic complexity metric can be used as a guide to the minimum number of unit test that should be written for a give function. This make it easy for a developer to hit more of the logic branches within the code under test. Unlike code coverage, the aim is to write more variety in the test. While at the same time will not expect an excess of tests to cover every possible iteration of the function.</p>
+<p>As a guide it is still up to the developer to write good meaningful tests. The cyclomatic complexity like code coverage will not point out the edge case in the software. That is still up to the developer to understand.</p>
+<h2 id="aiding-system-design" tabindex="-1"><a class="header-anchor" href="#aiding-system-design">Aiding system design</a></h2>
+<p>Using cyclomatic complexity to aid in system design will depend on the school of thought around what scores are acceptable. Followers of &quot;<a href="https://www.oreilly.com/library/view/clean-code-a/9780136083238/">Clean Code</a>&quot; will believe functions should be short with minimal logic. This means the cyclomatic complexity will show areas that need refactoring to lower the metric for those functions. But if the belief is interfaces should be deep and not shallow, then the metric can show you functions that doing very little but require developers to know of their existence.</p>
+<p>My personal opinion is functions should try to be in Rank B (6-10 range). This greatly reduce the number of APIs that a developer is required to learn while at the same time keeping the functions &quot;understandable&quot;. Yes there can be functions that fall outside this range on both sides. The reconcile function in an operator tends to have many function calls with error checking, these function have higher cyclomatic complexity because of the error checking.</p>
+<h1 id="missing-information" tabindex="-1"><a class="header-anchor" href="#missing-information">Missing Information</a></h1>
+<p>Looking into cyclomatic complexity and how to use the metric, it becomes clear there is information that would aid in its usefulness. The idea of code churn would highlight functions that have been updated regularly. This can indicate that the function is overly complex and people do not understand the function enough to create valid updates the first time around.</p>
+<p>Knowing the number of calls to a function could show premature abstractions. On low complexity functions this leads to a cognitive load on the programmers as they are required to have a deeper knowledge of the functions within a code base. This is especially true for new contributors joining a project.</p>
+<h1 id="conclusion" tabindex="-1"><a class="header-anchor" href="#conclusion">Conclusion</a></h1>
+<p>The conclusion of this research into cyclomatic complexity is as follows. While the cyclomatic complexity scores can show how large a project is, it will not say anything about how well it is designed. It is a good metric for identifying areas within a code base that maybe too complex, and should have a refactor done. The inverse is also true, it can identify areas that are overly simple requiring developers to hold more information in their heads.</p>
+<p>Begin able to calculate the cyclomatic complexity manually in your head can be useful as a guide to how many test cases for a function should be created. The test cases still need to be meaningful, and not created to just please some metric on a dashboard.</p>
+<p>Tracking the metric over time is worthless, as the project grows, so does the cyclomatic complexity and therefore the metric. Where the over time metric can be used is a reminder to existing developers of how much more complex the project is of new developer's starting. The onboard time for a new developer will take longer, and any existing developers may require more patience with the new developer. Tracking the Ranks proportional over time may have some benefit in identifying when a project is starting to slip and get &quot;untidy&quot;.</p>
+<p>Overall, it is a nice metric, just like code coverage, it is a bit meaningless but can help drive decisions on a case by case bases. For public facing APIs, it can help identify areas that many be too broad requiring a developer to hold more context than is required to use the API.</p>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/ehearne-intern-journey/">How Kuadrant has made my internship journey unique at Red Hat.</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
