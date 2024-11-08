@@ -26,10 +26,13 @@ module.exports = function(eleventyConfig) {
 		// Warning: Avif can be resource-intensive so take care!
 		let formats = ["avif", "webp", "auto"];
 		let input;
+		let originalSrc;
 		if(isFullUrl(src)) {
 			input = src;
+			originalSrc = src;
 		} else {
 			input = relativeToInputPath(this.page.inputPath, src);
+			originalSrc = '.' + src; // passthrough copy puts imags 1 level up
 		}
 
 		let metadata = await eleventyImage(input, {
@@ -46,6 +49,8 @@ module.exports = function(eleventyConfig) {
 			decoding: "async",
 		};
 
-		return eleventyImage.generateHTML(metadata, imageAttributes);
+		let imageHtml = eleventyImage.generateHTML(metadata, imageAttributes);
+
+		return `<a href="${originalSrc}">${imageHtml}</a>`;
 	});
 };
