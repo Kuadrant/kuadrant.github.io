@@ -46,6 +46,8 @@ module.exports = function(eleventyConfig) {
 			decoding: "async",
 		};
 
-		return eleventyImage.generateHTML(metadata, imageAttributes);
+		let imageHtml = eleventyImage.generateHTML(metadata, imageAttributes);
+
+		return `<a href="${src}">${imageHtml}</a>`;
 	});
 };
