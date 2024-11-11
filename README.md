@@ -36,11 +36,16 @@ This will ensure the blog post title shows up in the post list, grouped by year 
 The title, author and date will also render in a styled manner at the top of the post page.
 
 If you want to include images, you can create a folder in the `src/blog/` folder, and put the markdown file there, along with any images.
-Then you can insert an image like this:
+Make sure the folder name is the same as the markdown file name so that the url allows relative image links to work. For example, if the folder is `src/blog/mypost/` and the markdown file is `mypost.md`, then the url will be `/blog/mypost/`. If they are different, like `src/blog/mypost/MyPost.md`, the url will be `/blog/mypost/MyPost/` and relative image links will give a 404.
+
+To insert an image, use the image helper function:
 
 ```njk
 {% image "./myimage.png", "My image" %}
 ```
+
+Images will sized automatically for the site, but also include a link to the original size.
+This can be helpful if sufficient detail is not visible in a shrunk down image.
 
 The post list template is at `src/_includes/postslist.njk`.
 The post page template is at `src/_includes/layouts/post.njk`.

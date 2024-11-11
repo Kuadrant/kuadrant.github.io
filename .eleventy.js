@@ -16,6 +16,8 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("src/.well-known");
 
+  eleventyConfig.addPassthroughCopy("src/blog/**/*.png");
+
   let markdownItOptions = {
     html: true,
     breaks: true,
