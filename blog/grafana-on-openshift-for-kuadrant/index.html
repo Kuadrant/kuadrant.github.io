@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Installing Grafana on Openshift for Kaudrant Observability.</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Installing Grafana on Openshift for Kaudrant Observability.</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: David Martin | <time datetime="2024-11-08">08 November 2024</time></li>
+</ul>
+</h4>
+<p>To make the most out of Kuadrant on OpenShift, you can install Grafana and import example dashboards for enhanced observability. This guide demonstrates how to install and configure Grafana using the Grafana Operator on OpenShift, specifically using <code>oc</code> commands. We'll also set up datasources to pull metrics from the OpenShift Thanos Query instance.</p>
+<h2 id="prerequisites" tabindex="-1"><a class="header-anchor" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li><strong>OpenShift version 4.17</strong> (commands tested on this version)</li>
+<li><strong>Kuadrant installed</strong> on your OpenShift cluster</li>
+<li><code>oc</code> CLI tool installed and configured</li>
+<li>User with <code>cluster-monitoring-view</code> role</li>
+</ul>
+<h2 id="installing-the-grafana-operator" tabindex="-1"><a class="header-anchor" href="#installing-the-grafana-operator">Installing the Grafana Operator</a></h2>
+<p>Grafana can be installed and managed on OpenShift using the <a href="https://grafana.github.io/grafana-operator/">Grafana Operator</a>. The operator is available via the <code>community-operators</code> source in OpenShift.</p>
+<p>Create a <code>Subscription</code> to install the Grafana Operator:</p>
+<pre><code class="language-bash">cat &lt;&lt; EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    operators.coreos.com/grafana-operator.openshift-operators: &quot;&quot;
+  name: grafana-operator
+  namespace: openshift-operators
+spec:
+  channel: v5
+  installPlanApproval: Automatic
+  name: grafana-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+EOF
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The <code>v5</code> channel introduces changes that are <strong>not</strong> backward compatible with version 4 of the operator.</p>
+</blockquote>
+<h2 id="creating-a-grafana-instance" tabindex="-1"><a class="header-anchor" href="#creating-a-grafana-instance">Creating a Grafana Instance</a></h2>
+<p>Next, create a Grafana Custom Resource (CR):</p>
+<pre><code class="language-bash">cat &lt;&lt; EOF | oc apply -f -
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  labels:
+    dashboards: grafana
+  name: grafana
+  namespace: openshift-operators
+spec:
+  config:
+    auth:
+      disable_login_form: 'false'
+    log:
+      mode: console
+    security:
+      admin_password: secret
+      admin_user: root
+  route:
+    metadata: {}
+    spec: {}
+  version: 10.4.3
+EOF
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> For simplicity, the admin username and password are set inline as <code>root</code> and <code>secret</code> respectively. Adjust these values as needed for your environment.</p>
+</blockquote>
+<h2 id="configuring-grafana-datasource" tabindex="-1"><a class="header-anchor" href="#configuring-grafana-datasource">Configuring Grafana DataSource</a></h2>
+<p>The source of metrics for Kuadrant dashboards will be the Thanos Query instance in the OpenShift cluster. This Thanos instance provides important cluster metrics, as well as any metrics pushed from the user-workload Prometheus instance (which includes metrics from the gateway and Kuadrant components).</p>
+<blockquote>
+<p><strong>Note:</strong> User workload monitoring needs to be enabled to include metrics from user workloads. See the <a href="https://docs.openshift.com/container-platform/4.17/observability/monitoring/enabling-monitoring-for-user-defined-projects.html">Openshift documentation</a> for how to do this.</p>
+</blockquote>
+<p>To allow Grafana to access Thanos Query, you can either use a user token or create a ServiceAccount token. In this guide, we'll use the token of the currently logged-in user.</p>
+<blockquote>
+<p><strong>Note:</strong> The user/serviceaccount must have the <code>cluster-monitoring-view</code> role. Depending on the type of account used, the token may expire after a set amount of time. For more information on accessing Thanos Query in an OpenShift cluster, refer to the <a href="https://docs.openshift.com/container-platform/4.15/observability/monitoring/accessing-third-party-monitoring-apis.html#accessing-metrics-from-outside-cluster_accessing-monitoring-apis-by-using-the-cli">OpenShift documentation</a>.</p>
+</blockquote>
+<p>Retrieve the user token and Thanos Query hostname:</p>
+<pre><code class="language-bash">TOKEN=$(oc whoami -t)
+HOST=$(oc -n openshift-monitoring get route thanos-querier -o jsonpath={.status.ingress[].host})
+</code></pre>
+<p>Create the Grafana datasource:</p>
+<pre><code class="language-bash">cat &lt;&lt; EOF | oc apply -f -
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: thanos-query-ds
+  namespace: openshift-operators
+spec:
+  datasource:
+    access: proxy
+    isDefault: true
+    jsonData:
+      httpHeaderName1: 'Authorization'
+      timeInterval: 5s
+      tlsSkipVerify: true
+    secureJsonData:
+      httpHeaderValue1: 'Bearer ${TOKEN}'
+    name: thanos-query-ds
+    type: prometheus
+    url: 'https://${HOST}'
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+EOF
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The token is included in plaintext in the <code>secureJsonData</code> section. For different authentication methods and best practices, consult the <a href="https://grafana.github.io/grafana-operator/docs/quick-start/">Grafana Operator documentation</a>.</p>
+</blockquote>
+<h2 id="accessing-grafana" tabindex="-1"><a class="header-anchor" href="#accessing-grafana">Accessing Grafana</a></h2>
+<p>Retrieve the Grafana route to access the UI:</p>
+<pre><code class="language-bash">oc -n openshift-operators get routes grafana-route -o jsonpath=&quot;https://{.status.ingress[].host}&quot;
+</code></pre>
+<p>Open the provided URL in your web browser and log in using the credentials set earlier (<code>root</code>/<code>secret</code>).</p>
+<h2 id="importing-kuadrant-dashboards" tabindex="-1"><a class="header-anchor" href="#importing-kuadrant-dashboards">Importing Kuadrant Dashboards</a></h2>
+<p>Import the Kuadrant dashboards into Grafana as detailed in the <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">Kuadrant documentation</a>.</p>
+<p>If you have a gateway configured with Kuadrant policies, you should see activity on the various dashboards.</p>
+<h2 id="further-reading" tabindex="-1"><a class="header-anchor" href="#further-reading">Further Reading</a></h2>
+<ul>
+<li><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/metrics/">Metrics</a></li>
+<li><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/examples/">Dashboards and Alerts</a></li>
+<li><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/observability/tracing/">Tracing</a></li>
+<li><a href="https://cloud.redhat.com/experts/o11y/ocp-grafana/">Deploying Grafana on Openshift (using older v4 channel)</a></li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/Understanding-Cyclomatic-Complexity/">Understanding Cyclomatic Complexity</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
