@@ -31,45 +31,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Jost", sans-serif;
-}
-
-/*--------------------------------------------------------------
-# Preloader
---------------------------------------------------------------*/
-#preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  overflow: hidden;
-  background: #37517e;
-}
-
-#preloader:before {
-  content: "";
-  position: fixed;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  border: 6px solid #37517e;
-  border-top-color: #fff;
-  border-bottom-color: #fff;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: animate-preloader 1s linear infinite;
-}
-
-@keyframes animate-preloader {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+  font-family: "Open Sans", sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -1952,4 +1914,42 @@ h1, h2, h3, h4, h5 {
 
 .footer-contact img {
   max-width: 20em;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #37517e;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+  color: #2a4866;
+  font-weight: 600;
+  margin-bottom: 0.9rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #37517e;
+  font-weight: 500;
+  letter-spacing: 0.02rem;
+  margin-bottom: 0.8rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  color: #2a4866;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+}
+
+h5 {
+  font-size: 1rem;
+  color: #537198;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.05rem;
+  margin-bottom: 0.6rem;
 }
