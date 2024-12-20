@@ -1,5 +1,5 @@
 ---
-title: Installing Grafana on Openshift for Kaudrant Observability. 
+title: Installing Grafana on Openshift for Kuadrant Observability. 
 date: 2024-11-08
 author: David Martin
 ---
