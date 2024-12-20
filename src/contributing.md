@@ -30,6 +30,7 @@ We welcome many different types of contributions covering areas such as:
 * Documentation updates
 * Release management
 * Discussions, feedback and/or guidance on [Slack][SlackChannelURL]/[Mailing List][MailingList]
+* Get involved with [feature, RFCs and architecture proposals](https://github.com/Kuadrant/architecture/tree/main/rfcs)
 
 ### Community Calls
 
