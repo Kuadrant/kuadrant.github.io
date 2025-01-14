@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Kuadrant v1</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Kuadrant v1</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Jason Madigan | <time datetime="2024-11-28">28 November 2024</time></li>
+</ul>
+</h4>
+<p><strong>Update:</strong> Kuadrant <a href="https://github.com/Kuadrant/kuadrant-operator/releases/tag/v1.0.1">v1.0.1</a> is now available, with some small bugfixes.</p>
+<h2 id="kuadrant-v1" tabindex="-1"><a class="header-anchor" href="#kuadrant-v1">Kuadrant v1!</a></h2>
+<p>We're thrilled to announce the release of Kuadrant <a href="https://github.com/Kuadrant/kuadrant-operator/releases/tag/v1.0.0">v1.0.0</a>! This marks a major milestone in the Kuadrant project after its recent acceptance into <a href="https://www.cncf.io/sandbox-projects/">CNCF's sandbox</a>.</p>
+<h3 id="what-is-kuadrant" tabindex="-1"><a class="header-anchor" href="#what-is-kuadrant">What is Kuadrant?</a></h3>
+<p>Kuadrant is a set of Kubernetes-native controllers, services, and APIs that provide gateway policies for existing <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a> providers in both single and multi-cluster environments. It builds on top of Kubernetes <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a> and technologies such as Istio and Envoy to introduce provider-agnostic Gateway Policies for Kubernetes.</p>
+<h3 id="why-v1-matters" tabindex="-1"><a class="header-anchor" href="#why-v1-matters">Why v1 Matters</a></h3>
+<p>Reaching v1 signifies our project's stability, maturity, and production-readiness. With v1, we believe Kuadrant is now ready to power key workloads in Kubernetes environments.</p>
+<h3 id="whats-new-in-v1" tabindex="-1"><a class="header-anchor" href="#whats-new-in-v1">What's new in v1?</a></h3>
+<p>Here are some key highlights from this release:</p>
+<h4 id="crd-graduation-to-v1" tabindex="-1"><a class="header-anchor" href="#crd-graduation-to-v1">CRD Graduation to v1</a></h4>
+<p><code>AuthPolicy</code>, <code>DNSPolicy</code>, <code>RateLimitPolicy</code>, and <code>TLSPolicy</code> have now graduated to <code>v1</code> in their CRDs, signalling their readiness for production use. We now consider these APIs stable, and commit to enabling migration paths in subsequent API upgrades.</p>
+<p>See the following documentation for API reference and usage examples:</p>
+<ul>
+<li><code>AuthPolicy</code>: <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/overviews/auth/">Overview</a></li>
+<li><code>DNSPolicy</code>: <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/overviews/dns/">Overview</a></li>
+<li><code>RateLimitPolicy</code>: <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/overviews/rate-limiting/">Overview</a></li>
+<li><code>TLSPolicy</code>: <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/overviews/tls/">Overview</a></li>
+</ul>
+<h4 id="cel-support" tabindex="-1"><a class="header-anchor" href="#cel-support">CEL Support</a></h4>
+<p><a href="https://cel.dev/">CEL</a> (Common Expression Language) introduces a powerful and flexible way to define conditions and predicates in <a href="https://github.com/Kuadrant/authorino/blob/main/docs/features.md#common-feature-common-expression-language-cel"><code>AuthPolicy</code></a> and <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/reference/ratelimitpolicy/#predicate"><code>RateLimitPolicy</code></a>. With CEL, you can evaluate custom boolean logic, extract and manipulate request data, and conditionally apply policies in expressive, dynamic ways. CEL's rich syntax includes string operations (e.g., <code>split</code>, <code>indexOf</code>), type-safe expressions, and robust support for combining logical operators.</p>
+<p><strong>Example: Dynamic Authorization Rules in an <code>AuthPolicy</code></strong></p>
+<p>With CEL, you can configure AuthPolicy conditions to enforce access control based on dynamic request attributes. The following example demonstrates a Gateway deny-all policy with a CEL-based exception for requests to the <code>/health</code> path:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: my-gateway-auth
+  namespace: gateways
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: my-gateway
+  defaults:
+   when:
+     - predicate: &quot;request.path != '/health'&quot;
+   rules:
+    authorization:
+      deny-all:
+        opa:
+          rego: &quot;allow = false&quot;
+    response:
+      unauthorized:
+        headers:
+          &quot;content-type&quot;:
+            value: application/json
+        body:
+          value: |
+            {
+              &quot;error&quot;: &quot;Forbidden&quot;,
+              &quot;message&quot;: &quot;Access denied by default by the gateway operator. If you are the administrator of the service, create a specific auth policy for the route.&quot;
+            }
+</code></pre>
+<p>For much more detailed examples, see this <a href="https://github.com/Kuadrant/authorino/blob/main/docs/features.md#common-feature-conditions-when">document</a>.</p>
+<p><strong>Example: User-Specific Rate Limiting in RateLimitPolicy</strong></p>
+<p>CEL can also simplify rate-limiting rules. Here's an example limiting general users to 1 request every 3 seconds while giving a specific user, &quot;bob&quot; a higher limit of 2 requests per 3 seconds:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1
+kind: RateLimitPolicy
+metadata:
+  name: toystore
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: toystore
+  limits:
+    &quot;general-user&quot;:
+      rates:
+        - limit: 1
+          window: 3s
+      counters:
+        - expression: auth.identity.userid
+      when:
+        - predicate: &quot;auth.identity.userid != 'bob'&quot;
+    &quot;bob-limit&quot;:
+      rates:
+        - limit: 2
+          window: 3s
+      when:
+        - predicate: &quot;auth.identity.userid == 'bob'&quot;
+</code></pre>
+<h4 id="helm-installation-support" tabindex="-1"><a class="header-anchor" href="#helm-installation-support">Helm Installation Support</a></h4>
+<p>Kuadrant now offers a way to install the Kuadrant Operator via Helm charts. The Helm charts are available and indexed on <a href="https://artifacthub.io/packages/helm/kuadrant/kuadrant-operator">ArtifactHub.io</a>.</p>
+<p>To get started with Helm, add the Kuadrant Helm repository and install the operator:</p>
+<pre><code class="language-bash">helm repo add kuadrant https://kuadrant.io/helm-charts/ --force-update
+helm install kuadrant kuadrant/kuadrant-operator --namespace kuadrant-system --create-namespace
+helm status -n kuadrant-system kuadrant
+</code></pre>
+<p>For more details, explore our <a href="https://kuadrant.io/helm-charts/">Helm charts repository</a>.</p>
+<h4 id="on-cluster-gateway-dns-health-checks" tabindex="-1"><a class="header-anchor" href="#on-cluster-gateway-dns-health-checks">On-cluster Gateway DNS Health Checks</a></h4>
+<p><code>DNSPolicy</code> now supports DNS health checks for <code>Gateway</code> resources. This allows you to define HTTP-based health checks for targetted <code>Gateway</code> listeners with specific (i.e. non-wildcard) hostnames. These health checks evaluate the health of configured endpoints, ensuring that unhealthy enpoints are unpublished or excluded from DNS records.</p>
+<p>An example:</p>
+<p>Suppose you have a <code>Gateway</code> called <code>external</code> with a listener for <code>example.com</code> and want to ensure only healthy endpoints are published. You can define a <code>DNSPolicy</code> with the following configuration:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1
+kind: DNSPolicy
+metadata:
+  name: gateway-dns
+spec:
+  healthCheck:
+    failureThreshold: 3
+    interval: 5m
+    path: /health
+  ...
+   targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: external  
+</code></pre>
+<p>This policy sets up a health check that probes the <code>/health</code> endpoint on <code>example.com</code> every 5 minutes. If <code>3</code> consecutive checks fail, the <code>DNSRecord</code> for <code>example.com</code> will be marked unhealthy. Depending on the policy's configuration, the IP will either be excluded from DNS records (say, if it's part of a multi-value A record) or unpublished altogether. This ensures that only healthy endpoints are routed through DNS.</p>
+<p>To read more about <code>DNSPolicy</code> and health checks, see our <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/user-guides/dns/dnshealthchecks/">DNS health checks documentation</a></p>
+<h4 id="policy-machinery-integration" tabindex="-1"><a class="header-anchor" href="#policy-machinery-integration">Policy Machinery Integration</a></h4>
+<p>Our core components now implement <a href="https://github.com/Kuadrant/policy-machinery">policy-machinery</a>, providing a powerful way to calculate and visualise the &quot;state of the world&quot; for policy-attachment based policies on Kubernetes clusters. No more guessing where policies and their behaviours originate from. Policy machinery and visualisation through the console plugin make it easier than ever to reason about policy effects, behaviours and origins.</p>
+<h4 id="shift-to-the-sail-operator" tabindex="-1"><a class="header-anchor" href="#shift-to-the-sail-operator">Shift to the Sail Operator</a></h4>
+<p>With v1, we recommend installing Istio using the new Istio <a href="https://istio.io/latest/blog/2024/introducing-sail-operator/">Sail Operator</a> instead of <code>istioctl</code>. Our guides and documentation for getting started have been amended to incorporate this change.</p>
+<h4 id="envoy-gateway-support" tabindex="-1"><a class="header-anchor" href="#envoy-gateway-support">Envoy Gateway support</a></h4>
+<p>We've recently added <a href="https://github.com/Kuadrant/kuadrant-operator/issues/325">support</a> for <a href="https://gateway.envoyproxy.io/">Envoy Gateway</a> as a Gateway API implementation, complementing the Istio support we’ve provided so far. Until now, Kuadrant relied exclusively on Istio as a Gateway API provider, leveraging its robust extension mechanisms, such as <a href="https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/">Wasm Plugins</a>. However, recent advancements in Envoy Gateway, including the introduction of <a href="https://gateway.envoyproxy.io/contributions/design/envoy-patch-policy/"><code>EnvoyPatchPolicy</code></a> and <a href="https://gateway.envoyproxy.io/v1.1/tasks/extensibility/wasm/">Wasm Extensions</a>, enable us to achieve similar functionality with Envoy Gateway.</p>
+<p>Our <a href="https://docs.kuadrant.io/1.0.x/kuadrant-operator/doc/install/install-kubernetes/#optional-install-envoy-gateway-as-a-gateway-api-provider">installation guides</a> for Kubernetes now include optional steps to choose between Istio or Envoy Gateway as your preferred Gateway API provider.</p>
+<h4 id="wasm-based-auth" tabindex="-1"><a class="header-anchor" href="#wasm-based-auth">Wasm-based Auth</a></h4>
+<p>Although primarily an &quot;under the hood&quot; enhancement, this change is significant and worth highlighting.</p>
+<p>Previously, <a href="https://github.com/Kuadrant/authorino">Authorino</a>, which implements <code>AuthPolicy</code>, relied on Istio's <a href="https://istio.io/latest/docs/reference/config/security/authorization-policy/">AuthorizationPolicy</a> to provide authorization in the request flow. Starting with v1, this mechanism has been replaced with an <a href="https://istio.io/latest/docs/reference/config/networking/envoy-filter/">EnvoyFilter</a> and <a href="https://github.com/Kuadrant/wasm-shim">Wasm Extensions</a>, aligning its implementation with how <code>RateLimitPolicy</code> operates.</p>
+<p><code>RateLimitPolicy</code> has long utilised a Wasm-shim as an intercept point to apply rate-limiting logic in Envoy. By adopting a similar Wasm-shim-based approach, <code>AuthPolicy</code> now gains improved flexibility and extensibility. This update also simplifies our architecture by standardising the mechanisms used across our core policies, ensuring both consistency and better alignment.</p>
+<h4 id="sectionname-support" tabindex="-1"><a class="header-anchor" href="#sectionname-support">SectionName Support</a></h4>
+<p>Added support for <a href="https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io%2fv1.SectionName">SectionName</a> throughout our policy set, allowing users to apply policies to specific sections of Gateways.</p>
+<h4 id="new-console-plugin" tabindex="-1"><a class="header-anchor" href="#new-console-plugin">New Console Plugin</a></h4>
+<p>For <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift">OpenShift</a> / <a href="https://okd.io/">OKD</a> console users, a new Console Plugin is available for managing policies and visualising <a href="https://github.com/Kuadrant/policy-machinery">policy-machinery</a> &quot;state of the world&quot;. We plan to make some of this functionality available through other means for Kubernetes users in the near future.</p>
+<h4 id="other-smaller-changes" tabindex="-1"><a class="header-anchor" href="#other-smaller-changes">Other, smaller changes</a></h4>
+<p>In addition to the above, many more smaller fixes and enhancements are captured by our <a href="https://github.com/Kuadrant/kuadrant-operator/releases/tag/v1.0.0">release changelogs</a>). Take a look at our associated component release notes too for smaller changes not covered in detail here.</p>
+<h3 id="components-in-this-release" tabindex="-1"><a class="header-anchor" href="#components-in-this-release">Components in this release</a></h3>
+<p>The individual components that make up this v1.0.0 release of the Kuadrant Operator:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Version</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorino Operator</td>
+<td><a href="https://github.com/Kuadrant/authorino-operator/releases/tag/v0.16.0">v0.16.0</a></td>
+</tr>
+<tr>
+<td>Limitador Operator</td>
+<td><a href="https://github.com/Kuadrant/limitador-operator/releases/tag/v0.12.1">v0.12.1</a></td>
+</tr>
+<tr>
+<td>DNS Operator</td>
+<td><a href="https://github.com/Kuadrant/dns-operator/releases/tag/v0.12.0">v0.12.0</a></td>
+</tr>
+<tr>
+<td>Wasm Shim</td>
+<td><a href="https://github.com/Kuadrant/wasm-shim/releases/tag/v0.8.1">v0.8.1</a></td>
+</tr>
+<tr>
+<td>Console Plugin</td>
+<td><a href="https://github.com/Kuadrant/console-plugin/releases/tag/v0.0.14">v0.0.14</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="thank-you-and-how-to-get-involved" tabindex="-1"><a class="header-anchor" href="#thank-you-and-how-to-get-involved">Thank you and how to get involved</a></h3>
+<p>We are always looking for ways to extend the community and encourage contributions. We thank all of our community contributors for helping make v1 happen!</p>
+<p>To find out more and get involved:</p>
+<ul>
+<li>Check out the <a href="https://docs.kuadrant.io">documentation</a></li>
+<li>Explore the Kuadrant <a href="https://github.com/kuadrant/">repositories</a></li>
+<li>Engage with the <a href="https://kuadrant.io/community/">community</a></li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/grafana-on-openshift-for-kuadrant/">Installing Grafana on Openshift for Kuadrant Observability.</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
