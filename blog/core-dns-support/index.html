@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Blog</title>
+  <title>Alpha support for DNSPolicy using CoreDNS</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
           <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
           
             <li>
-              <a class="nav-link active" href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
             </li>
             <li>
               <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
@@ -66,57 +66,31 @@
 
     
     <div class="container">
-      
-
-
-
-<h3>2025</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/core-dns-support/" class="postlist-link">Alpha support for DNSPolicy using CoreDNS</a>
-		<time class="postlist-date" datetime="2025-04-15">April 2025</time>
-	</li>
-
+      <h1>Alpha support for DNSPolicy using CoreDNS</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Craig Brookes | <time datetime="2025-04-15">15 April 2025</time></li>
 </ul>
-
-
-<h3>2024</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-v1/" class="postlist-link">Kuadrant v1</a>
-		<time class="postlist-date" datetime="2024-11-28">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/grafana-on-openshift-for-kuadrant/" class="postlist-link">Installing Grafana on Openshift for Kuadrant Observability.</a>
-		<time class="postlist-date" datetime="2024-11-08">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/Understanding-Cyclomatic-Complexity/" class="postlist-link">Understanding Cyclomatic Complexity</a>
-		<time class="postlist-date" datetime="2024-10-31">October 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/ehearne-intern-journey/" class="postlist-link">How Kuadrant has made my internship journey unique at Red Hat.</a>
-		<time class="postlist-date" datetime="2024-09-01">September 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-roadmap/" class="postlist-link">Introducing the Kuadrant Roadmap and Process</a>
-		<time class="postlist-date" datetime="2024-08-20">August 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/cncf-sandbox/" class="postlist-link">Kuadrant Accepted as Cloud Native Computing Foundation (CNCF) Sandbox Project</a>
-		<time class="postlist-date" datetime="2024-08-02">August 2024</time>
-	</li>
-
+</h4>
+<p>Kuadrant now offers an Alpha or &quot;Preview&quot; level integration with <a href="https://coredns.io/">CoreDNS</a> as one of our DNS providers for the <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/dnspolicy/">DNSPolicy API</a>. This will allow you to define how you want your DNS to work for your gateway API based gateways whether that is a single gateway or multiple gateways across multiple clusters. The aim with this early support and release is to get this feature into users hands and allow them to experiment, ideally submit feature requests and discover what is missing and any changes we may need to make to our current design.</p>
+<h3 id="why-does-this-matter" tabindex="-1"><a class="header-anchor" href="#why-does-this-matter">Why does this matter?</a></h3>
+<p>Until now, the Kuadrant DNS operator has only ever integrated with cloud DNS providers (route53, GCP and Azure). With the addition of CoreDNS as an option, you can now delegate a zone from any edge recursive DNS resolver to a set of CoreDNS instances on your own infrastructure. This means that if you have your own edge DNS server you can keep all of your DNS internally managed but still get the features offered by Kuadrant's and DNSPolicy.</p>
+<h2 id="what-can-you-do-with-the-coredns-integration" tabindex="-1"><a class="header-anchor" href="#what-can-you-do-with-the-coredns-integration">What can you do with the CoreDNS integration?</a></h2>
+<p>Kuadrant has developed its own plug-in for CoreDNS. This currently allows us to support GEO, Weighted and Geo + Weighted DNS responses based on our existing DNSRecord and DNSPolicy resources. The plug-in is required in order to source the DNS records and meta-data from our existing custom resources. So you can use all the features of DNSPolicy with a CoreDNS provider with the exception of health checks and wildcard hosts currently (these will be added in the near future).</p>
+<h2 id="how-does-it-work" tabindex="-1"><a class="header-anchor" href="#how-does-it-work">How does it work</a></h2>
+<p>To find out more about how it works under the hood, take a look the the <a href="https://github.com/Kuadrant/architecture/blob/main/docs/design/core-dns-integration.md">design doc</a></p>
+<h2 id="getting-started" tabindex="-1"><a class="header-anchor" href="#getting-started">Getting Started</a></h2>
+<p>To get started, take a look at the guide we have prepared. <a href="https://github.com/Kuadrant/kuadrant-operator/blob/main/doc/user-guides/dns/core-dns.md">CoreDNS Guide</a></p>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">Whats next</a></h2>
+<ul>
+<li>Support for Wildcard hosts</li>
+<li>Support for HealthChecks</li>
+<li>Exploring what is possible with more advanced policies leveraging on cluster metrics, data and CEL based conditions.</li>
 </ul>
+<p>You can track what we are doing for the next iteration of CoreDNS support <a href="https://github.com/Kuadrant/dns-operator/issues/447">here</a></p>
 
-
+<ul class="links-nextprev"><li>Previous: <a href="/blog/kuadrant-v1/">Kuadrant v1</a></li>
+</ul>
     </div>
     
     
