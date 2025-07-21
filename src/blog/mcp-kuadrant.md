@@ -25,15 +25,13 @@ request.headers.exists(h, h.lowerAscii() == "x-mcp-tools" && request.headers[h] 
 This expression also supports tool-specific Rate Limiting. Such limits are useful for tools that are resource-intensive or have long execution times, allowing users to limit how often they can be invoked.
 
 ### Tool aggregation and routing
-The nature of Streamable HTTP makes it difficult to have one Gateway with one HTTPRoute with one backend, because of what we said before with the one accessible endpoint `/mcp`. To come up with a potential solution for this we created an `MCP-Gateway`. This was an MCP-Server standing in front of two other MCP servers. 
+The nature of Streamable HTTP makes it difficult to have one Gateway with one HTTPRoute with one backend, because of what we said before with the one accessible endpoint `/mcp`. To come up with a potential solution for this we created an `MCP-Gateway` proof of concept. This was an MCP-Server standing in front of two other MCP servers. 
 
-How it worked is that on startup, the first server or MCP gateway makes an instantiation call to the two other MCP servers, followed by a tool list call. The MCP gateway then saves this tool list response in memory to be used at a later time by a MCP Host via the single gateway and HTTPRoute(Backend). This works brilliantly with the tool AuthZ and Rate Limiting mentioned above. To route the call from the MCP Host back to the right MCP server, the routing piece was handled when a tools/call was seen in the gateway. It would pass the JSON RPC message on to the appropriate MCP server, and proxy back the response.
+How it worked is that on startup, the first server or MCP gateway makes an initialize call to the two other MCP servers, followed by a tool list call. The MCP gateway then saves this tool list response in memory to be used at a later time by a MCP Host via the single gateway and HTTPRoute(Backend). 
 
-The nature of Streamable HTTP makes it challenging to rely on a single Gateway, HTTPRoute, and backend when all functionality is exposed through a single endpoint `/mcp`. To address this limitation, we designed a component called the MCP Gateway, a dedicated MCP server that acts as a proxy in front of two other MCP servers.
+This works brilliantly with the tool-based AuthZ and Rate Limiting mentioned above. When a tools/call is detected by the gateway, it routes the JSON-RPC message from the MCP Host to the correct MCP server and proxies the response back. 
 
-On startup, the first MCP Server or MCP Gateway performs an instantiation call to each  MCP server, followed by a tool list call. The Gateway saves the tool list responses in memory, allowing it to dynamically route future requests from MCP hosts through a single Gateway API Gateway and HTTPRoute.
-
-This approach integrates perfectly with the previously mentioned tool-based authorization and Rate Limiting policies. When a tools/call is received, the MCP Gateway inspects the JSON-RPC message to determine the correct backend MCP server for the requested tool, forwards the request, and proxies the response back to the client via the Gateway API Gateway.
+To ensure proper isolation and state consistency, the gateway implements per-client backend connections, meaning each client that connects to the gateway receives dedicated connections to each backend server. These connections maintain their own sessions internally through the mcp-go client library, eliminating the need for manual session header management. 
 
 To test these POC's out for yourself, please see the following repos:
 * Existing policies: DNS, TLS, Auth and Rate limiting [POC](https://github.com/Kuadrant/kuadrant-mcp-poc)
