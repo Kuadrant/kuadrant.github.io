@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Blog</title>
+  <title>Kuadrant and Model context protocol (MCP) the ultimate pairing?</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
           <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
           
             <li>
-              <a class="nav-link active" href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
             </li>
             <li>
               <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
@@ -66,62 +66,38 @@
 
     
     <div class="container">
-      
-
-
-
-<h3>2025</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/mcp-kuadrant/" class="postlist-link">Kuadrant and Model context protocol (MCP) the ultimate pairing?</a>
-		<time class="postlist-date" datetime="2025-07-09">July 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/core-dns-support/" class="postlist-link">Alpha support for DNSPolicy using CoreDNS</a>
-		<time class="postlist-date" datetime="2025-04-15">April 2025</time>
-	</li>
-
+      <h1>Kuadrant and Model context protocol (MCP) the ultimate pairing?</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Rachel Lawton | <time datetime="2025-07-09">09 July 2025</time></li>
 </ul>
+</h4>
+<p>With the rise in popularity of Model context protocol (MCP) and the recent addition of Streamable HTTP. Kuadrant created some proof of concepts to showcase what Kuadrant could provide to MCP as is or with a few tweaks.</p>
+<h3 id="existing-policies-dns-tls-auth-and-rate-limiting" tabindex="-1"><a class="header-anchor" href="#existing-policies-dns-tls-auth-and-rate-limiting">Existing policies: DNS, TLS, Auth and Rate limiting</a></h3>
+<p>This proof of concept demonstrated that Kuadrant policies can effectively stand in front of an MCP server using Streamable HTTP. Adding value through DNS, TLS, Authentication, and Rate Limiting policies. This was a great success! Users could create a Gateway and HTTPRoute for the MCP Server, and it worked like any other application. This allowed users to secure, connect and protect their MCP server.</p>
+<h3 id="tool-based-authz-and-rate-limiting" tabindex="-1"><a class="header-anchor" href="#tool-based-authz-and-rate-limiting">Tool based AuthZ and Rate limiting</a></h3>
+<p>Since the first POC was successful and all policies functioned as expected, we explored additional areas where Kuadrant policies could provide value, leading us to investigate tool-based Authorization and Rate Limiting.</p>
+<p>In this use case, we aimed to allow a platform engineer to authorise users to access only specific tools exposed by the MCP server. This was more complex due to the nature of streamable HTTP based MCP servers, which expose a single endpoint for all functionality. Also, requests and responses are sent and received via JSON-RPC, making it difficult to directly extract the necessary information for policy evaluation.</p>
+<p>To address this, we introduced an ext-proc (external processing) component into the Kuadrant filter chain. This component parses the tool name from the JSON-RPC request body and inserts it into a custom header (e.g. x-mcp-tools). This approach enabled us to use CEL (Common Expression Language) within our policies for evaluation.</p>
+<p>For example, the following CEL expression checks if the header exists and matches a specific tool:</p>
+<pre><code class="language-cel">request.headers.exists(h, h.lowerAscii() == &quot;x-mcp-tools&quot; &amp;&amp; request.headers[h] == &quot;server1-echo_headers&quot;)
 
-
-<h3>2024</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-v1/" class="postlist-link">Kuadrant v1</a>
-		<time class="postlist-date" datetime="2024-11-28">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/grafana-on-openshift-for-kuadrant/" class="postlist-link">Installing Grafana on Openshift for Kuadrant Observability.</a>
-		<time class="postlist-date" datetime="2024-11-08">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/Understanding-Cyclomatic-Complexity/" class="postlist-link">Understanding Cyclomatic Complexity</a>
-		<time class="postlist-date" datetime="2024-10-31">October 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/ehearne-intern-journey/" class="postlist-link">How Kuadrant has made my internship journey unique at Red Hat.</a>
-		<time class="postlist-date" datetime="2024-09-01">September 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-roadmap/" class="postlist-link">Introducing the Kuadrant Roadmap and Process</a>
-		<time class="postlist-date" datetime="2024-08-20">August 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/cncf-sandbox/" class="postlist-link">Kuadrant Accepted as Cloud Native Computing Foundation (CNCF) Sandbox Project</a>
-		<time class="postlist-date" datetime="2024-08-02">August 2024</time>
-	</li>
-
+</code></pre>
+<p>This expression also supports tool-specific Rate Limiting. Such limits are useful for tools that are resource-intensive or have long execution times, allowing users to limit how often they can be invoked.</p>
+<h3 id="tool-aggregation-and-routing" tabindex="-1"><a class="header-anchor" href="#tool-aggregation-and-routing">Tool aggregation and routing</a></h3>
+<p>The nature of Streamable HTTP makes it difficult to have one Gateway with one HTTPRoute with one backend, because of what we said before with the one accessible endpoint <code>/mcp</code>. To come up with a potential solution for this we created an <code>MCP-Gateway</code> proof of concept. This was an MCP-Server standing in front of two other MCP servers.</p>
+<p>How it worked is that on startup, the first server or MCP gateway makes an initialize call to the two other MCP servers, followed by a tool list call. The MCP gateway then saves this tool list response in memory to be used at a later time by a MCP Host via the single gateway and HTTPRoute(Backend).</p>
+<p>This works brilliantly with the tool-based AuthZ and Rate Limiting mentioned above. When a tools/call is detected by the gateway, it routes the JSON-RPC message from the MCP Host to the correct MCP server and proxies the response back.</p>
+<p>To ensure proper isolation and state consistency, the gateway implements per-client backend connections, meaning each client that connects to the gateway receives dedicated connections to each backend server. These connections maintain their own sessions internally through the mcp-go client library, eliminating the need for manual session header management.</p>
+<p>To test these POC's out for yourself, please see the following repos:</p>
+<ul>
+<li>Existing policies: DNS, TLS, Auth and Rate limiting <a href="https://github.com/Kuadrant/kuadrant-mcp-poc">POC</a></li>
+<li>Tool based AuthZ, Rate limiting and tool aggregation and routing <a href="https://github.com/Kuadrant/Kuadrant-MCP-Walkthrough">POC</a></li>
 </ul>
+<p>To watch demos please see the Kuadrant YouTube <a href="https://youtu.be/Dya_4lEVtQs">channel</a></p>
 
-
+<ul class="links-nextprev"><li>Previous: <a href="/blog/core-dns-support/">Alpha support for DNSPolicy using CoreDNS</a></li>
+</ul>
     </div>
     
     
