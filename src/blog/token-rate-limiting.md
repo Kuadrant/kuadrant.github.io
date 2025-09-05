@@ -84,7 +84,7 @@ The `TokenRateLimitPolicy` reads the `usage.total_tokens` value (100 in this exa
 
 ## Getting Started
 
-Check out our comprehensive [TokenRateLimitPolicy tutorial](/doc/user-guides/tokenratelimitpolicy/authenticated).
+Check out our comprehensive [TokenRateLimitPolicy tutorial](https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/tokenratelimitpolicy/authenticated-token-ratelimiting-tutorial/).
 
 ## What's Next
 
