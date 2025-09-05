@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Blog</title>
+  <title>Introducing TokenRateLimitPolicy for LLM API Protection</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
           <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
           
             <li>
-              <a class="nav-link active" href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
             </li>
             <li>
               <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
@@ -66,67 +66,98 @@
 
     
     <div class="container">
-      
-
-
-
-<h3>2025</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/token-rate-limiting/" class="postlist-link">Introducing TokenRateLimitPolicy for LLM API Protection</a>
-		<time class="postlist-date" datetime="2025-07-10">July 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/mcp-kuadrant/" class="postlist-link">Kuadrant and Model context protocol (MCP) the ultimate pairing?</a>
-		<time class="postlist-date" datetime="2025-07-09">July 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/core-dns-support/" class="postlist-link">Alpha support for DNSPolicy using CoreDNS</a>
-		<time class="postlist-date" datetime="2025-04-15">April 2025</time>
-	</li>
-
+      <h1>Introducing TokenRateLimitPolicy for LLM API Protection</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Jason Madigan | <time datetime="2025-07-10">10 July 2025</time></li>
+</ul>
+</h4>
+<p>We're excited to announce a new <code>TokenRateLimitPolicy</code> API in Kuadrant as <code>v1alpha1</code>, designed specifically for protecting Large Language Model (LLM) APIs through token-based rate limiting.</p>
+<h2 id="rate-limiting-and-llms" tabindex="-1"><a class="header-anchor" href="#rate-limiting-and-llms">Rate-limiting and LLMs</a></h2>
+<p>Traditional rate limiting (for example, that of our <code>RateLimitPolicy</code>) counts requests, but LLM APIs have varying computational costs based on token consumption per inference request. Platform Engineers and SRE teams making models (be they in-cluster, or hosted elsewhere) available for internal or external usage are likely to want to protect these resources from over consumption, given their expense.</p>
+<h2 id="tokenratelimitpolicy" tabindex="-1"><a class="header-anchor" href="#tokenratelimitpolicy"><code>TokenRateLimitPolicy</code></a></h2>
+<p>The <code>TokenRateLimitPolicy</code> introduces rate limiting that:</p>
+<ul>
+<li><strong>Counts tokens consumed</strong> - Automatically extracts token usage from OpenAI-style LLM responses</li>
+<li><strong>Enables tiered access</strong> - Combined with an <code>AuthPolicy</code>, enables different token limits for different user groups</li>
+<li><strong>Works with OpenAI-compatible APIs</strong> - Supports standard token usage response formats</li>
+</ul>
+<h2 id="how-it-works" tabindex="-1"><a class="header-anchor" href="#how-it-works">How It Works</a></h2>
+<p>Here is a simple example that sets different daily token limits for user tiers:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1alpha1
+kind: TokenRateLimitPolicy
+metadata:
+  name: llm-token-limits
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: api-gateway
+  limits:
+    free:
+      rates:
+        - limit: 20000
+          window: 24h
+      when:
+        - predicate: request.path == &quot;/v1/chat/completions&quot;
+        - predicate: &gt;
+            request.auth.identity.metadata.annotations[&quot;kuadrant.io/groups&quot;].split(&quot;,&quot;).exists(g, g == &quot;free&quot;)
+      counters:
+        - expression: auth.identity.userid
+    gold:
+      rates:
+        - limit: 200000
+          window: 24h
+      when:
+        - predicate: request.path == &quot;/v1/chat/completions&quot;
+        - predicate: &gt;
+            request.auth.identity.metadata.annotations[&quot;kuadrant.io/groups&quot;].split(&quot;,&quot;).exists(g, g == &quot;gold&quot;)
+      counters:
+        - expression: auth.identity.userid
+</code></pre>
+<p>The policy automatically extracts the <code>usage.total_tokens</code> field from OpenAI-style LLM API downstream responses. Currently, only non-streaming responses are supported (where <code>stream: false</code> or is omitted in the request).</p>
+<p>For example, a typical response from <code>/v1/chat/completions</code>:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;chatcmpl-123&quot;,
+  &quot;object&quot;: &quot;chat.completion&quot;,
+  &quot;created&quot;: 1677652288,
+  &quot;model&quot;: &quot;gpt-3.5-turbo-0613&quot;,
+  &quot;choices&quot;: [{
+    &quot;index&quot;: 0,
+    &quot;message&quot;: {
+      &quot;role&quot;: &quot;assistant&quot;,
+      &quot;content&quot;: &quot;Hello! How can I assist you today?&quot;
+    },
+    &quot;finish_reason&quot;: &quot;stop&quot;
+  }],
+  &quot;usage&quot;: {
+    &quot;prompt_tokens&quot;: 15,
+    &quot;completion_tokens&quot;: 85,
+    &quot;total_tokens&quot;: 100
+  }
+}
+</code></pre>
+<p>The <code>TokenRateLimitPolicy</code> reads the <code>usage.total_tokens</code> value (100 in this example) and counts it against the user's configured limit.</p>
+<h2 id="getting-started" tabindex="-1"><a class="header-anchor" href="#getting-started">Getting Started</a></h2>
+<p>Check out our comprehensive <a href="/doc/user-guides/tokenratelimitpolicy/authenticated">TokenRateLimitPolicy tutorial</a>.</p>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
+<p>This is our first alpha release of <code>TokenRateLimitPolicy</code>. We're actively working on:</p>
+<ul>
+<li>Support for streaming responses (currently only non-streaming responses are supported)</li>
+<li>Custom token extraction paths to support more inference endpoints</li>
+<li>Token budget alerts and notifications</li>
+<li>Observability and metrics</li>
+</ul>
+<p>We'd love your feedback! Try out the new policy and let us know your thoughts through our <a href="https://kuadrant.io/community/">community channels</a>.</p>
+<h2 id="learn-more" tabindex="-1"><a class="header-anchor" href="#learn-more">Learn More</a></h2>
+<ul>
+<li><a href="/doc/user-guides/tokenratelimitpolicy/authenticated">TokenRateLimitPolicy Tutorial</a></li>
+<li><a href="https://docs.kuadrant.io/latest/reference/tokenratelimitpolicy/">API Reference Documentation</a></li>
+<li><a href="https://github.com/kuadrant">Kuadrant on GitHub</a></li>
 </ul>
 
-
-<h3>2024</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-v1/" class="postlist-link">Kuadrant v1</a>
-		<time class="postlist-date" datetime="2024-11-28">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/grafana-on-openshift-for-kuadrant/" class="postlist-link">Installing Grafana on Openshift for Kuadrant Observability.</a>
-		<time class="postlist-date" datetime="2024-11-08">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/Understanding-Cyclomatic-Complexity/" class="postlist-link">Understanding Cyclomatic Complexity</a>
-		<time class="postlist-date" datetime="2024-10-31">October 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/ehearne-intern-journey/" class="postlist-link">How Kuadrant has made my internship journey unique at Red Hat.</a>
-		<time class="postlist-date" datetime="2024-09-01">September 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-roadmap/" class="postlist-link">Introducing the Kuadrant Roadmap and Process</a>
-		<time class="postlist-date" datetime="2024-08-20">August 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/cncf-sandbox/" class="postlist-link">Kuadrant Accepted as Cloud Native Computing Foundation (CNCF) Sandbox Project</a>
-		<time class="postlist-date" datetime="2024-08-02">August 2024</time>
-	</li>
-
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-kuadrant/">Kuadrant and Model context protocol (MCP) the ultimate pairing?</a></li>
 </ul>
-
-
     </div>
     
     
