@@ -1,5 +1,5 @@
 ---
-title: Protecting AI Agent Tool Access with Kuadrant&#58; A Model Context Protocol Gateway Case Study
+title: Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study
 date: 2025-11-11
 author: Guilherme Cassolato
 ---
