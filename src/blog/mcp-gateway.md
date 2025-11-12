@@ -507,6 +507,8 @@ Watch a demo of all 3 solutions in action:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_ETWYIBAbOg?si=jWKN-SBhjMSgXJ-R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+<br/>
+
 ## Try It Yourself
 
 The MCP Gateway repository includes a complete working example with Kuadrant:
@@ -520,7 +522,7 @@ make local-env-setup
 make oauth-token-exchange-example-setup
 
 # Open MCP Inspector to test
-open "http://localhost:6274/?transport=streamable-http&serverUrl=http://mcp.127-0-0-1.sslip.io:8888/mcp"
+make inspect-gateway
 ```
 
 This creates:
