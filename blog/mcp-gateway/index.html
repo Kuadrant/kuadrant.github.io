@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Guilherme Cassolato | <time datetime="2025-11-11">11 November 2025</time></li>
+</ul>
+</h4>
+<p>As AI agents become more sophisticated and autonomous, they increasingly need access to real-world tools and services through APIs. The <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> provides a standardized way for AI agents to discover and invoke tools from various servers. However, this creates a complex security challenge: how do you enforce fine-grained access control when an agent aggregates tools from multiple sources with different authentication mechanisms?</p>
+<p>This post follows up on Rachel Lawton's <a href="mcp-kuadrant.md">Kuadrant and Model context protocol (MCP) the ultimate pairing?</a> to explores how <a href="https://kuadrant.io">Kuadrant</a>'s AuthPolicy provides an elegant solution to the MCP tool aggregation auth problem, using the <a href="https://github.com/kagenti/mcp-gateway">MCP Gateway</a> as a real-world case study. We'll show how Kuadrant's declarative policy API, built on Gateway API and Envoy, enables sophisticated authentication and authorization patterns that would be prohibitively complex to implement manually.</p>
+<h2 id="the-mcp-gateway-security-challenge" tabindex="-1"><a class="header-anchor" href="#the-mcp-gateway-security-challenge">The MCP Gateway Security Challenge</a></h2>
+<p>An MCP Gateway aggregates tools from multiple MCP servers behind a single endpoint. For example, an AI agent might access:</p>
+<ul>
+<li>Internal code review tools requiring corporate OAuth2</li>
+<li>GitHub repository tools requiring a Personal Access Token (PAT)</li>
+<li>Weather services requiring API keys</li>
+<li>Database query tools requiring role-based access control</li>
+</ul>
+<p>This creates three critical security requirements:</p>
+<ol>
+<li><strong>Identity-based tool filtering</strong>: Only show users tools they're authorized to access</li>
+<li><strong>Token scope reduction</strong>: Don't pass overly permissive tokens to backend servers</li>
+<li><strong>Credential translation</strong>: Support servers with different authentication mechanisms</li>
+</ol>
+<p>Traditional API gateway authorization falls short because:</p>
+<ul>
+<li>Most gateways only authorize at the endpoint level, not per-operation (tool)</li>
+<li>OAuth2 token exchange (RFC 8693) requires complex integration</li>
+<li>Combining multiple authentication methods in a single policy is difficult</li>
+<li>Injecting trusted metadata into requests requires cryptographic verification</li>
+</ul>
+<p>This is exactly the kind of complex, multi-faceted security challenge that Kuadrant's AuthPolicy is designed to solve.</p>
+<h2 id="why-kuadrant" tabindex="-1"><a class="header-anchor" href="#why-kuadrant">Why Kuadrant?</a></h2>
+<p><a href="https://kuadrant.io">Kuadrant</a> is a policy engine for Gateway API that extends Envoy with declarative, Kubernetes-native policies for authentication, authorization, and rate limiting. What makes it particularly well-suited for MCP Gateway protection?</p>
+<h3 id="1-declarative-composable-policies" tabindex="-1"><a class="header-anchor" href="#1-declarative-composable-policies">1. <strong>Declarative, Composable Policies</strong></a></h3>
+<p>AuthPolicy uses a multi-phase pipeline that separates concerns:</p>
+<ul>
+<li><strong>Authentication</strong>: Validate credentials (JWT, API keys, etc.)</li>
+<li><strong>Metadata</strong>: Fetch additional context (ACLs, external credentials)</li>
+<li><strong>Authorization</strong>: Make access decisions using fetched data</li>
+<li><strong>Response</strong>: Inject headers or modify responses</li>
+</ul>
+<p>This separation makes complex flows readable and maintainable.</p>
+<h3 id="2-built-on-standards" tabindex="-1"><a class="header-anchor" href="#2-built-on-standards">2. <strong>Built on Standards</strong></a></h3>
+<p>Kuadrant is built on:</p>
+<ul>
+<li><a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a> for routing</li>
+<li><a href="https://www.envoyproxy.io/">Envoy</a> for the data plane</li>
+<li><a href="https://github.com/Kuadrant/authorino">Authorino</a> for the policy engine</li>
+</ul>
+<p>This means it works with multiple Gateway API providers (Istio, Envoy Gateway) and integrates with existing Envoy ecosystems.</p>
+<h3 id="3-powerful-expression-languages" tabindex="-1"><a class="header-anchor" href="#3-powerful-expression-languages">3. <strong>Powerful Expression Languages</strong></a></h3>
+<p>AuthPolicy supports <a href="https://cel.dev/">Common Expression Language (CEL)</a> as well as <a href="https://www.openpolicyagent.org">Open Policy Agent</a> for dynamic policy logic, enabling sophisticated authorization rules without custom code.</p>
+<h3 id="4-extensibility-through-metadata" tabindex="-1"><a class="header-anchor" href="#4-extensibility-through-metadata">4. <strong>Extensibility Through Metadata</strong></a></h3>
+<p>The metadata phase can call external HTTP services, enabling integration with secret stores (Vault), ACL systems, and other external policy decision points.</p>
+<p>Let's see how these capabilities solve the MCP Gateway security challenges.</p>
+<h2 id="solution-1-identity-based-tool-filtering-with-wristbands" tabindex="-1"><a class="header-anchor" href="#solution-1-identity-based-tool-filtering-with-wristbands">Solution 1: Identity-Based Tool Filtering with Wristbands</a></h2>
+<h3 id="the-challenge" tabindex="-1"><a class="header-anchor" href="#the-challenge">The Challenge</a></h3>
+<p>When an agent calls <code>tools/list</code>, the gateway returns all available tools. But we want to filter this list based on the authenticated user's permissions. The MCP Gateway needs to:</p>
+<ol>
+<li>Receive trusted permission data</li>
+<li>Verify it hasn't been tampered with</li>
+<li>Filter tools efficiently</li>
+</ol>
+<h3 id="the-kuadrant-solution" tabindex="-1"><a class="header-anchor" href="#the-kuadrant-solution">The Kuadrant Solution</a></h3>
+<p>We use AuthPolicy's <strong>wristband</strong> feature to create a cryptographically-signed JWT containing the user's permitted tools:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: mcp-auth-policy
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    sectionName: mcp
+  when:
+    - predicate: &quot;!request.path.contains('/.well-known')&quot;
+  rules:
+    # Phase 1: Authentication
+    authentication:
+      'keycloak':
+        jwt:
+          issuerUrl: https://keycloak.example.com/realms/mcp
+
+    # Phase 2: Authorization
+    authorization:
+      'allow-tool-list':
+        patternMatching:
+          patterns:
+            - predicate: request.headers['x-mcp-method'] in [&quot;tools/list&quot;,&quot;initialize&quot;,&quot;notifications/initialized&quot;]
+
+      'authorized-tools':
+        opa:
+          rego: |
+            allow = true
+            # Extract tool permissions from JWT resource_access claim
+            tools = { server: roles |
+              server := object.keys(input.auth.identity.resource_access)[_];
+              roles := object.get(input.auth.identity.resource_access, server, {}).roles
+            }
+          allValues: true
+
+    # Phase 3: Request modification
+    response:
+      success:
+        headers:
+          x-authorized-tools:
+            wristband:
+              issuer: 'authorino'
+              customClaims:
+                'allowed-tools':
+                  selector: auth.authorization.authorized-tools.tools.@tostr
+              tokenDuration: 300
+              signingKeyRefs:
+                - name: trusted-headers-private-key
+                  algorithm: ES256
+</code></pre>
+<p><strong>What's happening here:</strong></p>
+<ol>
+<li><strong>Authentication</strong>: Validates the JWT from Keycloak</li>
+<li><strong>Authorization with OPA</strong>: Uses Open Policy Agent to extract tool permissions from the JWT's <code>resource_access</code> claim (a Keycloak feature where each MCP server is a client and each tool is a role)</li>
+<li><strong>Wristband creation</strong>: Creates a new JWT signed with ES256 containing:<pre><code class="language-json">{
+  &quot;allowed-tools&quot;: &quot;{\&quot;server1.mcp.local\&quot;:[\&quot;greet\&quot;,\&quot;time\&quot;],\&quot;server2.mcp.local\&quot;:[\&quot;headers\&quot;]}&quot;,
+  &quot;iss&quot;: &quot;authorino&quot;,
+  &quot;exp&quot;: 1760004918
+}
+</code></pre>
+</li>
+<li><strong>Header injection</strong>: Adds this wristband as the <code>x-authorized-tools</code> header</li>
+</ol>
+<p>The MCP Broker then validates this header's signature and filters the tool list. Because it's cryptographically signed, the broker can trust it came from the authorized policy engine.</p>
+<h3 id="why-this-is-powerful" tabindex="-1"><a class="header-anchor" href="#why-this-is-powerful">Why This is Powerful</a></h3>
+<ul>
+<li><strong>Zero trust</strong>: The broker doesn't trust the client's token directly - it trusts Authorino's signed assertion</li>
+<li><strong>Flexible permissions</strong>: The OPA policy can extract structured metadata, including permissions from any JWT claim structure</li>
+<li><strong>Efficient</strong>: Permissions are computed once and cached in the wristband for the duration of the request</li>
+<li><strong>Auditable</strong>: The wristband is a JWT, so it can be logged and inspected</li>
+</ul>
+<h2 id="solution-2-oauth2-token-exchange-with-rfc-8693" tabindex="-1"><a class="header-anchor" href="#solution-2-oauth2-token-exchange-with-rfc-8693">Solution 2: OAuth2 Token Exchange with RFC 8693</a></h2>
+<h3 id="the-challenge-1" tabindex="-1"><a class="header-anchor" href="#the-challenge-1">The Challenge</a></h3>
+<p>AI agents typically have broad OAuth2 access tokens covering all services. Passing these tokens to every MCP server creates a privilege escalation risk - a malicious server could use the token to access unauthorized resources.</p>
+<p>We need to:</p>
+<ol>
+<li>Exchange the broad token for a narrow one scoped to each MCP server</li>
+<li>Verify the new token has the correct audience</li>
+<li>Check the user is authorized for the specific tool being called</li>
+<li>Replace the token in the Authorization header</li>
+</ol>
+<h3 id="the-kuadrant-solution-1" tabindex="-1"><a class="header-anchor" href="#the-kuadrant-solution-1">The Kuadrant Solution</a></h3>
+<p>AuthPolicy's metadata phase can call external HTTP services, making OAuth2 token exchange a simple declarative configuration:</p>
+<pre><code class="language-yaml">apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: mcps-auth-policy
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    sectionName: mcps
+  rules:
+    # Phase 1: Authentication
+    authentication:
+      'keycloak':
+        jwt:
+          issuerUrl: https://keycloak.example.com/realms/mcp
+
+    # Phase 2: Metadata - fetch scoped token
+    metadata:
+      oauth-token-exchange:
+        http:
+          url: https://keycloak.example.com/realms/mcp/protocol/openid-connect/token
+          method: POST
+          credentials:
+            authorizationHeader:
+              prefix: Basic
+          sharedSecretRef:
+            name: token-exchange
+            key: oauth-client-basic-auth
+          bodyParameters:
+            grant_type:
+              value: urn:ietf:params:oauth:grant-type:token-exchange
+            subject_token:
+              expression: request.headers['authorization'].split('Bearer ')[1]
+            subject_token_type:
+              value: urn:ietf:params:oauth:token-type:access_token
+            audience:
+              expression: request.host  # Target MCP server
+            scope:
+              value: openid
+
+    # Phase 3: Authorization - verify token and tool access
+    authorization:
+      'token':
+        opa:
+          rego: |
+            # Use exchanged token if available, otherwise original
+            scoped_jwt := object.get(object.get(object.get(input.auth, &quot;metadata&quot;, {}),
+                &quot;oauth-token-exchange&quot;, {}), &quot;access_token&quot;, &quot;&quot;)
+            jwt := j { scoped_jwt != &quot;&quot;; j := scoped_jwt }
+            jwt := j { scoped_jwt == &quot;&quot;; j := split(input.request.headers[&quot;authorization&quot;], &quot;Bearer &quot;)[1] }
+            claims := c { [_, c, _] := io.jwt.decode(jwt) }
+            allow = true
+          allValues: true
+
+      'scoped-audience-check':
+        patternMatching:
+          patterns:
+            - predicate: |
+                has(auth.authorization.token.claims.aud) &amp;&amp;
+                type(auth.authorization.token.claims.aud) == string &amp;&amp;
+                auth.authorization.token.claims.aud == request.host
+
+      'tool-access-check':
+        patternMatching:
+          patterns:
+            - predicate: |
+                request.headers['x-mcp-toolname'] in
+                  (has(auth.authorization.token.claims.resource_access) &amp;&amp;
+                   auth.authorization.token.claims.resource_access.exists(p, p == request.host) ?
+                   auth.authorization.token.claims.resource_access[request.host].roles : [])
+
+    # Phase 4: Response - inject scoped token
+    response:
+      success:
+        headers:
+          authorization:
+            plain:
+              expression: &quot;Bearer &quot; + auth.authorization.token.jwt
+</code></pre>
+<p><strong>The flow:</strong></p>
+<ol>
+<li><strong>Authenticate</strong> the incoming request's JWT</li>
+<li><strong>Metadata phase</strong> calls Keycloak's token exchange endpoint (RFC 8693), passing:
+<ul>
+<li>The original token as the subject</li>
+<li>The target MCP server hostname as the audience</li>
+<li>The <code>mcp-gateway</code> client credentials for authorization</li>
+</ul>
+</li>
+<li><strong>Authorization phase</strong> does three checks:
+<ul>
+<li>Extracts claims from the exchanged token (or falls back to original)</li>
+<li>Verifies <code>aud</code> claim matches the target server (<code>:authority</code> header)</li>
+<li>Verifies the user has access to the specific tool (<code>x-mcp-toolname</code> header)</li>
+</ul>
+</li>
+<li><strong>Response phase</strong> replaces the Authorization header with the scoped token</li>
+</ol>
+<h3 id="why-this-is-powerful-1" tabindex="-1"><a class="header-anchor" href="#why-this-is-powerful-1">Why This is Powerful</a></h3>
+<ul>
+<li><strong>Declarative token exchange</strong>: No custom code needed for RFC 8693</li>
+<li><strong>Chained authorization</strong>: Multiple authorization checks can reference earlier phases</li>
+<li><strong>Dynamic audience</strong>: Uses CEL expressions to set audience based on request headers</li>
+<li><strong>Least privilege</strong>: Each server receives only the token it needs</li>
+</ul>
+<h3 id="cel-expressions-in-action" tabindex="-1"><a class="header-anchor" href="#cel-expressions-in-action">CEL Expressions in Action</a></h3>
+<p>The power of CEL is evident in the authorization predicates. For example, the tool access check:</p>
+<pre><code class="language-cel">request.headers['x-mcp-toolname'] in
+  (has(auth.authorization.token.claims.resource_access) &amp;&amp;
+   auth.authorization.token.claims.resource_access.exists(p, p == request.host) ?
+   auth.authorization.token.claims.resource_access[request.host].roles : [])
+</code></pre>
+<p>This single expression:</p>
+<ol>
+<li>Checks if the JWT has a <code>resource_access</code> claim</li>
+<li>Checks if that claim has an entry for the current host</li>
+<li>Extracts the roles array for that host</li>
+<li>Checks if the requested tool name is in that array</li>
+<li>Returns an empty array as fallback if any step fails</li>
+</ol>
+<p>Without CEL, this would require custom code or a complex OPA policy.</p>
+<h3 id="opas-built-in-functions-make-it-all-easier" tabindex="-1"><a class="header-anchor" href="#opas-built-in-functions-make-it-all-easier">OPA's built-in functions make it all easier</a></h3>
+<p>The possibility to embed OPA's Rego built-in capabilities into the AuthPolicy made it easy to decode the scope token for extracting claim, with fall back to the broad token for resilient policy evaluation.</p>
+<p>The next authorization steps thereafter became straightforward with the CEL expressions refering to <code>auth.authorization.token.claims</code>.</p>
+<h2 id="solution-3-vault-integration-for-credential-translation" tabindex="-1"><a class="header-anchor" href="#solution-3-vault-integration-for-credential-translation">Solution 3: Vault Integration for Credential Translation</a></h2>
+<h3 id="the-challenge-2" tabindex="-1"><a class="header-anchor" href="#the-challenge-2">The Challenge</a></h3>
+<p>External MCP servers often don't support OAuth2. GitHub's MCP server requires a Personal Access Token (PAT). Other services use API keys. We need to:</p>
+<ol>
+<li>Fetch the appropriate credential for each user and server</li>
+<li>Use it instead of OAuth2 when available</li>
+<li>Fall back to token exchange when not</li>
+</ol>
+<h3 id="the-kuadrant-solution-2" tabindex="-1"><a class="header-anchor" href="#the-kuadrant-solution-2">The Kuadrant Solution</a></h3>
+<p>AuthPolicy's metadata phase can fetch from multiple sources with priorities. We fetch from Vault first, then fall back to OAuth2 token exchange:</p>
+<pre><code class="language-yaml">metadata:
+  # Priority 0: Try Vault first
+  vault:
+    http:
+      urlExpression: |
+        &quot;http://vault.vault.svc.cluster.local:8200/v1/secret/data/&quot; +
+        auth.identity.preferred_username + &quot;/&quot; + request.host
+      method: GET
+      credentials:
+        customHeader:
+          name: X-Vault-Token
+      sharedSecretRef:
+        name: token-exchange
+        key: vault-token
+    priority: 0
+
+  # Priority 1: Fallback to token exchange if Vault has no entry
+  oauth-token-exchange:
+    when:
+      - predicate: |
+          !has(auth.metadata.vault.data) ||
+          !has(auth.metadata.vault.data.data) ||
+          !has(auth.metadata.vault.data.data.token) ||
+          type(auth.metadata.vault.data.data.token) != string
+    http:
+      # ... token exchange config ...
+    priority: 1
+</code></pre>
+<p>The response injection uses conditional logic:</p>
+<pre><code class="language-yaml">response:
+  success:
+    headers:
+      authorization:
+        plain:
+          expression: |
+            &quot;Bearer &quot; + (
+              (has(auth.metadata.vault.data) &amp;&amp;
+               has(auth.metadata.vault.data.data) &amp;&amp;
+               has(auth.metadata.vault.data.data.token) &amp;&amp;
+               type(auth.metadata.vault.data.data.token) == string) ?
+              auth.metadata.vault.data.data.token :
+              auth.authorization.token.jwt
+            )
+</code></pre>
+<p><strong>The flow:</strong></p>
+<ol>
+<li><strong>Vault lookup</strong> at path <code>/v1/secret/data/{username}/{server}</code> (e.g., <code>/v1/secret/data/alice/github.mcp.local</code>)</li>
+<li>If found, skip token exchange (via the <code>when</code> predicate)</li>
+<li>If not found, fall back to OAuth2 token exchange</li>
+<li>Response injection uses Vault token if available, otherwise exchanged token</li>
+</ol>
+<h3 id="why-this-is-powerful-2" tabindex="-1"><a class="header-anchor" href="#why-this-is-powerful-2">Why This is Powerful</a></h3>
+<ul>
+<li><strong>Heterogeneous authentication</strong>: Single policy handles OAuth2, PATs, and API keys</li>
+<li><strong>User-specific credentials</strong>: Each user can have their own PATs for external services</li>
+<li><strong>Priority system</strong>: Clear precedence rules for metadata sources</li>
+<li><strong>Conditional execution</strong>: The <code>when</code> predicate prevents unnecessary token exchange</li>
+</ul>
+<h2 id="the-complete-picture-defense-in-depth" tabindex="-1"><a class="header-anchor" href="#the-complete-picture-defense-in-depth">The Complete Picture: Defense in Depth</a></h2>
+<p>When all three solutions are combined, you get defense in depth with multiple security layers:</p>
+<pre><code>┌──────────────────────────────────────────────────────┐
+│                MCP Client (AI Agent)                 │
+│      OAuth2 Token (broad scopes, multiple aud)       │
+└──────────────────────────┬───────────────────────────┘
+                           │
+                           ▼
+┌──────────────────────────────────────────────────────┐
+│          Gateway API + Kuadrant AuthPolicies         │
+│                                                      │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  Authentication Phase                           │ │
+│  │  - Validate JWT signature                       │ │
+│  │  - Extract identity claims                      │ │
+│  └───────────────────────┬─────────────────────────┘ │
+│                          │                           │
+│                          ▼                           │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  Metadata Phase                                 │ │
+│  │  Priority 0: Check Vault for PAT/API key        │ │
+│  │  Priority 1: Exchange token (RFC 8693)          │ │
+│  └───────────────────────┬─────────────────────────┘ │
+│                          │                           │
+│                          ▼                           │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  Authorization Phase                            │ │
+│  │  - OPA: Extract tool permissions                │ │
+│  │  - CEL: Verify audience scope                   │ │
+│  │  - CEL: Check tool-level access                 │ │
+│  └───────────────────────┬─────────────────────────┘ │
+│                          │                           │
+│                          ▼                           │
+│  ┌─────────────────────────────────────────────────┐ │
+│  │  Response Phase                                 │ │
+│  │  - (Broker) Create x-authorized-tools wristband │ │
+│  │  - (Router) Inject scoped token or Vault PAT    │ │
+│  └─────────────────────────────────────────────────┘ │
+└─────────────┬──────────────────────┬─────────────────┘
+              │                      │
+              ▼                      ▼
+      ┌───────────────┐      ┌───────────────┐
+      │  MCP Broker   │      │  MCP Router   │
+      │               │      │  (ext_proc)   │
+      │  - Validates  │      │               │
+      │    wristband  │      │  - Sets       │
+      │  - Filters    │      │    x-mcp-*    │
+      │    tool list  │      │    headers    │
+      └───────────────┘      └───────┬───────┘
+                                     │ Scoped token or PAT
+                                     ▼
+                             ┌───────────────┐
+                             │ Backend MCP   │
+                             │   Servers     │
+                             └───────────────┘
+</code></pre>
+<p>Each layer enforces a different security invariant:</p>
+<ol>
+<li><strong>Authentication</strong>: Only valid JWT holders proceed</li>
+<li><strong>Metadata</strong>: Credentials are scoped/exchanged before authorization</li>
+<li><strong>Authorization</strong>: Access decisions use correct token and permissions</li>
+<li><strong>Response</strong>: Injected data is cryptographically signed and verifiable</li>
+</ol>
+<h2 id="kuadrants-advantages-for-this-use-case" tabindex="-1"><a class="header-anchor" href="#kuadrants-advantages-for-this-use-case">Kuadrant's Advantages for This Use Case</a></h2>
+<h3 id="1-declarative-configuration" tabindex="-1"><a class="header-anchor" href="#1-declarative-configuration">1. <strong>Declarative Configuration</strong></a></h3>
+<p>The entire security policy is defined in YAML, making it:</p>
+<ul>
+<li>Version controlled</li>
+<li>Auditable</li>
+<li>Testable</li>
+<li>Self-documenting</li>
+</ul>
+<p>Compare this to writing custom Envoy filters or external auth services - you'd need hundreds of lines of code to achieve the same functionality.</p>
+<h3 id="2-separation-of-concerns" tabindex="-1"><a class="header-anchor" href="#2-separation-of-concerns">2. <strong>Separation of Concerns</strong></a></h3>
+<p>The multi-phase pipeline naturally separates:</p>
+<ul>
+<li><strong>Identity verification</strong> (authentication)</li>
+<li><strong>Context gathering</strong> (metadata)</li>
+<li><strong>Access decisions</strong> (authorization)</li>
+<li><strong>Request/response modification</strong> (response)</li>
+</ul>
+<p>This mirrors how security teams think about authorization, making policies easier to reason about.</p>
+<h3 id="3-composability" tabindex="-1"><a class="header-anchor" href="#3-composability">3. <strong>Composability</strong></a></h3>
+<p>AuthPolicy uses Gateway API's <a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/overviews/auth/#defaults-and-overrides">defaults and overrides</a> pattern:</p>
+<ul>
+<li>Define global policies at the Gateway level</li>
+<li>Override specific rules at the HTTPRoute level</li>
+</ul>
+<p>For example, you could set different OAuth2 scopes for different MCP servers by attaching route-specific AuthPolicies.</p>
+<h3 id="4-integration-ecosystem" tabindex="-1"><a class="header-anchor" href="#4-integration-ecosystem">4. <strong>Integration Ecosystem</strong></a></h3>
+<p>The metadata phase's HTTP callout capability enables integration with:</p>
+<ul>
+<li>Secret stores (Vault, AWS Secrets Manager)</li>
+<li>External ACL systems</li>
+<li>Policy decision points (OPA, custom services)</li>
+<li>Rate limit checks</li>
+<li>Audit logging endpoints</li>
+</ul>
+<p>All without writing custom code.</p>
+<h3 id="5-expression-language-power" tabindex="-1"><a class="header-anchor" href="#5-expression-language-power">5. <strong>Expression Language Power</strong></a></h3>
+<p>CEL expressions can:</p>
+<ul>
+<li>Navigate complex JSON structures</li>
+<li>Perform string manipulation</li>
+<li>Evaluate conditional logic</li>
+<li>Access request and auth context</li>
+</ul>
+<p>This eliminates the need for custom authorization code for most use cases.</p>
+<h2 id="real-world-benefits" tabindex="-1"><a class="header-anchor" href="#real-world-benefits">Real-World Benefits</a></h2>
+<p>Organizations using this pattern have seen:</p>
+<ul>
+<li><strong>Reduced attack surface</strong>: Backend servers never see overly permissive tokens</li>
+<li><strong>Simplified client code</strong>: AI agents don't handle credential translation or token exchange</li>
+<li><strong>Centralized policy</strong>: All authorization logic lives in Gateway API resources</li>
+<li><strong>Better auditability</strong>: AuthPolicy changes are tracked in Git and Kubernetes audit logs</li>
+<li><strong>Faster development</strong>: New MCP servers can be added without changing client code or broker logic</li>
+</ul>
+<h2 id="demo-of-the-solution-in-action" tabindex="-1"><a class="header-anchor" href="#demo-of-the-solution-in-action">Demo of the solution in action</a></h2>
+<p>Watch a demo of all 3 solutions in action:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_ETWYIBAbOg?si=jWKN-SBhjMSgXJ-R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<h2 id="try-it-yourself" tabindex="-1"><a class="header-anchor" href="#try-it-yourself">Try It Yourself</a></h2>
+<p>The MCP Gateway repository includes a complete working example with Kuadrant:</p>
+<pre><code class="language-bash"># Create a Kind cluster with Istio Gateway API and Kuadrant
+git clone https://github.com/kagenti/mcp-gateway &amp;&amp; cd mcp-gateway
+make local-env-setup
+
+# Set up OAuth + token exchange + Vault example
+make oauth-token-exchange-example-setup
+
+# Open MCP Inspector to test
+open &quot;http://localhost:6274/?transport=streamable-http&amp;serverUrl=http://mcp.127-0-0-1.sslip.io:8888/mcp&quot;
+</code></pre>
+<p>This creates:</p>
+<ul>
+<li>Keycloak realm with users, groups, and tool permissions</li>
+<li>HashiCorp Vault with example PATs</li>
+<li>Three test MCP servers with different auth requirements</li>
+<li>AuthPolicy resources implementing all three patterns</li>
+</ul>
+<p>You can experiment by:</p>
+<ul>
+<li>Adding/removing user permissions in Keycloak</li>
+<li>Storing credentials in Vault</li>
+<li>Modifying the AuthPolicy CEL expressions</li>
+<li>Adding new MCP servers with custom auth rules</li>
+</ul>
+<h2 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways">Key Takeaways</a></h2>
+<ol>
+<li>
+<p><strong>AuthPolicy is more than authentication</strong>: The metadata and response phases enable sophisticated credential management and request modification.</p>
+</li>
+<li>
+<p><strong>CEL is powerful</strong>: Common Expression Language provides the flexibility of custom code with the safety of declarative config.</p>
+</li>
+<li>
+<p><strong>Standards-based integration</strong>: OAuth2 token exchange (RFC 8693) and Gateway API patterns make this solution portable across environments.</p>
+</li>
+<li>
+<p><strong>Defense in depth</strong>: Multiple authorization layers (authentication, metadata validation, tool-level checks, cryptographic verification) provide strong security guarantees.</p>
+</li>
+<li>
+<p><strong>MCP is just one use case</strong>: The patterns demonstrated here apply to any scenario requiring fine-grained authorization across aggregated backends with heterogeneous authentication.</p>
+</li>
+</ol>
+<h2 id="conclusion" tabindex="-1"><a class="header-anchor" href="#conclusion">Conclusion</a></h2>
+<p>Protecting AI agent tool access is a complex challenge that combines traditional API gateway concerns with novel requirements like tool-level authorization and credential translation. Kuadrant's AuthPolicy provides a powerful, declarative solution that handles this complexity without custom code.</p>
+<p>The MCP Gateway case study demonstrates how Kuadrant can:</p>
+<ul>
+<li>Enforce identity-based tool filtering with cryptographic verification</li>
+<li>Implement OAuth2 token exchange to reduce token scope</li>
+<li>Integrate with secret stores for credential translation</li>
+<li>Combine multiple authentication methods in a single policy</li>
+<li>Provide defense in depth through multi-phase authorization</li>
+</ul>
+<p>If you're building systems that aggregate APIs with different authentication requirements and need fine-grained access control, Kuadrant's AuthPolicy is worth exploring. The declarative, composable approach scales from simple JWT validation to sophisticated multi-phase authorization flows like those demonstrated here.</p>
+<h3 id="learn-more" tabindex="-1"><a class="header-anchor" href="#learn-more">Learn More</a></h3>
+<ul>
+<li><a href="https://docs.kuadrant.io/">Kuadrant Documentation</a></li>
+<li><a href="https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/authpolicy/">AuthPolicy Reference</a></li>
+<li><a href="https://github.com/kagenti/mcp-gateway">MCP Gateway Repository</a></li>
+<li><a href="https://github.com/kagenti/mcp-gateway/blob/main/docs/guides/authorization.md">MCP Gateway Authorization Guide</a></li>
+<li><a href="https://gateway-api.sigs.k8s.io/">Gateway API Documentation</a></li>
+<li><a href="https://github.com/google/cel-spec">Common Expression Language (CEL)</a></li>
+<li><a href="https://www.openpolicyagent.org">Open Policy Agent</a></li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/token-rate-limiting/">Introducing TokenRateLimitPolicy for LLM API Protection</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
