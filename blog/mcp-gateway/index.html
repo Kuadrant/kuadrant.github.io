@@ -530,6 +530,7 @@ spec:
 <h2 id="demo-of-the-solution-in-action" tabindex="-1"><a class="header-anchor" href="#demo-of-the-solution-in-action">Demo of the solution in action</a></h2>
 <p>Watch a demo of all 3 solutions in action:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_ETWYIBAbOg?si=jWKN-SBhjMSgXJ-R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<br/>
 <h2 id="try-it-yourself" tabindex="-1"><a class="header-anchor" href="#try-it-yourself">Try It Yourself</a></h2>
 <p>The MCP Gateway repository includes a complete working example with Kuadrant:</p>
 <pre><code class="language-bash"># Create a Kind cluster with Istio Gateway API and Kuadrant
@@ -540,7 +541,7 @@ make local-env-setup
 make oauth-token-exchange-example-setup
 
 # Open MCP Inspector to test
-open &quot;http://localhost:6274/?transport=streamable-http&amp;serverUrl=http://mcp.127-0-0-1.sslip.io:8888/mcp&quot;
+make inspect-gateway
 </code></pre>
 <p>This creates:</p>
 <ul>
