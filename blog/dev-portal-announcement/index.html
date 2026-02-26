@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Rachel Lawton | <time datetime="2026-02-26">26 February 2026</time></li>
+</ul>
+</h4>
+<h1 id="introducing-the-kuadrant-developer-portal-self-service-api-access-management-for-kubernetes" tabindex="-1"><a class="header-anchor" href="#introducing-the-kuadrant-developer-portal-self-service-api-access-management-for-kubernetes">Introducing the Kuadrant Developer Portal: Self-Service API Access Management for Kubernetes</a></h1>
+<p>We're excited to announce the <strong>Developer Preview</strong> of the Kuadrant Developer Portal, available <strong>end of February 2026</strong>. This new Backstage plugin brings comprehensive API access management to your developer portal. Platform engineers and API owners can now provide secure API access to consumers.</p>
+<div style="margin: 0 auto; width: 560px; max-width: 100%;">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Zeh_KHn1BI0?si=An8uMVFImHKhcw9W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+<br/>
+<h2 id="what-is-the-kuadrant-developer-portal" tabindex="-1"><a class="header-anchor" href="#what-is-the-kuadrant-developer-portal">What is the Kuadrant Developer Portal?</a></h2>
+<p>The Kuadrant Developer Portal is a set of Backstage plugins that enables <strong>self-service API access management</strong> for Kubernetes-native APIs. It bridges the gap between APIs running on Kubernetes with Kuadrant policies and internal developer portals, creating a streamlined workflow for API discovery, access requests, and key management.</p>
+<p>Instead of managing API keys manually, the portal provides:</p>
+<ul>
+<li><strong>For API Consumers</strong>: A self-service portal to discover APIs with descriptions, documentation, and OpenAPI specifications, see available service tiers and rate limits, request access, and receive credentials once approved (shown once and must be saved immediately)</li>
+<li><strong>For API Owners</strong>: Tools to publish API products, choose between automatic and manual approval modes, review pending requests with requester context and use case, and set documentation links for self-service</li>
+<li><strong>For API Admins</strong>: Cross-team oversight and governance with the ability to view and manage all API products across the organization, approve or reject any API key request for centralized governance, and troubleshoot issues on behalf of API owners</li>
+<li><strong>For Platform Engineers</strong>: Infrastructure setup including deploying the Developer Portal Controller and Backstage plugin, configuring AuthPolicy and PlanPolicy resources, and establishing RBAC guardrails that enable self-service without platform team involvement in individual requests</li>
+</ul>
+<h2 id="key-capabilities" tabindex="-1"><a class="header-anchor" href="#key-capabilities">Key Capabilities</a></h2>
+<h3 id="1-api-discovery-and-catalog-integration" tabindex="-1"><a class="header-anchor" href="#1-api-discovery-and-catalog-integration">1. API Discovery and Catalog Integration</a></h3>
+<p>Published API products automatically sync from Kubernetes to the Backstage catalog. APIs appear in the catalog alongside other Backstage resources.</p>
+<p>API consumers can:</p>
+<ul>
+<li>Browse available APIs</li>
+<li>View documentation and OpenAPI specifications</li>
+<li>See available plan tiers and their rate limits</li>
+<li>Find contact information for API support</li>
+</ul>
+<p>The catalog integration provides a unified view of your platform's capabilities.</p>
+<h3 id="2-access-plans-with-rate-limiting" tabindex="-1"><a class="header-anchor" href="#2-access-plans-with-rate-limiting">2. Access Plans with Rate Limiting</a></h3>
+<p>Platform engineers can define rate limits on the cluster using a <code>PlanPolicy</code>. For example: bronze with 10 requests/day, silver with 50/day, gold with 100/day. These plans are automatically discovered and displayed in the portal.</p>
+<p>API consumers select the plan that matches their needs when requesting access. API owners can make informed approval decisions based on the requested plan and use case.</p>
+<h3 id="3-complete-api-key-lifecycle-management" tabindex="-1"><a class="header-anchor" href="#3-complete-api-key-lifecycle-management">3. Complete API Key Lifecycle Management</a></h3>
+<p>The developer portal handles the full lifecycle of API keys:</p>
+<ul>
+<li><strong>Request</strong>: Consumers select an API, optionally choose a plan tier, and provide a use case justification</li>
+<li><strong>Review</strong>: Owners view pending requests in an approval queue with full context (requester, tier, use case)</li>
+<li><strong>Approve/Reject</strong>: Single or bulk approval workflows with confirmation dialogs</li>
+<li><strong>Provision</strong>: Approved requests automatically generate Kubernetes Secrets with API keys</li>
+<li><strong>Use</strong>: Consumers view and copy their API keys with show-once security</li>
+<li><strong>Manage</strong>: Edit pending requests, revoke keys, or delete unused access</li>
+</ul>
+<p>All operations are secured with granular RBAC permissions and ownership verification.</p>
+<h3 id="4-approval-workflows" tabindex="-1"><a class="header-anchor" href="#4-approval-workflows">4. Approval Workflows</a></h3>
+<p>The portal supports two approval modes:</p>
+<ul>
+<li><strong>Manual Approval</strong>: API owners review each request and make approval decisions based on the requester's identity and use case</li>
+<li><strong>Automatic Approval</strong>: Trusted consumers can receive immediate access without manual review</li>
+</ul>
+<p>The approval queue provides filtering by status, API product, and plan tier. Bulk approval capabilities enable efficient processing of multiple requests.</p>
+<h3 id="5-role-based-access-control-rbac" tabindex="-1"><a class="header-anchor" href="#5-role-based-access-control-rbac">5. Role-Based Access Control (RBAC)</a></h3>
+<p>Each persona has 22 granular permissions controlling create, read, update, delete, and approve operations, with resource-level scoping for fine-grained access control.</p>
+<h2 id="technical-architecture" tabindex="-1"><a class="header-anchor" href="#technical-architecture">Technical Architecture</a></h2>
+<p>For more information about Kuadrant plugins architecture please see the <a href="https://github.com/R-Lawton/kuadrant-backstage-plugin/blob/main/docs/plugin-architecture.md">Kuadrant plugin</a> architecture doc.</p>
+<h2 id="how-it-works" tabindex="-1"><a class="header-anchor" href="#how-it-works">How It Works</a></h2>
+<h3 id="platform-engineer-setup" tabindex="-1"><a class="header-anchor" href="#platform-engineer-setup">Platform Engineer Setup</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ Kubernetes Cluster                                      │
+│                                                         │
+│  Gateway + HTTPRoute → AuthPolicy → PlanPolicy          │
+│  (API endpoint)       (API keys)   (bronze/silver/gold) │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Platform engineers deploy APIs with Gateway API resources, configure Kuadrant AuthPolicy for API key authentication, and optionally define PlanPolicy with tiered rate limits.</p>
+<h3 id="api-owner-publishes-product" tabindex="-1"><a class="header-anchor" href="#api-owner-publishes-product">API Owner Publishes Product</a></h3>
+<pre><code>┌────────────────────────────────────────────────────────┐
+│ Backstage UI - Kuadrant Page                           │
+│                                                        │
+│  [Create API Product]                                  │
+│   ├─ Select HTTPRoute: getting-started-toystore        │
+│   ├─ Name: toystore-api                                │
+│   ├─ Description: E-commerce product catalog API       │
+│   ├─ Approval Mode: Manual                             │
+│   ├─ Plan Tiers: Discovered from PlanPolicy            │
+│   │   • Bronze: 10 requests/day                        │
+│   │   • Silver: 50 requests/day                        │
+│   │   • Gold: 100 requests/day                         │
+│   └─ Publish: Published → Syncs to Backstage catalog   │
+└────────────────────────────────────────────────────────┘
+</code></pre>
+<p>API owners link their existing HTTPRoute to an API Product in the Backstage UI. Plan tiers with rate limits are automatically discovered and displayed from the cluster.</p>
+<h3 id="consumer-requests-access" tabindex="-1"><a class="header-anchor" href="#consumer-requests-access">Consumer Requests Access</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ Backstage Catalog - Toystore API                        │
+│                                                         │
+│  [API Keys Tab]                                         │
+│   [Request API Access]                                  │
+│    ├─ Plan Tier: Silver (50 requests/day)               │
+│    └─ Use Case: &quot;Integration with checkout service&quot;     │
+│                                                         │
+│  Status: Pending                                        │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Consumers discover the API in the catalog, view available tiers, select a plan, and submit a request with justification.</p>
+<h3 id="owner-approves-request" tabindex="-1"><a class="header-anchor" href="#owner-approves-request">Owner Approves Request</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ Backstage UI - Approval Queue                           │
+│                                                         │
+│  Pending Requests                                       │
+│   ┌───────────────────────────────────────────────┐     │
+│   │ API: Toystore API                             │     │
+│   │ Requester: team-checkout                      │     │
+│   │ Tier: Silver (50/day)                         │     │
+│   │ Use Case: &quot;Integration with checkout service&quot; │     │
+│   │                                               │     │
+│   │ [Approve] [Reject]                            │     │
+│   └───────────────────────────────────────────────┘     │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Owners review the request context and approve. This triggers automatic Kubernetes Secret creation.</p>
+<h3 id="consumer-uses-api-key" tabindex="-1"><a class="header-anchor" href="#consumer-uses-api-key">Consumer Uses API Key</a></h3>
+<p>Consumers view their approved key (with show-once security), copy it, and see code examples for immediate use.</p>
+<h2 id="why-kuadrant-developer-portal" tabindex="-1"><a class="header-anchor" href="#why-kuadrant-developer-portal">Why Kuadrant Developer Portal?</a></h2>
+<h3 id="kubernetes-native-architecture" tabindex="-1"><a class="header-anchor" href="#kubernetes-native-architecture">Kubernetes-Native Architecture</a></h3>
+<p>Built on Kuadrant's Gateway API, the portal integrates naturally with your existing Kubernetes infrastructure. No additional databases, message queues, or external dependencies. Everything runs on Kubernetes using CRDs and the Gateway API standard.</p>
+<h3 id="self-service-developer-experience" tabindex="-1"><a class="header-anchor" href="#self-service-developer-experience">Self-Service Developer Experience</a></h3>
+<p>Reduce operational toil by enabling developers to discover APIs, request access, and retrieve credentials without filing tickets or waiting for manual provisioning. API owners maintain control through approval workflows while developers get faster access.</p>
+<h3 id="enterprise-grade-security" tabindex="-1"><a class="header-anchor" href="#enterprise-grade-security">Enterprise-Grade Security</a></h3>
+<p>Granular RBAC permissions, ownership-based resource isolation, show-once API key viewing, and full audit trails ensure secure API access management that meets enterprise requirements.</p>
+<h3 id="backstage-integration" tabindex="-1"><a class="header-anchor" href="#backstage-integration">Backstage Integration</a></h3>
+<p>As a Backstage plugin, the portal fits naturally into your existing developer portal ecosystem. APIs appear in the catalog alongside other entities, permissions integrate with Backstage RBAC, and the UI follows Backstage design patterns.</p>
+<h3 id="flexible-rate-limiting" tabindex="-1"><a class="header-anchor" href="#flexible-rate-limiting">Flexible Rate Limiting</a></h3>
+<p>Optional tiered access plans with configurable rate limits (daily, weekly, monthly, yearly, or custom windows) let you offer different service levels based on consumer needs. From experimental bronze tiers to production-ready gold tiers.</p>
+<h2 id="try-it-out" tabindex="-1"><a class="header-anchor" href="#try-it-out">Try It Out</a></h2>
+<p>The Kuadrant Developer Portal will be available for <strong>Developer Preview at the end of February 2026</strong>.</p>
+<p>The plugins work with existing Red Hat Developer Hub or Backstage instances. You'll need a Kubernetes cluster with the Kuadrant operator installed and Gateway API CRDs.</p>
+<p>Visit our <a href="docs/installation.md">Installation Guide</a> for step-by-step setup instructions including Kubernetes RBAC configuration, frontend setup, and catalog integration.</p>
+<p>Follow our <a href="docs/getting-started.md">Getting Started Tutorial</a> for an end-to-end walkthrough. The tutorial demonstrates the complete workflow from platform engineer setup to API consumer usage, showing all key capabilities of the developer portal.</p>
+<p>For questions or to give feedback join the Kuadrant <a href="https://kubernetes.slack.com/archives/C05J0D0V525">Slack channel</a></p>
+<h2 id="additional-resources" tabindex="-1"><a class="header-anchor" href="#additional-resources">Additional Resources</a></h2>
+<ul>
+<li><strong><a href="docs/rbac-permissions.md">RBAC Permissions Guide</a></strong>: Detailed permission model and role definitions</li>
+<li><strong><a href="https://docs.kuadrant.io/">Kuadrant Documentation</a></strong>: Full Kuadrant operator documentation</li>
+<li><strong><a href="https://github.com/kuadrant/kuadrant-backstage-plugin">GitHub Repository</a></strong>: Source code and issue tracking</li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
