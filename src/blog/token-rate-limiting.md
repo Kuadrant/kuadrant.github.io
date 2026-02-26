@@ -99,5 +99,5 @@ We'd love your feedback! Try out the new policy and let us know your thoughts th
 ## Learn More
 
 - [TokenRateLimitPolicy Tutorial](/doc/user-guides/tokenratelimitpolicy/authenticated)
-- [API Reference Documentation](https://docs.kuadrant.io/latest/reference/tokenratelimitpolicy/)
+- [API Reference Documentation](https://docs.kuadrant.io/latest/kuadrant-operator/doc/reference/tokenratelimitpolicy/)
 - [Kuadrant on GitHub](https://github.com/kuadrant)
