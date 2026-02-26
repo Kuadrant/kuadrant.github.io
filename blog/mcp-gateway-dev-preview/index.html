@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Blog</title>
+  <title>Announcing MCP Gateway 0.5: Dev Preview Release</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
           <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
           
             <li>
-              <a class="nav-link active" href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
             </li>
             <li>
               <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
@@ -66,88 +66,47 @@
 
     
     <div class="container">
-      
-
-
-
-<h3>2026</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/dev-portal-announcement/" class="postlist-link">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a>
-		<time class="postlist-date" datetime="2026-02-26">February 2026</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/mcp-gateway-dev-preview/" class="postlist-link">Announcing MCP Gateway 0.5: Dev Preview Release</a>
-		<time class="postlist-date" datetime="2026-02-24">February 2026</time>
-	</li>
-
+      <h1>Announcing MCP Gateway 0.5: Dev Preview Release</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: David Martin | <time datetime="2026-02-24">24 February 2026</time></li>
+</ul>
+</h4>
+<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its 0.5 dev preview release. The MCP Gateway is a project from the Kuadrant team that provides centralized connectivity, access control, and security for AI agent applications accessing <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> servers.</p>
+<h2 id="what-is-the-mcp-gateway" tabindex="-1"><a class="header-anchor" href="#what-is-the-mcp-gateway">What is the MCP Gateway?</a></h2>
+<p>As AI agents become more capable, they need access to an increasing number of tools and services. The Model Context Protocol provides a standard way for agents to discover and invoke these tools, but managing connectivity, authentication, and authorization across multiple MCP servers quickly becomes complex.</p>
+<p>The MCP Gateway addresses this by aggregating MCP servers behind a single endpoint, built on <a href="https://www.envoyproxy.io/">Envoy proxy</a> and <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a>. It allows you to:</p>
+<ul>
+<li><strong>Aggregate MCP servers</strong> behind a single, unified endpoint for your AI agents</li>
+<li><strong>Manage access control and security</strong> with fine-grained, per-tool authorization</li>
+<li><strong>Scale agentic AI applications</strong> without embedding networking and auth logic into application code</li>
+</ul>
+<p>For a deeper look at how access control works with the MCP Gateway and Kuadrant's AuthPolicy, see our earlier post on <a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant</a>. Full details on the architecture and capabilities are available in the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
+<h2 id="whats-in-the-05-release" tabindex="-1"><a class="header-anchor" href="#whats-in-the-05-release">What's in the 0.5 Release?</a></h2>
+<p>This is a <strong>dev preview</strong> release. The MCP Gateway is available to try out and provide feedback on, but APIs and interfaces are expected to change as we gather feedback from the community. It is not yet intended for production use.</p>
+<p>The 0.5 release provides the core MCP Gateway functionality:</p>
+<ul>
+<li>MCP server aggregation and tool discovery via a single gateway endpoint</li>
+<li>Integration with Kuadrant's AuthPolicy for authentication and authorization</li>
+<li>Support for OAuth2 token exchange, credential translation via Vault, and identity-based tool filtering</li>
+<li>A quick start experience to get up and running locally</li>
+</ul>
+<h2 id="try-it-out" tabindex="-1"><a class="header-anchor" href="#try-it-out">Try It Out</a></h2>
+<p>The fastest way to see the MCP Gateway in action is the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/quick-start/">quick start guide</a>, along with the MCP Inspector:</p>
+<p><a href="./mcp-inspector-screenshot.png"><picture><source type="image/avif" srcset="/img/iNNeFb8C93-900.avif 900w"><source type="image/webp" srcset="/img/iNNeFb8C93-900.webp 900w"><img alt="MCP Inspector showing tools from aggregated MCP servers" loading="lazy" decoding="async" src="/img/iNNeFb8C93-900.png" width="900" height="580"></picture></a></p>
+<p>For a more detailed walkthrough, including setting up authentication and authorization, see the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</p>
+<h2 id="whats-next-the-road-to-06" tabindex="-1"><a class="header-anchor" href="#whats-next-the-road-to-06">What's Next: The Road to 0.6</a></h2>
+<p>The next release, 0.6, will focus primarily on adding a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Kubernetes operator</a> for easier installation and management of the MCP Gateway. This will simplify deployment and make it easier to manage MCP Gateway configurations declaratively alongside the rest of your Kuadrant policies.</p>
+<p>Milestones and progress can be tracked on the <a href="https://github.com/orgs/Kuadrant/projects/27/views/1">public project board</a>.</p>
+<h2 id="get-involved" tabindex="-1"><a class="header-anchor" href="#get-involved">Get Involved</a></h2>
+<p>As a dev preview, feedback will directly shape what comes next.</p>
+<ul>
+<li>Report issues or request features on the <a href="https://github.com/kuadrant/mcp-gateway/issues">MCP Gateway Issues</a> page.</li>
+<li>Engage with the <a href="https://kuadrant.io/community/">community</a>.</li>
 </ul>
 
-
-<h3>2025</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/mcp-gateway/" class="postlist-link">Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</a>
-		<time class="postlist-date" datetime="2025-11-11">November 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/token-rate-limiting/" class="postlist-link">Introducing TokenRateLimitPolicy for LLM API Protection</a>
-		<time class="postlist-date" datetime="2025-07-10">July 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/mcp-kuadrant/" class="postlist-link">Kuadrant and Model context protocol (MCP) the ultimate pairing?</a>
-		<time class="postlist-date" datetime="2025-07-09">July 2025</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/core-dns-support/" class="postlist-link">Alpha support for DNSPolicy using CoreDNS</a>
-		<time class="postlist-date" datetime="2025-04-15">April 2025</time>
-	</li>
-
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</a></li><li>Next: <a href="/blog/dev-portal-announcement/">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a></li>
 </ul>
-
-
-<h3>2024</h3>
-<ul reversed class="postlist">
-    
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-v1/" class="postlist-link">Kuadrant v1</a>
-		<time class="postlist-date" datetime="2024-11-28">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/grafana-on-openshift-for-kuadrant/" class="postlist-link">Installing Grafana on Openshift for Kuadrant Observability.</a>
-		<time class="postlist-date" datetime="2024-11-08">November 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/Understanding-Cyclomatic-Complexity/" class="postlist-link">Understanding Cyclomatic Complexity</a>
-		<time class="postlist-date" datetime="2024-10-31">October 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/ehearne-intern-journey/" class="postlist-link">How Kuadrant has made my internship journey unique at Red Hat.</a>
-		<time class="postlist-date" datetime="2024-09-01">September 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/kuadrant-roadmap/" class="postlist-link">Introducing the Kuadrant Roadmap and Process</a>
-		<time class="postlist-date" datetime="2024-08-20">August 2024</time>
-	</li>
-
-	<li class="postlist-item">
-		<a href="/blog/cncf-sandbox/" class="postlist-link">Kuadrant Accepted as Cloud Native Computing Foundation (CNCF) Sandbox Project</a>
-		<time class="postlist-date" datetime="2024-08-02">August 2024</time>
-	</li>
-
-</ul>
-
-
     </div>
     
     
