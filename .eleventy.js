@@ -47,6 +47,13 @@ eleventyConfig.addWatchTarget("content/**/*.{svg,webp,png,jpeg}");
 		return DateTime.fromJSDate(dateObj, {zone: 'utc'}).toFormat('yyyy-LL-dd');
 	});
 
+  eleventyConfig.addFilter("excerpt", (content) => {
+    if (!content) return "";
+    const plain = content.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    const words = plain.split(" ").slice(0, 30);
+    return words.join(" ") + (plain.split(" ").length > 30 ? "..." : "");
+  });
+
   eleventyConfig.addFilter("groupByYear", (posts) => {
     const groupedPosts = {};
 
