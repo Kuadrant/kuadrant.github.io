@@ -74,6 +74,11 @@
 <ul reversed class="postlist">
     
 	<li class="postlist-item">
+		<a href="/blog/mcp-gateway-tech-preview/" class="postlist-link">MCP Gateway 0.6: Tech Preview Release</a>
+		<time class="postlist-date" datetime="2026-04-17">April 2026</time>
+	</li>
+
+	<li class="postlist-item">
 		<a href="/blog/dev-portal-announcement/" class="postlist-link">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a>
 		<time class="postlist-date" datetime="2026-02-26">February 2026</time>
 	</li>
@@ -228,6 +233,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
 
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
 
   <!-- Template Main JS File -->
   <script src="/static/js/main.js"></script>

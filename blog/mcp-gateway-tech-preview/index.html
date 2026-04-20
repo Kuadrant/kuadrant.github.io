@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Announcing MCP Gateway 0.5: Dev Preview Release</title>
+  <title>MCP Gateway 0.6: Tech Preview Release</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -66,46 +66,91 @@
 
     
     <div class="container">
-      <h1>Announcing MCP Gateway 0.5: Dev Preview Release</h1>
+      <h1>MCP Gateway 0.6: Tech Preview Release</h1>
 <h4>
 <ul class="post-metadata">
-	<li>By: David Martin | <time datetime="2026-02-24">24 February 2026</time></li>
+	<li>By: David Martin | <time datetime="2026-04-17">17 April 2026</time></li>
 </ul>
 </h4>
-<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its 0.5 dev preview release. The MCP Gateway is a project from the Kuadrant team that provides centralized connectivity, access control, and security for AI agent applications accessing <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> servers.</p>
-<h2 id="what-is-the-mcp-gateway" tabindex="-1"><a class="header-anchor" href="#what-is-the-mcp-gateway">What is the MCP Gateway?</a></h2>
-<p>As AI agents become more capable, they need access to an increasing number of tools and services. The Model Context Protocol provides a standard way for agents to discover and invoke these tools, but managing connectivity, authentication, and authorization across multiple MCP servers quickly becomes complex.</p>
-<p>The MCP Gateway addresses this by aggregating MCP servers behind a single endpoint, built on <a href="https://www.envoyproxy.io/">Envoy proxy</a> and <a href="https://gateway-api.sigs.k8s.io/">Kubernetes Gateway API</a>. It allows you to:</p>
+<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.6.0">0.6 tech preview release</a>. This release adds a Kubernetes operator, MCP specification elicitation support, and Redis-backed horizontal scaling. For the full list of changes you can check out the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.6.0">0.6.0 release page</a> on GitHub.</p>
+<p>For background on the MCP Gateway, see the previous <a href="/blog/mcp-gateway-dev-preview/">0.5 dev preview announcement</a> or the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
+<h2 id="from-dev-preview-to-tech-preview" tabindex="-1"><a class="header-anchor" href="#from-dev-preview-to-tech-preview">From Dev Preview to Tech Preview</a></h2>
+<p>The 0.5 release was a dev preview, a first look at the core MCP Gateway functionality. With 0.6, the project moves to a tech preview as we work toward production readiness. APIs and interfaces may still change, but the foundations are now in place:</p>
 <ul>
-<li><strong>Aggregate MCP servers</strong> behind a single, unified endpoint for your AI agents</li>
-<li><strong>Manage access control and security</strong> with fine-grained, per-tool authorization</li>
-<li><strong>Scale agentic AI applications</strong> without embedding networking and auth logic into application code</li>
+<li><strong>Installation</strong> - OLM operator replaces Helm charts</li>
+<li><strong>Configuration</strong> - declarative CRD (<code>MCPGatewayExtension</code>) replaces manual resource creation</li>
+<li><strong>Scaling</strong> - Redis session store enables multi-replica deployments</li>
+<li><strong>Protocol</strong> - elicitation support tracks the evolving MCP specification</li>
 </ul>
-<p>For a deeper look at how access control works with the MCP Gateway and Kuadrant's AuthPolicy, see our earlier post on <a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant</a>. Full details on the architecture and capabilities are available in the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
-<h2 id="whats-in-the-05-release" tabindex="-1"><a class="header-anchor" href="#whats-in-the-05-release">What's in the 0.5 Release?</a></h2>
-<p>This is a <strong>dev preview</strong> release. The MCP Gateway is available to try out and provide feedback on, but APIs and interfaces are expected to change as we gather feedback from the community. It is not yet intended for production use.</p>
-<p>The 0.5 release provides the core MCP Gateway functionality:</p>
-<ul>
-<li>MCP server aggregation and tool discovery via a single gateway endpoint</li>
-<li>Integration with Kuadrant's AuthPolicy for authentication and authorization</li>
-<li>Support for OAuth2 token exchange, credential translation via Vault, and identity-based tool filtering</li>
-<li>A quick start experience to get up and running locally</li>
-</ul>
-<h2 id="try-it-out" tabindex="-1"><a class="header-anchor" href="#try-it-out">Try It Out</a></h2>
-<p>The fastest way to see the MCP Gateway in action is the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/quick-start/">quick start guide</a>, along with the MCP Inspector:</p>
-<p><a href="./mcp-inspector-screenshot.png"><picture><source type="image/avif" srcset="/img/iNNeFb8C93-900.avif 900w"><source type="image/webp" srcset="/img/iNNeFb8C93-900.webp 900w"><img alt="MCP Inspector showing tools from aggregated MCP servers" loading="lazy" decoding="async" src="/img/iNNeFb8C93-900.png" width="900" height="580"></picture></a></p>
-<p>For a more detailed walkthrough, including setting up authentication and authorization, see the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</p>
-<h2 id="whats-next-the-road-to-06" tabindex="-1"><a class="header-anchor" href="#whats-next-the-road-to-06">What's Next: The Road to 0.6</a></h2>
-<p>The next release, 0.6, will focus primarily on adding a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Kubernetes operator</a> for easier installation and management of the MCP Gateway. This will simplify deployment and make it easier to manage MCP Gateway configurations declaratively alongside the rest of your Kuadrant policies.</p>
-<p>Milestones and progress can be tracked on the <a href="https://github.com/orgs/Kuadrant/projects/27/views/1">public project board</a>.</p>
+<h2 id="whats-new-in-06" tabindex="-1"><a class="header-anchor" href="#whats-new-in-06">What's New in 0.6</a></h2>
+<h3 id="kubernetes-operator-and-mcpgatewayextension-crd" tabindex="-1"><a class="header-anchor" href="#kubernetes-operator-and-mcpgatewayextension-crd">Kubernetes Operator and MCPGatewayExtension CRD</a></h3>
+<p>The 0.6 release adds an <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/olm-install/">OLM-based installation</a> alongside the existing Helm chart approach. The operator introduces the <code>MCPGatewayExtension</code> custom resource for configuring the MCP Gateway.</p>
+<p>An <code>MCPGatewayExtension</code> targets a Gateway listener and configures the MCP routing layer:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1alpha1
+kind: MCPGatewayExtension
+metadata:
+  name: mcp-gateway
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    namespace: gateway-system
+    sectionName: mcp
+</code></pre>
+<p>The operator manages the MCP Router and Broker components, and (optionally) automatically creates <code>HTTPRoute</code> resources based on the <code>MCPGatewayExtension</code> configuration. Manual route definition is no longer needed.</p>
+<p>See the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/olm-install/">OLM install guide</a> to get started.</p>
+<h3 id="mcp-specification-elicitation-support" tabindex="-1"><a class="header-anchor" href="#mcp-specification-elicitation-support">MCP Specification Elicitation Support</a></h3>
+<p>This release adds support for the MCP protocol's <a href="https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation">elicitation</a> capability. Elicitation allows an MCP server to request additional information from the client during a tool call, enabling multi-turn exchanges between the agent and server. Below is a sequence diagram showing how elicitation events are mapped at the gateway between the client and server. Note the different request IDs on either side of the gateway, as the gateway abstracts this from the client.</p>
+<pre><code class="language-mermaid">sequenceDiagram
+  participant Client as MCP Client
+  participant Gateway as Gateway/MCP Router/MCP Broker
+  participant Server as MCP Server
+
+  Note over Client, Server: Tool call with elicitation
+  Client -&gt;&gt; Gateway: POST /mcp &quot;tools/call&quot;
+  Gateway -&gt;&gt; Server: POST /mcp &quot;tools/call&quot;
+  Note over Server, Gateway: Elicitation event
+  Server --&gt;&gt; Gateway: Streamed event: elicitation/create (id: 42)
+  Gateway -&gt;&gt; Gateway: Map server request ID (42) to gateway request ID (gateway-123)
+  Gateway --&gt;&gt; Client: Streamed event: elicitation/create (id: gateway-123)
+  Note over Client: User provides input
+  Client -&gt;&gt; Gateway: POST /mcp elicitation response (id: gateway-123)
+  Gateway -&gt;&gt; Gateway: Map gateway request ID (gateway-123) to server request ID (42)
+  Gateway -&gt;&gt; Server: POST /mcp elicitation response (id: 42)
+  Note over Server, Gateway: Tool call continues/resumes
+  Server --&gt;&gt; Gateway: tool/call response
+  Gateway --&gt;&gt; Client: tool/call response
+</code></pre>
+<p>As the <a href="https://modelcontextprotocol.io/">MCP specification</a> evolves, the MCP Gateway will continue to align its feature support with the spec. Teams adopting the gateway should not need to worry about protocol-level compatibility.</p>
+<h3 id="redis-session-store-for-horizontal-scaling" tabindex="-1"><a class="header-anchor" href="#redis-session-store-for-horizontal-scaling">Redis Session Store for Horizontal Scaling</a></h3>
+<p>The release also introduces a Redis-backed session store for horizontal scaling. When the MCP Gateway aggregates multiple MCP servers behind a single endpoint, it maintains session ID mappings between client sessions and upstream servers. The session store moves these mappings into Redis so that multiple gateway replicas can share state, removing the single-instance constraint from the dev preview.</p>
+<p>Configure it via the <code>sessionStore</code> field in the <code>MCPGatewayExtension</code> spec:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1alpha1
+kind: MCPGatewayExtension
+metadata:
+  name: mcp-gateway
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    namespace: gateway-system
+    sectionName: mcp
+  sessionStore:
+    secretName: redis-credentials
+</code></pre>
+<p>With a session store configured, requests can be load-balanced across replicas without session affinity.</p>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
+<p>There will likely be additional releases before the MCP Gateway reaches GA with a 1.0. The <a href="https://github.com/Kuadrant/mcp-gateway/milestone/5">0.7 milestone</a> includes a review of the virtual server API, tool search and discovery, and an investigation into how <a href="https://google.github.io/A2A/">A2A</a> fits into the picture, among other items.</p>
 <h2 id="get-involved" tabindex="-1"><a class="header-anchor" href="#get-involved">Get Involved</a></h2>
-<p>As a dev preview, feedback will directly shape what comes next.</p>
 <ul>
+<li>Try the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</li>
 <li>Report issues or request features on the <a href="https://github.com/kuadrant/mcp-gateway/issues">MCP Gateway Issues</a> page.</li>
 <li>Engage with the <a href="https://kuadrant.io/community/">community</a>.</li>
 </ul>
 
-<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</a></li><li>Next: <a href="/blog/dev-portal-announcement/">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a></li>
+<ul class="links-nextprev"><li>Previous: <a href="/blog/dev-portal-announcement/">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a></li>
 </ul>
     </div>
     

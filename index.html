@@ -100,6 +100,18 @@
       
       <div class="col-xl-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
         <div class="news-box d-flex flex-column">
+          <h4><a href="/blog/mcp-gateway-tech-preview/">MCP Gateway 0.6: Tech Preview Release</a></h4>
+          <p class="post-meta">
+            <time datetime="2026-04-17">17 April 2026</time>
+             &middot; David Martin
+          </p>
+          <p>The MCP Gateway has reached its 0.6 tech preview release. This release adds a Kubernetes operator, MCP specification elicitation support, and Redis-backed horizontal scaling. For the full list of changes...</p>
+          <a href="/blog/mcp-gateway-tech-preview/" class="read-more mt-auto">Read more &rarr;</a>
+        </div>
+      </div>
+      
+      <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="200">
+        <div class="news-box d-flex flex-column">
           <h4><a href="/blog/dev-portal-announcement/">Introducing the Kuadrant Developer Portal: Powered by the new Backstage plugin</a></h4>
           <p class="post-meta">
             <time datetime="2026-02-26">26 February 2026</time>
@@ -110,7 +122,7 @@
         </div>
       </div>
       
-      <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="200">
+      <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
         <div class="news-box d-flex flex-column">
           <h4><a href="/blog/mcp-gateway-dev-preview/">Announcing MCP Gateway 0.5: Dev Preview Release</a></h4>
           <p class="post-meta">
@@ -119,18 +131,6 @@
           </p>
           <p>The MCP Gateway has reached its 0.5 dev preview release. The MCP Gateway is a project from the Kuadrant team that provides centralized connectivity, access control, and security for AI...</p>
           <a href="/blog/mcp-gateway-dev-preview/" class="read-more mt-auto">Read more &rarr;</a>
-        </div>
-      </div>
-      
-      <div class="col-xl-4 col-md-6 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in" data-aos-delay="300">
-        <div class="news-box d-flex flex-column">
-          <h4><a href="/blog/mcp-gateway/">Protecting AI Agent Tool Access with Kuadrant：A Model Context Protocol Gateway Case Study</a></h4>
-          <p class="post-meta">
-            <time datetime="2025-11-11">11 November 2025</time>
-             &middot; Guilherme Cassolato
-          </p>
-          <p>As AI agents become more sophisticated and autonomous, they increasingly need access to real-world tools and services through APIs. The Model Context Protocol (MCP) provides a standardized way for AI...</p>
-          <a href="/blog/mcp-gateway/" class="read-more mt-auto">Read more &rarr;</a>
         </div>
       </div>
       
@@ -438,6 +438,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
 
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
 
   <!-- Template Main JS File -->
   <script src="/static/js/main.js"></script>
