@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Managing AI Workload Egress with Kuadrant: Access Control, Rate Limiting, and Credential Injection</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Managing AI Workload Egress with Kuadrant: Access Control, Rate Limiting, and Credential Injection</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Maksym Vavilov | <time datetime="2026-05-05">05 May 2026</time></li>
+</ul>
+</h4>
+<p>Kuadrant extends <a href="https://gateway-api.sigs.k8s.io/">Gateway API</a> with policies for authentication, rate limiting, DNS, and TLS. With egress gateway support, these same policies now apply to <strong>outbound</strong> traffic — giving platform teams a unified, policy-driven way to manage how workloads connect to external services.</p>
+<p>For AI workloads calling providers like OpenAI, Anthropic, or self-hosted inference endpoints, Kuadrant provides:</p>
+<ul>
+<li><strong>Access control</strong> — Authenticate workloads by their Kubernetes identity and restrict which namespaces can reach which external APIs.</li>
+<li><strong>Rate limiting</strong> — Per-workload request budgets to control API costs. Each team gets their own limit.</li>
+<li><strong>Credential injection</strong> — Workloads send their Kubernetes ServiceAccount token; the gateway swaps it for the real API key from <a href="https://developer.hashicorp.com/vault">HashiCorp Vault</a>. No shared secrets, no key distribution.</li>
+<li><strong>Transparent DNS routing</strong> — Optional <a href="https://docs.kuadrant.io/latest/dns-operator/">DNSPolicy</a> configuration so workloads can call external hostnames directly without code changes.</li>
+</ul>
+<p>The egress gateway itself is a standard <a href="https://gateway-api.sigs.k8s.io/api-types/gateway/">Gateway API Gateway</a> backed by <a href="https://istio.io/">Istio</a>. No new APIs to learn — if you've used Kuadrant on ingress, you already know the model.</p>
+<h2 id="how-it-works" tabindex="-1"><a class="header-anchor" href="#how-it-works">How It Works</a></h2>
+<p>Kuadrant policies attach to standard Gateway API resources using the same <code>targetRef</code> mechanism as ingress. The egress gateway handles TLS origination — workloads send plain HTTP, the gateway upgrades to HTTPS toward the external service.</p>
+<pre><code class="language-mermaid">graph TB
+    subgraph &quot;ai-workloads namespace&quot;
+        W([Workload&lt;br/&gt;sends SA token as credential])
+    end
+
+    W --&gt;|&quot;HTTP + Authorization: Bearer SA-token&quot;| GW
+
+    subgraph &quot;gateway-system namespace&quot;
+        GW[Gateway&lt;br/&gt;kuadrant-egressgateway]
+        HR[HTTPRoute&lt;br/&gt;openai-external]
+        HR -.-&gt;|routes| GW
+    end
+
+    AP[AuthPolicy&lt;br/&gt;access control +&lt;br/&gt;credential injection] -.-&gt;|attached to| HR
+    RLP[RateLimitPolicy&lt;br/&gt;per-workload limits] -.-&gt;|attached to| HR
+    DNS[DNSPolicy&lt;br/&gt;transparent DNS] -.-&gt;|attached to| GW
+
+    GW --&gt;|&quot;HTTPS + Authorization: Bearer API-key&quot;| EXT([api.openai.com])
+</code></pre>
+<p>The AuthPolicy verifies the workload's Kubernetes identity, fetches the real API credential from Vault, and injects it into the outbound request. The RateLimitPolicy enforces per-workload rate limits. The DNSPolicy optionally resolves external hostnames to the gateway IP so workloads can call external APIs transparently.</p>
+<h2 id="prerequisites" tabindex="-1"><a class="header-anchor" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>A Kubernetes cluster with Istio and Kuadrant installed — see the <a href="https://docs.kuadrant.io/latest/getting-started/">installation guide</a></li>
+<li><code>kubectl</code> and <code>helm</code> CLIs configured</li>
+<li>An OpenAI API key (for the credential injection step)</li>
+</ul>
+<h2 id="set-up-the-egress-gateway-for-openai" tabindex="-1"><a class="header-anchor" href="#set-up-the-egress-gateway-for-openai">Set Up the Egress Gateway for OpenAI</a></h2>
+<p>Create the egress gateway and the Istio resources for routing traffic to <a href="http://api.openai.com">api.openai.com</a>. The Gateway provisions an Envoy proxy via Istio. The ServiceEntry registers the external hostname in Istio's service registry. The DestinationRule handles TLS origination — workloads send plain HTTP, the gateway upgrades to HTTPS. The HTTPRoute routes traffic to the external service:</p>
+<pre><code class="language-bash">kubectl apply -f - &lt;&lt;'EOF'
+# Gateway — standard Gateway API resource, ClusterIP since traffic is internal
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: kuadrant-egressgateway
+  namespace: gateway-system
+  annotations:
+    networking.istio.io/service-type: ClusterIP
+spec:
+  gatewayClassName: istio
+  listeners:
+    - name: openai
+      port: 80
+      protocol: HTTP
+      hostname: api.openai.com
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+# ServiceEntry — registers api.openai.com in Istio's service registry
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: openai-external
+  namespace: gateway-system
+spec:
+  hosts:
+    - api.openai.com
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+---
+# DestinationRule — TLS origination (workload sends HTTP, gateway upgrades to HTTPS)
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: openai-external
+  namespace: gateway-system
+spec:
+  host: api.openai.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      sni: api.openai.com
+---
+# HTTPRoute — routes traffic to api.openai.com through the gateway
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: openai-external
+  namespace: gateway-system
+spec:
+  parentRefs:
+    - name: kuadrant-egressgateway
+      namespace: gateway-system
+  hostnames:
+    - api.openai.com
+  rules:
+    - filters:
+        - type: URLRewrite
+          urlRewrite:
+            hostname: api.openai.com
+      backendRefs:
+        - group: networking.istio.io
+          kind: Hostname
+          name: api.openai.com
+          port: 443
+EOF
+kubectl wait --for=condition=Programmed gateway/kuadrant-egressgateway -n gateway-system --timeout=120s
+</code></pre>
+<p>Export the gateway address for use in later commands:</p>
+<pre><code class="language-bash">export EGRESS_IP=$(kubectl get gtw kuadrant-egressgateway -n gateway-system \
+    -o jsonpath='{.status.addresses[0].value}')
+</code></pre>
+<h2 id="deploy-vault-and-a-test-workload" tabindex="-1"><a class="header-anchor" href="#deploy-vault-and-a-test-workload">Deploy Vault and a Test Workload</a></h2>
+<p>Deploy a <a href="https://developer.hashicorp.com/vault">HashiCorp Vault</a> instance in dev mode with Kubernetes auth configured:</p>
+<pre><code class="language-bash">helm repo add hashicorp https://helm.releases.hashicorp.com
+helm install vault hashicorp/vault \
+    --create-namespace --namespace vault \
+    --set &quot;server.dev.enabled=true&quot; \
+    --set &quot;server.dev.devRootToken=root&quot; \
+    --wait --timeout=300s
+
+# Enable Kubernetes auth method
+kubectl exec vault-0 -n vault -- vault auth enable kubernetes
+kubectl exec vault-0 -n vault -- vault write auth/kubernetes/config \
+    kubernetes_host=&quot;https://kubernetes.default.svc.cluster.local:443&quot;
+
+# Create a policy that allows reading egress credentials
+kubectl exec vault-0 -n vault -- vault policy write egress-read - &lt;&lt;'EOF'
+path &quot;secret/data/egress/*&quot; {
+  capabilities = [&quot;read&quot;]
+}
+EOF
+</code></pre>
+<p>Create a namespace for AI workloads and deploy a test pod:</p>
+<pre><code class="language-bash">kubectl create namespace ai-workloads
+kubectl apply -f - &lt;&lt;'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-client
+  namespace: ai-workloads
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl:8.12.1
+      command: [&quot;sleep&quot;, &quot;infinity&quot;]
+  restartPolicy: Never
+EOF
+kubectl wait --for=condition=Ready pod/test-client -n ai-workloads --timeout=60s
+</code></pre>
+<p>Store your OpenAI API key in Vault and authorize the workload's namespace:</p>
+<pre><code class="language-bash"># Store the API key at the per-identity Vault path
+kubectl exec vault-0 -n vault -- vault kv put secret/egress/ai-workloads/default \
+    api_key=&quot;&lt;your-openai-api-key&gt;&quot;
+
+# Create a Vault role bound to the ai-workloads namespace
+kubectl exec vault-0 -n vault -- vault write auth/kubernetes/role/egress-workload \
+    bound_service_account_names=default \
+    bound_service_account_namespaces=ai-workloads \
+    policies=egress-read \
+    ttl=1h
+</code></pre>
+<h2 id="optional-transparent-dns-with-dnspolicy" tabindex="-1"><a class="header-anchor" href="#optional-transparent-dns-with-dnspolicy">Optional: Transparent DNS with DNSPolicy</a></h2>
+<p>One way to reach the egress gateway is by using its internal hostname and passing a <code>Host</code> header — no DNS configuration required. Another option is <strong>transparent DNS routing</strong> using <a href="https://docs.kuadrant.io/latest/dns-operator/">DNSPolicy</a> and <a href="https://github.com/kuadrant/dns-operator/blob/main/docs/coredns/coredns-integration.md">kuadrant CoreDNS</a>, which lets workloads call <code>http://api.openai.com/...</code> directly without code changes.</p>
+<pre><code class="language-mermaid">graph TB
+    W([Workload]) --&gt;|&quot;all DNS queries&quot;| KDNS[kuadrant CoreDNS]
+
+    KDNS --&gt;|&quot;api.openai.com →&lt;br/&gt;gateway IP&quot;| GW[Egress Gateway]
+    KDNS --&gt;|&quot;everything else&quot;| CDNS[Cluster DNS]
+
+    GW --&gt;|HTTPS| EXT([api.openai.com])
+    CDNS --&gt;|resolves| SVC([Cluster Services])
+
+    DP[DNSPolicy] -.-&gt;|&quot;creates DNSRecord&quot;| KDNS
+</code></pre>
+<p>Workload pods are configured with a custom <code>dnsConfig</code> pointing to kuadrant CoreDNS as their nameserver. Kuadrant CoreDNS resolves egress hostnames (like <code>api.openai.com</code>) to the gateway IP, and forwards all other queries — cluster services, external non-egress hostnames — to the cluster DNS. The DNSPolicy reads the Gateway's listener hostnames and status address, then publishes the DNS records to kuadrant CoreDNS automatically.</p>
+<p>The Gateway listener in this guide already includes <code>hostname: api.openai.com</code>, which is what DNSPolicy needs to create the DNS record. For the full setup walkthrough — including CoreDNS deployment, Corefile configuration, DNSPolicy, and pod dnsConfig — see the <a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/egress/dns-routing/">DNS Routing Guide</a>.</p>
+<h2 id="control-access-with-authpolicy" tabindex="-1"><a class="header-anchor" href="#control-access-with-authpolicy">Control Access with AuthPolicy</a></h2>
+<p>In egress, clients are internal workloads. Every pod in Kubernetes has a ServiceAccount token mounted automatically — no API keys to distribute. AuthPolicy uses <a href="https://kubernetes.io/docs/reference/kubernetes-api/authentication-resources/token-review-v1/">kubernetesTokenReview</a> to verify the workload's identity and restrict access by namespace:</p>
+<pre><code class="language-bash">kubectl apply -f - &lt;&lt;'EOF'
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: openai-access-control
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: openai-external
+  rules:
+    authentication:
+      &quot;workload-sa&quot;:
+        kubernetesTokenReview:
+          audiences:
+            - &quot;https://kubernetes.default.svc.cluster.local&quot;
+    authorization:
+      &quot;allowed-namespaces&quot;:
+        patternMatching:
+          patterns:
+            - predicate: auth.identity.user.username.startsWith('system:serviceaccount:ai-workloads:')
+EOF
+</code></pre>
+<p>This allows only workloads from the <code>ai-workloads</code> namespace to reach OpenAI. Add more patterns for additional namespaces. Requests without a valid token get 401; requests from unauthorized namespaces get 403.</p>
+<h2 id="rate-limit-api-calls" tabindex="-1"><a class="header-anchor" href="#rate-limit-api-calls">Rate Limit API Calls</a></h2>
+<p>RateLimitPolicy gives each workload its own API call budget, tracking by ServiceAccount identity:</p>
+<pre><code class="language-bash">kubectl apply -f - &lt;&lt;'EOF'
+apiVersion: kuadrant.io/v1
+kind: RateLimitPolicy
+metadata:
+  name: openai-rate-limit
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: openai-external
+  limits:
+    per-workload:
+      rates:
+        - limit: 100
+          window: 1m
+      counters:
+        - expression: &quot;auth.identity.username&quot;
+EOF
+</code></pre>
+<p>Each ServiceAccount gets an independent 100 req/min bucket. <code>system:serviceaccount:team-a:default</code> and <code>system:serviceaccount:team-b:default</code> are tracked separately. Once a workload hits its limit, further requests get 429 until the window resets.</p>
+<p>For AI workloads, you may also want to limit by <strong>token consumption</strong> rather than request count. Kuadrant's <a href="https://kuadrant.io/blog/token-rate-limiting/">TokenRateLimitPolicy</a> counts tokens from OpenAI-compatible responses — e.g., 100,000 tokens per hour per workload.</p>
+<h2 id="inject-credentials-from-vault" tabindex="-1"><a class="header-anchor" href="#inject-credentials-from-vault">Inject Credentials from Vault</a></h2>
+<p>Credential injection takes egress policies a step further: workloads send their Kubernetes identity, and the gateway transparently injects the real API credential from <a href="https://developer.hashicorp.com/vault">HashiCorp Vault</a>.</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant W as Workload
+    participant G as Egress Gateway
+    participant A as Authorino
+    participant V as Vault
+    participant O as api.openai.com
+
+    W-&gt;&gt;G: Authorization: Bearer &lt;SA token&gt;
+    G-&gt;&gt;A: ext_authz check
+    A-&gt;&gt;A: kubernetesTokenReview (verify identity)
+    A-&gt;&gt;V: Login with SA token (K8s auth)
+    V--&gt;&gt;A: Vault client token
+    A-&gt;&gt;V: Read secret/egress/&lt;ns&gt;/&lt;sa&gt;
+    V--&gt;&gt;A: API key
+    A--&gt;&gt;G: Replace header: Bearer &lt;API key&gt;
+    G-&gt;&gt;O: HTTPS + Authorization: Bearer &lt;API key&gt;
+    O--&gt;&gt;G: Chat completion response
+    G--&gt;&gt;W: Response (workload never saw the API key)
+</code></pre>
+<p>This AuthPolicy replaces the access control policy above — it includes identity verification and adds Vault-based credential injection on top. Remove the previous AuthPolicy first:</p>
+<pre><code class="language-bash">kubectl delete authpolicy openai-access-control -n gateway-system
+</code></pre>
+<pre><code class="language-bash">kubectl apply -f - &lt;&lt;'EOF'
+apiVersion: kuadrant.io/v1
+kind: AuthPolicy
+metadata:
+  name: openai-credential-injection
+  namespace: gateway-system
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: openai-external
+  rules:
+    authentication:
+      &quot;workload-identity&quot;:
+        kubernetesTokenReview:
+          audiences:
+            - &quot;https://kubernetes.default.svc.cluster.local&quot;
+    metadata:
+      vault_login:
+        http:
+          url: &quot;http://vault.vault.svc.cluster.local:8200/v1/auth/kubernetes/login&quot;
+          method: POST
+          contentType: application/json
+          body:
+            expression: '&quot;{\&quot;jwt\&quot;: \&quot;&quot; + request.headers.authorization.substring(7) + &quot;\&quot;, \&quot;role\&quot;: \&quot;egress-workload\&quot;}&quot;'
+        priority: 0
+      vault_secret:
+        http:
+          urlExpression: '&quot;http://vault.vault.svc.cluster.local:8200/v1/secret/data/egress/&quot; + auth.metadata.vault_login.auth.metadata.service_account_namespace + &quot;/&quot; + auth.metadata.vault_login.auth.metadata.service_account_name'
+          method: GET
+          headers:
+            X-Vault-Token:
+              expression: 'auth.metadata.vault_login.auth.client_token'
+        priority: 1
+    authorization:
+      vault_credential_check:
+        patternMatching:
+          patterns:
+          - predicate: 'has(auth.metadata.vault_secret.data)'
+    response:
+      success:
+        headers:
+          authorization:
+            plain:
+              expression: '&quot;Bearer &quot; + auth.metadata.vault_secret.data.data.api_key'
+EOF
+</code></pre>
+<p><strong>What each section does:</strong></p>
+<ul>
+<li><code>authentication.workload-identity</code> — validates the workload's SA token via TokenReview.</li>
+<li><code>metadata.vault_login</code> (priority 0) — authenticates to Vault using the SA token. Vault's <a href="https://developer.hashicorp.com/vault/docs/auth/kubernetes">Kubernetes auth method</a> validates the token and checks <code>bound_service_account_namespaces</code>.</li>
+<li><code>metadata.vault_secret</code> (priority 1, runs after vault_login) — reads the API key from a path built from the workload's namespace and service account: <code>secret/egress/&lt;namespace&gt;/&lt;sa-name&gt;</code>. Each workload identity gets its own credential.</li>
+<li><code>authorization.vault_credential_check</code> — verifies the credential fetch succeeded. If Vault denies access, the request is rejected (403).</li>
+<li><code>response.success.headers.authorization</code> — replaces the Authorization header with the real API key from Vault. The SA token never reaches OpenAI.</li>
+</ul>
+<p><strong>Per-workload credentials</strong> happen automatically. Store different API keys at different Vault paths and authorize the namespaces:</p>
+<pre><code class="language-bash"># Store per-team OpenAI keys
+kubectl exec vault-0 -n vault -- vault kv put secret/egress/team-a/default \
+    api_key=sk-team-a-key...
+kubectl exec vault-0 -n vault -- vault kv put secret/egress/team-b/default \
+    api_key=sk-team-b-key...
+
+# Authorize both namespaces in the Vault role
+kubectl exec vault-0 -n vault -- vault write auth/kubernetes/role/egress-workload \
+    bound_service_account_names=default \
+    bound_service_account_namespaces=ai-workloads,team-a,team-b \
+    policies=egress-read \
+    ttl=1h
+</code></pre>
+<p>Same AuthPolicy — each workload gets its own key based on its namespace and ServiceAccount.</p>
+<h2 id="test-it" tabindex="-1"><a class="header-anchor" href="#test-it">Test It</a></h2>
+<p>Deploy a test workload and send a real chat completion request. The workload sends its SA token; the gateway swaps it for the OpenAI API key from Vault.</p>
+<p><strong>With DNSPolicy</strong> (transparent DNS — workload calls <a href="http://api.openai.com">api.openai.com</a> directly):</p>
+<pre><code class="language-bash">kubectl exec test-client -n ai-workloads -- sh -c '
+curl -s -H &quot;Content-Type: application/json&quot; \
+    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \
+    -d '\''{&quot;model&quot;:&quot;gpt-4o-mini&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Say hello from Kubernetes&quot;}]}'\'' \
+    http://api.openai.com/v1/chat/completions
+'
+</code></pre>
+<p><strong>Without DNSPolicy</strong> (workload targets the gateway IP with a Host header):</p>
+<pre><code class="language-bash">kubectl exec test-client -n ai-workloads -- sh -c '
+curl -s -H &quot;Host: api.openai.com&quot; \
+    -H &quot;Content-Type: application/json&quot; \
+    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \
+    -d '\''{&quot;model&quot;:&quot;gpt-4o-mini&quot;,&quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Say hello from Kubernetes&quot;}]}'\'' \
+    http://'&quot;${EGRESS_IP}&quot;'/v1/chat/completions
+'
+</code></pre>
+<p>In both cases, the workload sends its Kubernetes identity. The gateway verifies it, fetches the real API key from Vault, and forwards the request to OpenAI over HTTPS. The response comes back to the workload — which never touched the API key.</p>
+<p>An unauthorized workload from a different namespace is blocked by Vault — it has a valid Kubernetes identity, but Vault's <code>bound_service_account_namespaces</code> denies credential access:</p>
+<pre><code class="language-bash">kubectl run bad-client --image=curlimages/curl:8.12.1 -n default --restart=Never \
+    --command -- sleep infinity
+kubectl wait --for=condition=Ready pod/bad-client -n default --timeout=30s
+
+kubectl exec bad-client -n default -- sh -c '
+curl -s -o /dev/null -w &quot;%{http_code}&quot; \
+    -H &quot;Host: api.openai.com&quot; \
+    -H &quot;Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)&quot; \
+    http://'&quot;${EGRESS_IP}&quot;'/v1/chat/completions
+'
+# 403
+
+kubectl delete pod bad-client -n default
+</code></pre>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
+<ul>
+<li><strong><a href="https://kuadrant.io/blog/token-rate-limiting/">TokenRateLimitPolicy</a></strong> — rate limit by token consumption instead of request count. Set per-workload token budgets for AI inference cost control.</li>
+</ul>
+<h2 id="learn-more" tabindex="-1"><a class="header-anchor" href="#learn-more">Learn More</a></h2>
+<ul>
+<li><a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/egress/egress-gateway/">Egress Gateway User Guide</a> — full setup and policy reference</li>
+<li><a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/egress/credential-injection/">Credential Injection Guide</a> — deep dive into Vault integration</li>
+<li><a href="https://docs.kuadrant.io/dev/kuadrant-operator/doc/user-guides/egress/dns-routing/">DNS Routing Guide</a> — internal hostname and CoreDNS approaches</li>
+<li><a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0016-egress-gateway.md">RFC 0016: Egress Gateway</a> — design and architecture</li>
+<li><a href="https://kuadrant.io/community/">Kuadrant Community</a> — join the conversation</li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway-tech-preview/">MCP Gateway 0.6: Tech Preview Release</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
