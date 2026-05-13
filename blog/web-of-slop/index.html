@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>The Web of Slop: AI-Driven Astroturfing in Open Source</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>The Web of Slop: AI-Driven Astroturfing in Open Source</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: David Martin | <time datetime="2026-05-08">08 May 2026</time></li>
+</ul>
+</h4>
+<p>There's plenty of coverage about AI slop hitting open source: low-quality pull requests, junk issues, the maintenance burden they create. Jeff Geerling has <a href="https://www.jeffgeerling.com/blog/2026/ai-is-destroying-open-source/">written about it</a>. The curl project shut down its bug bounty over it. GitHub is <a href="https://www.theregister.com/2026/02/03/github_kill_switch_pull_requests_ai/">shipping features</a> to help maintainers deal with it. The term <a href="https://www.kunalganglani.com/blog/ai-slopageddon-open-source-crisis/">&quot;AI Slopageddon&quot;</a> captures the volume problem well.</p>
+<p>What I've been seeing is a bit different, and I haven't seen it named yet.</p>
+<h2 id="the-pattern" tabindex="-1"><a class="header-anchor" href="#the-pattern">The pattern</a></h2>
+<p>I'm a maintainer on the <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> project, an Envoy-based gateway for MCP servers. We had an <a href="https://github.com/Kuadrant/mcp-gateway/issues/710">open issue</a> for auditing MCP tool calls via Envoy access logs. Two comments appeared within a few days of each other, both from accounts with no history in the project.</p>
+<p><a href="./mcp-gateway-comment-1.png"><picture><source type="image/avif" srcset="/img/SQVSjz5Q3C-900.avif 900w"><source type="image/webp" srcset="/img/SQVSjz5Q3C-900.webp 900w"><img alt="First comment on the MCP Gateway auditing issue" loading="lazy" decoding="async" src="/img/SQVSjz5Q3C-900.png" width="900" height="219"></picture></a></p>
+<p><a href="./mcp-gateway-comment-2.png"><picture><source type="image/avif" srcset="/img/wha2UwI9NN-900.avif 900w"><source type="image/webp" srcset="/img/wha2UwI9NN-900.webp 900w"><img alt="Second comment on the MCP Gateway auditing issue" loading="lazy" decoding="async" src="/img/wha2UwI9NN-900.png" width="900" height="204"></picture></a></p>
+<p>Same structure both times: acknowledge the approach in one sentence, identify a &quot;gap&quot;, pitch their project as the complement, close with a tidy summary. Neither account had any prior interaction with MCP Gateway.</p>
+<p>On their own, these could pass as genuine community input. What gave them away was the template: validate, gap, pitch, summary. Two different accounts, two different projects, same playbook.</p>
+<p>I checked where else these accounts comment. One promotes its project across issues in crewAI, autogen, openai-agents-python, agentops, and MCP Gateway. The other does the same across agent governance repositories. Both created their promoted projects in early 2026. Both carpet-bomb relevant issues across high-visibility repos.</p>
+<h2 id="a-more-sophisticated-version" tabindex="-1"><a class="header-anchor" href="#a-more-sophisticated-version">A more sophisticated version</a></h2>
+<p>The same pattern shows up in a more elaborate form on <a href="https://github.com/kubernetes-sigs/kube-agentic-networking">kube-agentic-networking</a>, a Kubernetes SIG project I'm involved with. An account opened a <a href="https://github.com/kubernetes-sigs/kube-agentic-networking/issues/243">detailed proposal issue</a> for receipt-based admission control, complete with schema definitions, IETF draft references, and info on four implementations!</p>
+<p><a href="./kan-issue-opener.png"><picture><source type="image/avif" srcset="/img/iHYiA7cViG-900.avif 900w"><source type="image/webp" srcset="/img/iHYiA7cViG-900.webp 900w"><img alt="Proposal issue on kube-agentic-networking" loading="lazy" decoding="async" src="/img/iHYiA7cViG-900.png" width="900" height="308"></picture></a></p>
+<p>The IETF draft was authored by the same person who opened the issue. Three of the four &quot;independent implementations&quot; are by that same person, published under two different company names. The fourth is by the second account that later showed up to validate the proposal. Anyone can submit an individual Internet-Draft to the IETF datatracker with no peer review or endorsement, but dropping &quot;IETF draft&quot; in a GitHub issue implies a level of credibility that isn't there.</p>
+<p>Within hours, the second account appeared to validate and extend the proposal, agreed on the approach, offered to co-author a reference implementation, and dropped links to their own product's API endpoints.</p>
+<p><a href="./kan-comment-exchange.png"><picture><source type="image/avif" srcset="/img/o7l205wfJO-900.avif 900w"><source type="image/webp" srcset="/img/o7l205wfJO-900.webp 900w"><img alt="Choreographed exchange on kube-agentic-networking" loading="lazy" decoding="async" src="/img/o7l205wfJO-900.png" width="900" height="113"></picture></a></p>
+<p>The original author responded enthusiastically, accepting every suggestion and proposing they collaborate. It reads like two independent experts converging on a shared design, exactly the kind of organic technical discourse you'd want on a SIG issue.</p>
+<p>But the proposal author's GitHub account was created mid-2025 and already has over a hundred followers and dozens of repositories. The validating commenter promotes their own governance platform across multiple repos, including their own. Both accounts appear across the same constellation of AI governance repositories, commenting on each other's projects, filing issues that reference each other's work, building a web of cross-references that looks like community adoption.</p>
+<p>This is what makes the pattern effective. The discussion looks legitimate enough that it's reasonable to engage with it. That's the whole point: create something that passes the smell test so the promoted projects gain credibility by association with a real community.</p>
+<h2 id="the-web-of-slop" tabindex="-1"><a class="header-anchor" href="#the-web-of-slop">The web of slop</a></h2>
+<p>This isn't new. SEO comment spam, blog spam, and astroturfing on forums have existed for decades. What's different now is that the comments are contextually accurate (they reference specific technical details from the issue, use the right terminology, propose plausible integration points), and the accounts look real (followers, repos, activity histories that used to require human effort to build).</p>
+<p>Most importantly, the cross-referencing creates artificial consensus. Multiple accounts across multiple repositories all pointing to the same projects, agreeing with each other's proposals. It manufactures the appearance of community demand. A maintainer seeing &quot;oh, multiple people have independently suggested this&quot; is seeing a mirage.</p>
+<p>Others have named parts of this. &quot;AI slop&quot; covers the content quality problem. <a href="https://news.ycombinator.com/item?id=46682139">&quot;Dead GitHub Theory&quot;</a> describes the authenticity crisis. The <a href="https://www.startuphub.ai/ai-news/cybersecurity/2026/github-fake-stars-reputation-as-a-service/">&quot;fake star economy&quot;</a> covers manufactured popularity signals. What I haven't seen named is the network structure: accounts that cross-reference, validate, and promote each other to manufacture credibility at scale. I'm calling it the <strong>web of slop</strong>.</p>
+<h2 id="what-were-doing-about-it" tabindex="-1"><a class="header-anchor" href="#what-were-doing-about-it">What we're doing about it</a></h2>
+<p>In the <a href="https://kuadrant.io">Kuadrant</a> project, a few practical things:</p>
+<ul>
+<li><strong>Check the account.</strong> When someone with no prior engagement pitches a project in a comment, check where else they comment. If they're running the same pitch across dozens of repos, minimise it as spam.</li>
+<li><strong>Don't engage.</strong> Replying, even to say &quot;thanks but no thanks&quot;, validates the approach and makes the links more visible to search indexing. Minimise and move on.</li>
+<li><strong>Share examples.</strong> Once you've seen the template, you spot it quickly. The best defence is the team recognising the pattern.</li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/egress-gateway-ai-workloads/">Managing AI Workload Egress with Kuadrant: Access Control, Rate Limiting, and Credential Injection</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
