@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>MCP Gateway 0.7 Release</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>MCP Gateway 0.7 Release</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: David Martin | <time datetime="2026-06-03">03 June 2026</time></li>
+</ul>
+</h4>
+<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.7.0">0.7 release</a>. This release adds tool discovery, per-user tool listings, prompt federation, and OAuth configuration via CRD. The project continues as a tech preview as APIs and core features evolve. For the full list of changes, check the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.7.0">0.7.0 release page</a> on GitHub.</p>
+<p>For background on the MCP Gateway, see the previous <a href="/blog/mcp-gateway-tech-preview/">0.6 tech preview announcement</a> or the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
+<h2 id="whats-new-in-07" tabindex="-1"><a class="header-anchor" href="#whats-new-in-07">What's New in 0.7</a></h2>
+<h3 id="tool-discovery" tabindex="-1"><a class="header-anchor" href="#tool-discovery">Tool Discovery</a></h3>
+<p>As the number of tools behind a gateway grows, returning everything in a single <code>tools/list</code> response becomes impractical. This release introduces progressive tool discovery via two built-in meta-tools: <code>discover_tools</code> and <code>select_tools</code>.</p>
+<p><code>discover_tools</code> returns lightweight metadata (server names, categories, hints, and tool names without schemas) so an agent can browse what's available. <code>select_tools</code> then scopes the session to a working set of tools, sending a <code>notifications/tools/list_changed</code> event so the agent refreshes its view.</p>
+<p>Operators annotate their <code>MCPServerRegistration</code> resources with <code>category</code> and <code>hint</code> fields to make servers discoverable:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1alpha1
+kind: MCPServerRegistration
+metadata:
+  name: weather-server
+spec:
+  prefix: weather
+  category:
+    - data
+    - environment
+  hint: &quot;Weather forecasts and historical climate data&quot;
+  targetRef:
+    name: weather-server
+</code></pre>
+<p>Discovery is enabled by default and can be tuned with the <code>--discovery-tool-threshold</code> flag to control when meta-tools appear. See the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/tool-discovery/">tool discovery guide</a> for details.</p>
+<h3 id="per-user-tool-listings" tabindex="-1"><a class="header-anchor" href="#per-user-tool-listings">Per-User Tool Listings</a></h3>
+<p>The gateway can now return different tool lists depending on who is calling. When <code>userSpecificList</code> is enabled on an <code>MCPServerRegistration</code>, the broker fetches tools per-user during <code>tools/list</code> rather than returning the same cached set for everyone. This supports upstream MCP servers that tailor their capabilities based on user identity or permissions.</p>
+<p>Per-user listings are opt-in and disabled by default. When enabled, the server must use a prefix:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1alpha1
+kind: MCPServerRegistration
+metadata:
+  name: user-aware-server
+spec:
+  prefix: myserver
+  userSpecificList: Enabled
+  targetRef:
+    name: user-aware-server
+</code></pre>
+<h3 id="prompt-federation" tabindex="-1"><a class="header-anchor" href="#prompt-federation">Prompt Federation</a></h3>
+<p>The gateway now federates MCP <a href="https://modelcontextprotocol.io/specification/2025-11-25/server/prompts">prompts</a> from upstream servers alongside tools. Prompts are prefixed the same way as tools and are accessible via <code>prompts/list</code> and <code>prompts/get</code> through the gateway. Authorization filtering supports prompts via the <code>allowed-capabilities</code> JWT claim, and virtual servers can scope prompts via the <code>spec.prompts</code> field on <code>MCPVirtualServer</code>.</p>
+<h3 id="oauth-protected-resource-configuration-via-crd" tabindex="-1"><a class="header-anchor" href="#oauth-protected-resource-configuration-via-crd">OAuth Protected Resource Configuration via CRD</a></h3>
+<p>The <code>oauthProtectedResource</code> field on <code>MCPGatewayExtension</code> replaces the previous approach of manually setting <code>OAUTH_*</code> environment variables on the broker-router deployment. The controller manages the environment variables automatically:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1alpha1
+kind: MCPGatewayExtension
+metadata:
+  name: mcp-gateway
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    namespace: gateway-system
+    sectionName: mcp
+  oauthProtectedResource:
+    authorizationServers:
+      - &quot;https://keycloak.example.com/realms/mcp&quot;
+    scopesSupported:
+      - &quot;basic&quot;
+      - &quot;groups&quot;
+</code></pre>
+<p>Only <code>authorizationServers</code> is required. Sensible defaults are applied for the other fields. See the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/authentication/">authentication guide</a> for the updated workflow.</p>
+<h3 id="enabledisable-mcpserverregistration" tabindex="-1"><a class="header-anchor" href="#enabledisable-mcpserverregistration">Enable/Disable MCPServerRegistration</a></h3>
+<p><code>MCPServerRegistration</code> resources now support a <code>state</code> field (<code>Enabled</code> or <code>Disabled</code>, default <code>Enabled</code>). Setting <code>state: Disabled</code> tells the broker to disconnect from the upstream server and remove its tools and prompts from the gateway. The registration is preserved and can be re-enabled at any time without recreating resources.</p>
+<h3 id="bug-fixes-and-security-improvements" tabindex="-1"><a class="header-anchor" href="#bug-fixes-and-security-improvements">Bug Fixes and Security Improvements</a></h3>
+<p>This release includes a number of bug fixes and security improvements, including a <a href="https://github.com/advisories/GHSA-g53w-w6mj-hrpp">critical security fix</a> for the hairpin backend-init request flow, concurrent map access fixes, Redis session TTL alignment, and improved health check endpoints. See the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.7.0">release notes</a> for the full list.</p>
+<h2 id="breaking-changes" tabindex="-1"><a class="header-anchor" href="#breaking-changes">Breaking Changes</a></h2>
+<p>The 0.7 release includes several breaking API changes. The project is still in tech preview with alpha APIs, so these are expected as the API surface stabilizes.</p>
+<ul>
+<li><strong><code>toolPrefix</code> renamed to <code>prefix</code></strong> on <code>MCPServerRegistration</code>. The field applies to both tools and prompts, so the name now reflects its actual scope. Existing resources must be deleted and recreated due to immutability validation.</li>
+<li><strong><code>x-authorized-tools</code> header replaced with <code>x-mcp-authorized</code></strong>. The authorization header now supports a capability-typed JWT structure covering tools, prompts, and resources. AuthPolicy configurations must be updated.</li>
+<li><strong><code>--enforce-tool-filtering</code> renamed to <code>--enforce-capability-filtering</code></strong>. The CLI flag name reflects the broader scope of capability filtering beyond just tools.</li>
+<li><strong>Keycloak roles now require a <code>tool:</code> prefix</strong>. Roles like <code>greet</code> must become <code>tool:greet</code> to support future capability types (<code>prompt:</code>, <code>resource:</code>).</li>
+<li><strong><code>JWT_SESSION_SIGNING_KEY</code> renamed to <code>GATEWAY_SIGNING_KEY</code></strong>. The old environment variable is still accepted as a fallback but is deprecated. In controller-managed deployments, this is handled automatically.</li>
+</ul>
+<p>See the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.7.0">release notes</a> for detailed migration steps.</p>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
+<p>The <a href="https://github.com/Kuadrant/mcp-gateway/milestone/7">0.8 milestone</a> is in progress. The project continues to track the evolving <a href="https://modelcontextprotocol.io/">MCP specification</a> and work toward production readiness.</p>
+<h2 id="get-involved" tabindex="-1"><a class="header-anchor" href="#get-involved">Get Involved</a></h2>
+<ul>
+<li>Try the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</li>
+<li>Report issues or request features on the <a href="https://github.com/kuadrant/mcp-gateway/issues">MCP Gateway Issues</a> page.</li>
+<li>Engage with the <a href="https://kuadrant.io/community/">community</a>.</li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/web-of-slop/">The Web of Slop: AI-Driven Astroturfing in Open Source</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
