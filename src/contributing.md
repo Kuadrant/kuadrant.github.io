@@ -42,13 +42,24 @@ Missed a meeting? Don't worry! All of our Community calls are recorded and avail
 
 A list of good first issues can be found from the Kuadrant Github [projects board](https://github.com/orgs/Kuadrant/projects/18/views/7). These issues are categorised per component.
 
+### Issue Triage
+
+All new issues are automatically labelled with `triage/needs-triage`. Once the team has reviewed and prioritised an issue, a maintainer will move it to `triage/accepted`. Look for issues with the `triage/accepted` label — that's the signal that an issue is ready to be picked up.
+
+| Label | Meaning |
+|---|---|
+| `triage/needs-triage` | New issue, awaiting maintainer review |
+| `triage/accepted` | Reviewed, prioritised, and ready for work |
+
+Only maintainers can change triage labels.
+
 ### Assigning an Issue
 
 If you're interested in working on an issue, start by leaving a comment to let others know — please don't assign yourself straight away. Once you've had a chance to confirm it's a good fit and you're ready to start, then mark yourself as an assignee and update the status to `In Progress`.
 
 We'd encourage you to focus on one issue at a time and see it through to completion — including review feedback and any follow-up — before picking up the next one. Maintainers have limited capacity and are often working across multiple projects, so this helps them give your work the attention it deserves rather than spreading review time across several in-flight PRs.
 
-If an issue already has someone assigned, either let them run with it or drop a comment to see if they'd be open to pairing — but please don't assign yourself over someone who's already working on it. There are plenty of great issues to go around and we're sure you'll find something that's a great fit. If something looks like it may have been abandoned (no activity for a few weeks), drop us a message on [Slack][SlackChannelURL] and we can help figure out next steps.
+Each issue can only have one open PR at a time — if someone else already has a PR open against the issue, the automation will close any additional ones. If an issue already has someone assigned, either let them run with it or drop a comment to see if they'd be open to pairing — but please don't assign yourself over someone who's already working on it. There are plenty of great issues to go around and we're sure you'll find something that's a great fit. If something looks like it may have been abandoned (no activity for a few weeks), drop us a message on [Slack][SlackChannelURL] and we can help figure out next steps.
 
 On the rare occasion that there are no good first issues available, that's OK! There is likely still something for you to work on. If you want to contribute but you don't know where to start or can't find a suitable issue, you can reach out via the [Public Slack channel][SlackChannelURL] for suggestions and/or guidance.
 
@@ -105,7 +116,7 @@ repository, you can amend your commit with the sign-off by running
 
 Please keep to one open PR per project at a time. Getting a single change reviewed, approved and merged is more valuable than having several PRs open in parallel — it keeps the review queue manageable and means you get faster, more focused feedback. Once your PR is merged, you're welcome to open the next one.
 
-When submitting a pull request against one of the Kuadrant component repositories, should the PR address a particular Github issue please make sure to reference it in the PR description. That said, it is not mandatory for a PR to have an associated issue referenced. In the event of a standalone PR that doesn't have an associated issue, please add a detailed description of the changes included. Adding *What* and *Why* sections is a good start. For example, *What* is the purpose of this change and *Why* is it required and/or being implemented in this way?
+PRs from external contributors must link to a triaged issue — use `Fixes #123` or `Closes #123` in the PR description, or link it via the GitHub sidebar. The linked issue must have the `triage/accepted` label. PRs that don't meet these requirements will be automatically closed. Your branch won't be deleted, so you can reopen once the requirements are met.
 
 If you used AI tools to help write your contribution, please review the [Using AI Tools](#using-ai-tools) section before submitting.
 
