@@ -63,7 +63,7 @@ That's because I hadn't wired the metadata through yet: `ext_authz` doesn't forw
 
 The fix was adding the MCP namespace to the [`ext_authz` configuration](https://github.com/kkukadia/mcp-native-investigation/blob/master/tests/capability/c5/kuadrant/manifests/envoy138.yaml):
 
-```
+```yaml
 metadata_context_namespaces:
 - envoy.filters.http.mcp
 ```
@@ -78,7 +78,7 @@ Before Envoy 1.38, a custom component had to sit between the proxy and authoriza
 
 For a single MCP server: Envoy can provide the context needed for tool-level authorization without a separate parsing process. The tradeoff shifts from building custom infrastructure to waiting on Istio to register `envoy.filters.http.mcp` in its own proxy build.
 
-That's the one piece still missing. Kuadrant's `AuthPolicy` CRD already works cleanly against an Istio 1.30 Gateway with zero manual Envoy config ([evidence](https://github.com/kkukadia/mcp-native-investigation/blob/master/results/c6.txt)), so replacing `AuthConfig` with `AuthPolicy` is solved independent of the filter question. Once Istio adds the filter itself, the rest of the integration path is already proven.
+That's the one piece still missing. Two things are proven independently here, not together: the native filter works, tested standalone against Authorino directly, and Kuadrant's `AuthPolicy` CRD works cleanly against an Istio 1.30 Gateway with zero manual Envoy config ([evidence](https://github.com/kkukadia/mcp-native-investigation/blob/master/results/c6.txt)). That `AuthPolicy` test ran without the filter present, since Istio doesn't register it yet. The combined path, native filter plus `AuthPolicy` plus Istio all at once, hasn't been tested and can't be until Istio adds the filter to its build.
 
 MCP gateways still have other jobs to solve - routing across multiple servers, aggregation, and higher-level MCP-specific behavior, but parsing no longer has to be one of them.
 
