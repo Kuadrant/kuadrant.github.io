@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Replacing ext-proc with Envoy&#39;s Native MCP Filter (Almost)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Replacing ext-proc with Envoy&#39;s Native MCP Filter (Almost)</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Krishna Kukadia | <time datetime="2026-07-26">26 July 2026</time></li>
+</ul>
+</h4>
+<p><code>mcp-gateway</code> relies on a custom Go processor, <code>ext-proc</code>, to parse MCP requests - routing tool calls, managing sessions, and exposing metadata for authorization, work Envoy had no native way to do. Parsing sits underneath all of it: without knowing which tool a request is calling, none of the rest is possible. Envoy 1.38 changed this specifically: its native MCP filter can extract the same metadata without custom code.</p>
+<p>A <code>tools/call</code> request makes this concrete. The HTTP request line only says <code>POST /mcp</code> - the tool being called lives entirely inside the JSON-RPC body:</p>
+<pre><code class="language-json">POST /mcp HTTP/1.1
+Content-Type: application/json
+
+{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;delete_records&quot;,
+    &quot;arguments&quot;: { &quot;table&quot;: &quot;users&quot; }
+  }
+}
+</code></pre>
+<p>Nothing in the path or headers says <code>delete_records</code>. A proxy reading only HTTP semantics has no way to know which tool this request is calling, or to authorize it at the tool level, without opening this body.</p>
+<p>I took this on as my <a href="https://mentorship.lfx.linuxfoundation.org/project/1acff18b-c4da-4166-9a79-ceb8a8ad112b">LFX mentorship project</a> this term (Term 2, 2026), scoped in <a href="https://github.com/Kuadrant/mcp-gateway/issues/809">this issue</a>: if Envoy's <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/mcp_filter">native MCP filter</a> can already parse requests and publish that metadata on its own, does a separate parsing component still belong in the request path?</p>
+<p>To answer that question, I compared <code>mcp-gateway</code>'s current architecture against a native Envoy filter chain.</p>
+<p>But before looking at the comparison, a few terms worth defining:</p>
+<ul>
+<li><strong><a href="https://github.com/Kuadrant/mcp-gateway/tree/main/internal/mcp-router">ext-proc</a></strong> - the processor <code>mcp-gateway</code> uses to parse MCP requests before Authorino sees them</li>
+<li><strong><a href="https://github.com/Kuadrant/authorino">Authorino</a></strong> - evaluates policy and returns allow or deny</li>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview">HTTP</a></strong> - the transport carrying MCP messages between the client, gateway, and server</li>
+<li><strong><a href="https://www.jsonrpc.org/specification">JSON-RPC</a></strong> - MCP's message format, where tool calls are represented in the request body rather than the HTTP path or headers</li>
+</ul>
+<p><a href="./diagram-architecture.png"><picture><source type="image/avif" srcset="/img/Iu-Hvjjh16-900.avif 900w"><source type="image/webp" srcset="/img/Iu-Hvjjh16-900.webp 900w"><img alt="mcp-gateway path compared to the native Envoy filter chain" loading="lazy" decoding="async" src="/img/Iu-Hvjjh16-900.png" width="900" height="470"></picture></a></p>
+<h2 id="testing-standalone-instead-of-waiting" tabindex="-1"><a class="header-anchor" href="#testing-standalone-instead-of-waiting">Testing standalone instead of waiting</a></h2>
+<p>At the time of testing, Istio didn't run the native MCP filter, and this is the kind of thing that can change as Istio's build evolves. Even on Istio 1.30, which bundles Envoy 1.38, loading <code>envoy.filters.http.mcp</code> through an <code>EnvoyFilter</code> was rejected (<a href="https://github.com/kkukadia/mcp-native-investigation/blob/master/results/c6.txt">evidence</a>) - Istio compiles its own proxy image from a curated subset of upstream Envoy extensions, and this filter wasn't in that set. Since Kuadrant deployments typically run Envoy through Istio, testing the filter at all meant not going through Istio.</p>
+<p>I had two options:</p>
+<ul>
+<li><strong>Wait for Istio to add the filter to its build.</strong></li>
+<li><strong>Test standalone Envoy 1.38 directly with Authorino.</strong></li>
+</ul>
+<p>I chose the standalone approach, using Authorino's <code>AuthConfig</code> API directly since Kuadrant's <code>AuthPolicy</code> integration depends on the Istio request path. The goal was to validate the new Envoy → authorization flow directly, not reproduce the entire production stack.</p>
+<h2 id="connecting-parsing-to-authorization" tabindex="-1"><a class="header-anchor" href="#connecting-parsing-to-authorization">Connecting parsing to authorization</a></h2>
+<p>A single <code>tools/call</code> request needs to pass through several steps before the MCP server sees it:</p>
+<p><a href="./diagram-sequence.png"><picture><source type="image/avif" srcset="/img/SkwMmVoqbH-900.avif 900w"><source type="image/webp" srcset="/img/SkwMmVoqbH-900.webp 900w"><img alt="Request sequence for a single tools/call" loading="lazy" decoding="async" src="/img/SkwMmVoqbH-900.png" width="900" height="342"></picture></a></p>
+<p>The initial setup looked correct: Envoy had the expected filter chain (<code>mcp_filter → ext_authz → router</code>), and the MCP filter was successfully extracting the method and tool name from requests.</p>
+<p>Every tool call still returned <code>200</code>, though - allowed and blocked alike.</p>
+<p>That's because I hadn't wired the metadata through yet: <code>ext_authz</code> doesn't forward Envoy's dynamic metadata to the authorization server by default, so Authorino was evaluating every request with an empty input.</p>
+<p>The fix was adding the MCP namespace to the <a href="https://github.com/kkukadia/mcp-native-investigation/blob/master/tests/capability/c5/kuadrant/manifests/envoy138.yaml"><code>ext_authz</code> configuration</a>:</p>
+<pre><code class="language-yaml">metadata_context_namespaces:
+- envoy.filters.http.mcp
+</code></pre>
+<p>After that, Authorino received the method and tool name, and the <a href="https://github.com/kkukadia/mcp-native-investigation/blob/master/tests/capability/c5/kuadrant/manifests/authconfig.yaml">policies</a> started producing the expected allow and deny decisions.</p>
+<h2 id="where-this-leaves-things" tabindex="-1"><a class="header-anchor" href="#where-this-leaves-things">Where this leaves things</a></h2>
+<p>The interesting part of this investigation was what happened once MCP parsing moved into the data plane, not just that Envoy could parse an MCP request in the first place.</p>
+<p>Before Envoy 1.38, a custom component had to sit between the proxy and authorization layer to translate MCP into something policy engines could understand. With the native MCP filter, that translation can happen inside Envoy itself. The remaining question is which responsibilities should stay outside the proxy.</p>
+<p>For a single MCP server: Envoy can provide the context needed for tool-level authorization without a separate parsing process. The tradeoff shifts from building custom infrastructure to waiting on Istio to register <code>envoy.filters.http.mcp</code> in its own proxy build.</p>
+<p>That's the one piece still missing. Two things are proven independently here, not together: the native filter works, tested standalone against Authorino directly, and Kuadrant's <code>AuthPolicy</code> CRD works cleanly against an Istio 1.30 Gateway with zero manual Envoy config (<a href="https://github.com/kkukadia/mcp-native-investigation/blob/master/results/c6.txt">evidence</a>). That <code>AuthPolicy</code> test ran without the filter present, since Istio doesn't register it yet. The combined path, native filter plus <code>AuthPolicy</code> plus Istio all at once, hasn't been tested and can't be until Istio adds the filter to its build.</p>
+<p>MCP gateways still have other jobs to solve - routing across multiple servers, aggregation, and higher-level MCP-specific behavior, but parsing no longer has to be one of them.</p>
+<p>I tested Envoy's native aggregating mode against multiple backend servers separately, and the results are a different enough story (caching, session notifications, per-backend credentials) to leave for their own writeup (<a href="https://github.com/kkukadia/mcp-native-investigation/tree/master/results">evidence</a>).</p>
+<p>The full evidence and working configuration are available in the <a href="https://github.com/kkukadia/mcp-native-investigation">investigation repo</a>.</p>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway-0.7/">MCP Gateway 0.7 Release</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
