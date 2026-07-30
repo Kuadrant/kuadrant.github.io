@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>MCP Gateway 0.8 Release (2026-07-28 protocol support)</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>MCP Gateway 0.8 Release (2026-07-28 protocol support)</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: David Martin | <time datetime="2026-07-30">30 July 2026</time></li>
+</ul>
+</h4>
+<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">0.8 release</a>. This release adds early support for the MCP 2026 stateless protocol, promotes APIs to v1, introduces broker observability metrics, and adds CA certificate bundle configuration. The project continues as a tech preview. For the full list of changes, check the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">0.8.0 release page</a> on GitHub.</p>
+<p>For background on the MCP Gateway, see the previous <a href="/blog/mcp-gateway-0.7/">0.7 release announcement</a> or the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
+<h2 id="whats-new-in-08" tabindex="-1"><a class="header-anchor" href="#whats-new-in-08">What's New in 0.8</a></h2>
+<h3 id="mcp-2026-protocol-support-alpha" tabindex="-1"><a class="header-anchor" href="#mcp-2026-protocol-support-alpha">MCP 2026 Protocol Support (Alpha)</a></h3>
+<p>The <a href="https://modelcontextprotocol.io/">MCP specification</a> published a new protocol version (<code>2026-07-28</code>) that introduces a stateless HTTP transport. The gateway now supports both protocol versions simultaneously on a single endpoint. Clients negotiate the protocol version, and the gateway routes accordingly: 2026 clients get stateless HTTP handling, while 2025 clients continue with the existing streamable HTTP transport.</p>
+<p>This required a significant internal restructuring. Routing logic was extracted from the ext_proc adapter into a transport-agnostic package, with versioned router implementations (<code>Router202511</code>, <code>Router202607</code>) behind a common interface. The broker maintains separate tool sets per protocol version, so 2026 clients only see tools from stateless-capable backends and vice versa.</p>
+<p>A protocol-specific route (<code>/mcp/stateful</code>) is also available for clients that want to force the older version regardless of negotiation.</p>
+<p>This support is alpha. It will continue to evolve as the 2026 specification matures.</p>
+<h3 id="api-promotion-to-v1" tabindex="-1"><a class="header-anchor" href="#api-promotion-to-v1">API Promotion to v1</a></h3>
+<p>The custom resource APIs (<code>MCPGatewayExtension</code>, <code>MCPServerRegistration</code>, <code>MCPVirtualServer</code>) have been promoted from <code>v1alpha1</code> to <code>v1</code>. The <code>v1alpha1</code> version remains served for backwards compatibility, but <code>v1</code> is now the storage version.</p>
+<p>As part of the promotion, several experimental annotations were replaced with typed spec fields:</p>
+<ul>
+<li><code>mcp.kuadrant.io/experimental-discovery</code> annotations are now <code>category</code> and <code>hint</code> fields on <code>MCPServerRegistration</code></li>
+<li><code>mcp.kuadrant.io/experimental-extension</code> annotations are now typed fields on the relevant CRDs</li>
+<li>Resource shortnames were standardized (<code>mcpge</code>, <code>mcpsr</code>, <code>mcpvs</code>)</li>
+</ul>
+<p>See the <a href="https://github.com/Kuadrant/mcp-gateway/blob/main/docs/release-notes/1109-api-v1-migration.md">v1 migration guide</a> for details on updating existing resources.</p>
+<h3 id="broker-prometheus-metrics" tabindex="-1"><a class="header-anchor" href="#broker-prometheus-metrics">Broker Prometheus Metrics</a></h3>
+<p>The broker now exposes Prometheus metrics on a dedicated scrape endpoint (<code>:9090</code> by default). Five new metrics cover upstream discovery health, tool inventory, connection stability, and response sizes:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mcp_broker_discovery_total</code></td>
+<td>Counter</td>
+<td>Discovery attempts per upstream server</td>
+</tr>
+<tr>
+<td><code>mcp_broker_discovery_duration_seconds</code></td>
+<td>Histogram</td>
+<td>Duration of discovery calls</td>
+</tr>
+<tr>
+<td><code>mcp_broker_tools_discovered</code></td>
+<td>Gauge</td>
+<td>Current tool count per server</td>
+</tr>
+<tr>
+<td><code>mcp_broker_upstream_connection_failures_total</code></td>
+<td>Counter</td>
+<td>Connection failures per server</td>
+</tr>
+<tr>
+<td><code>mcp_broker_tools_list_response_bytes</code></td>
+<td>Gauge</td>
+<td>Size of <code>tools/list</code> response per server</td>
+</tr>
+</tbody>
+</table>
+<p>Metrics use <code>server_name</code> as the only label, bounded by the number of <code>MCPServerRegistration</code> resources. No high-cardinality labels. See the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/opentelemetry/">OpenTelemetry guide</a> for setup.</p>
+<h3 id="ca-certificate-bundle" tabindex="-1"><a class="header-anchor" href="#ca-certificate-bundle">CA Certificate Bundle</a></h3>
+<p>The new <code>caCertBundleRef</code> field on <code>MCPGatewayExtension</code> references a shared CA certificate bundle Secret. The broker loads this as a base trust pool for all upstream connections, eliminating duplication when multiple upstream servers share the same private CA:</p>
+<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1
+kind: MCPGatewayExtension
+metadata:
+  name: mcp-gateway
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: mcp-gateway
+    namespace: gateway-system
+    sectionName: mcp
+  caCertBundleRef:
+    name: my-ca-bundle
+</code></pre>
+<p>The trust pool is additive: system roots, gateway-level bundle, and per-server CA certificates are all composed together.</p>
+<h3 id="official-mcp-go-sdk" tabindex="-1"><a class="header-anchor" href="#official-mcp-go-sdk">Official MCP Go SDK</a></h3>
+<p>The broker and router internals migrated from the community <code>mark3labs/mcp-go</code> library to the <a href="https://github.com/modelcontextprotocol/go-sdk">official MCP Go SDK</a>. A compatibility layer preserves the exact observable behavior from the previous library, so existing clients are unaffected.</p>
+<h3 id="bug-fixes-and-security-improvements" tabindex="-1"><a class="header-anchor" href="#bug-fixes-and-security-improvements">Bug Fixes and Security Improvements</a></h3>
+<p>This release includes a significant number of bug fixes and security improvements from both maintainers and new contributors. Highlights include elicitation ID rewriting fixes, session token expiry handling, transport timeout enforcement on upstream connections, race-free routing config updates, log output obfuscation of session IDs, and cookie/proxy header stripping for user-specific upstreams. See the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">release notes</a> for the full list.</p>
+<h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
+<p>The project continues to track the evolving <a href="https://modelcontextprotocol.io/">MCP specification</a> and work toward production readiness. MCP resource federation, additional 2026 protocol features, and further observability improvements are on the roadmap.</p>
+<h2 id="get-involved" tabindex="-1"><a class="header-anchor" href="#get-involved">Get Involved</a></h2>
+<ul>
+<li>Try the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</li>
+<li>Report issues or request features on the <a href="https://github.com/kuadrant/mcp-gateway/issues">MCP Gateway Issues</a> page.</li>
+<li>Engage with the <a href="https://kuadrant.io/community/">community</a>.</li>
+</ul>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/envoy-native-mcp-filter/">Replacing ext-proc with Envoy&#39;s Native MCP Filter (Almost)</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
