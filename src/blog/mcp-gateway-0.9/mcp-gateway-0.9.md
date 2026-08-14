@@ -4,7 +4,7 @@ date: 2026-08-14
 author: David Martin
 ---
 
-The [MCP Gateway](https://github.com/kuadrant/mcp-gateway) has reached its [0.9 release](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0). This release adds MCP resource federation, structured audit logging, and integration with the Kuadrant umbrella operator. It also continues maturing the 2026 stateless protocol support introduced in 0.8. The project remains a tech preview. For the full list of changes, check the [0.9.0 release page](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0) on GitHub.
+The [MCP Gateway](https://github.com/kuadrant/mcp-gateway) has reached its [0.9 release](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0). This release adds MCP resource federation and structured audit logging. It also continues maturing the 2026 stateless protocol support introduced in 0.8. The project remains a tech preview. For the full list of changes, check the [0.9.0 release page](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0) on GitHub.
 
 For background on the MCP Gateway, see the previous [0.8 release announcement](/blog/mcp-gateway-0.8/) or the [overview documentation](https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/).
 
@@ -12,9 +12,9 @@ For background on the MCP Gateway, see the previous [0.8 release announcement](/
 
 ### Resource Federation
 
-The gateway now federates MCP [resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) from upstream servers, completing the set alongside tools and prompts. A `resources/list` request fans out to all registered upstreams concurrently and merges the results, with the server prefix injected into each resource URI so clients can address resources unambiguously.
+The gateway now federates MCP [resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) from upstream servers, extending federation beyond tools and prompts. A `resources/list` request fans out to all registered upstreams concurrently and merges the results, with the owning server's prefix injected into the resource URI so clients can address them unambiguously.
 
-Unlike tools and prompts, resources are fetched live per request rather than cached, so `resources/list` always reflects the current state of each upstream. Resolution uses longest-prefix matching to route a resource read back to the server that owns it. Upstreams that error or time out are skipped, producing an observable partial list rather than failing the whole call.
+Unlike tools and prompts, resources are fetched live per request rather than cached, so `resources/list` always reflects the current state of each upstream. Upstreams that error, time out, or have no prefix are skipped, producing an observable partial list rather than failing the whole call. This release covers listing; routing `resources/read` calls back to the owning server (longest-prefix match on the URI) lands as a follow-up.
 
 ### Structured Audit Logging
 
