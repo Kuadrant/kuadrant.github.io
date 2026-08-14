@@ -32,7 +32,7 @@ level=INFO msg="tool call" audit=true user=alice@example.com tool=echo server=mc
 
 Entries are emitted both when a call reaches the backend and when the router rejects it early (for example on a session init failure or unknown server). Because the log is produced inside the router, the audit trail is self-contained and does not depend on the Envoy or Istio telemetry pipeline. This matters on platforms where the Istio configuration is managed externally and a custom telemetry `extensionProvider` cannot be relied on.
 
-It also supplements what Istio can see. Istio telemetry records the HTTP request to the gateway (method, path, status, latency, and the authenticated peer), but the MCP method and tool name live inside the JSON-RPC request body, which the proxy treats as opaque. The router parses that body and makes the routing decision, so it can attribute each call to a specific tool and the upstream server it resolved to, tied to the calling user. The audit log adds that MCP-level detail on top of Istio's transport-level view.
+It also supplements what Istio can see. Istio telemetry records the HTTP request to the gateway (method, path, status, latency, and the authenticated peer), but the MCP method and tool name live inside the JSON-RPC request body (or headers for 2026 protocol), which the proxy treats as opaque. The router parses that body and makes the routing decision, so it can attribute each call to a specific tool and the upstream server it resolved to, tied to the calling user. The audit log adds that MCP-level detail on top of Istio's transport-level view.
 
 ### 2026 Protocol: Streaming and Protocol Handlers
 
