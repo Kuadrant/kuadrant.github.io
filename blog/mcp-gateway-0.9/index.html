@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>MCP Gateway 0.8 Release (2026-07-28 protocol support)</title>
+  <title>MCP Gateway 0.9 Release</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -66,91 +66,31 @@
 
     
     <div class="container">
-      <h1>MCP Gateway 0.8 Release (2026-07-28 protocol support)</h1>
+      <h1>MCP Gateway 0.9 Release</h1>
 <h4>
 <ul class="post-metadata">
-	<li>By: David Martin | <time datetime="2026-07-30">30 July 2026</time></li>
+	<li>By: David Martin | <time datetime="2026-08-14">14 August 2026</time></li>
 </ul>
 </h4>
-<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">0.8 release</a>. This release adds early support for the MCP 2026 stateless protocol, promotes APIs to v1, introduces broker observability metrics, and adds CA certificate bundle configuration. The project continues as a tech preview. For the full list of changes, check the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">0.8.0 release page</a> on GitHub.</p>
-<p>For background on the MCP Gateway, see the previous <a href="/blog/mcp-gateway-0.7/">0.7 release announcement</a> or the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
-<h2 id="whats-new-in-08" tabindex="-1"><a class="header-anchor" href="#whats-new-in-08">What's New in 0.8</a></h2>
-<h3 id="mcp-2026-protocol-support-alpha" tabindex="-1"><a class="header-anchor" href="#mcp-2026-protocol-support-alpha">MCP 2026 Protocol Support (Alpha)</a></h3>
-<p>The <a href="https://modelcontextprotocol.io/">MCP specification</a> published a new protocol version (<code>2026-07-28</code>) that introduces a stateless HTTP transport. The gateway now supports both protocol versions simultaneously on a single endpoint. Clients negotiate the protocol version, and the gateway routes accordingly: 2026 clients get stateless HTTP handling, while 2025 clients continue with the existing streamable HTTP transport.</p>
-<p>This required a significant internal restructuring. Routing logic was extracted from the ext_proc adapter into a transport-agnostic package, with versioned router implementations (<code>Router202511</code>, <code>Router202607</code>) behind a common interface. The broker maintains separate tool sets per protocol version, so 2026 clients only see tools from stateless-capable backends and vice versa.</p>
-<p>A protocol-specific route (<code>/mcp/stateful</code>) is also available for clients that want to force the older version regardless of negotiation.</p>
-<p>This support is alpha. It will continue to evolve as the 2026 specification matures.</p>
-<h3 id="api-promotion-to-v1" tabindex="-1"><a class="header-anchor" href="#api-promotion-to-v1">API Promotion to v1</a></h3>
-<p>The custom resource APIs (<code>MCPGatewayExtension</code>, <code>MCPServerRegistration</code>, <code>MCPVirtualServer</code>) have been promoted from <code>v1alpha1</code> to <code>v1</code>. The <code>v1alpha1</code> version remains served for backwards compatibility, but <code>v1</code> is now the storage version.</p>
-<p>As part of the promotion, several experimental annotations were replaced with typed spec fields:</p>
-<ul>
-<li><code>mcp.kuadrant.io/experimental-discovery</code> annotations are now <code>category</code> and <code>hint</code> fields on <code>MCPServerRegistration</code></li>
-<li><code>mcp.kuadrant.io/experimental-extension</code> annotations are now typed fields on the relevant CRDs</li>
-<li>Resource shortnames were standardized (<code>mcpge</code>, <code>mcpsr</code>, <code>mcpvs</code>)</li>
-</ul>
-<p>See the <a href="https://github.com/Kuadrant/mcp-gateway/blob/main/docs/release-notes/1109-api-v1-migration.md">v1 migration guide</a> for details on updating existing resources.</p>
-<h3 id="broker-prometheus-metrics" tabindex="-1"><a class="header-anchor" href="#broker-prometheus-metrics">Broker Prometheus Metrics</a></h3>
-<p>The broker now exposes Prometheus metrics on a dedicated scrape endpoint (<code>:9090</code> by default). Five new metrics cover upstream discovery health, tool inventory, connection stability, and response sizes:</p>
-<table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mcp_broker_discovery_total</code></td>
-<td>Counter</td>
-<td>Discovery attempts per upstream server</td>
-</tr>
-<tr>
-<td><code>mcp_broker_discovery_duration_seconds</code></td>
-<td>Histogram</td>
-<td>Duration of discovery calls</td>
-</tr>
-<tr>
-<td><code>mcp_broker_tools_discovered</code></td>
-<td>Gauge</td>
-<td>Current tool count per server</td>
-</tr>
-<tr>
-<td><code>mcp_broker_upstream_connection_failures_total</code></td>
-<td>Counter</td>
-<td>Connection failures per server</td>
-</tr>
-<tr>
-<td><code>mcp_broker_tools_list_response_bytes</code></td>
-<td>Gauge</td>
-<td>Size of <code>tools/list</code> response per server</td>
-</tr>
-</tbody>
-</table>
-<p>Metrics use <code>server_name</code> as the only label, bounded by the number of <code>MCPServerRegistration</code> resources. No high-cardinality labels. See the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/opentelemetry/">OpenTelemetry guide</a> for setup.</p>
-<h3 id="ca-certificate-bundle" tabindex="-1"><a class="header-anchor" href="#ca-certificate-bundle">CA Certificate Bundle</a></h3>
-<p>The new <code>caCertBundleRef</code> field on <code>MCPGatewayExtension</code> references a shared CA certificate bundle Secret. The broker loads this as a base trust pool for all upstream connections, eliminating duplication when multiple upstream servers share the same private CA:</p>
-<pre><code class="language-yaml">apiVersion: mcp.kuadrant.io/v1
-kind: MCPGatewayExtension
-metadata:
-  name: mcp-gateway
-spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: mcp-gateway
-    namespace: gateway-system
-    sectionName: mcp
-  caCertBundleRef:
-    name: my-ca-bundle
+<p>The <a href="https://github.com/kuadrant/mcp-gateway">MCP Gateway</a> has reached its <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0">0.9 release</a>. This release adds structured audit logging and continues maturing the 2026 stateless protocol support introduced in 0.8. The project remains a tech preview. For the full list of changes, check the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0">0.9.0 release page</a> on GitHub.</p>
+<p>For background on the MCP Gateway, see the previous <a href="/blog/mcp-gateway-0.8/">0.8 release announcement</a> or the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/">overview documentation</a>.</p>
+<h2 id="whats-new-in-09" tabindex="-1"><a class="header-anchor" href="#whats-new-in-09">What's New in 0.9</a></h2>
+<h3 id="structured-audit-logging" tabindex="-1"><a class="header-anchor" href="#structured-audit-logging">Structured Audit Logging</a></h3>
+<p>The router now emits a structured audit log entry for every <code>tools/call</code> request. Each entry is logged at <code>INFO</code> level with <code>audit=true</code> and carries the calling user (the JWT <code>sub</code> claim) if available, the tool and server names, the response status, and request and session identifiers:</p>
+<pre><code>level=INFO msg=&quot;tool call&quot; audit=true user=alice@example.com tool=echo server=mcp-test/my-server status=200 request_id=&lt;uuid&gt; session=&lt;id&gt;
 </code></pre>
-<p>The trust pool is additive: system roots, gateway-level bundle, and per-server CA certificates are all composed together.</p>
-<h3 id="official-mcp-go-sdk" tabindex="-1"><a class="header-anchor" href="#official-mcp-go-sdk">Official MCP Go SDK</a></h3>
-<p>The broker and router internals migrated from the community <code>mark3labs/mcp-go</code> library to the <a href="https://github.com/modelcontextprotocol/go-sdk">official MCP Go SDK</a>. A compatibility layer preserves the exact observable behavior from the previous library, so existing clients are unaffected.</p>
-<h3 id="bug-fixes-and-security-improvements" tabindex="-1"><a class="header-anchor" href="#bug-fixes-and-security-improvements">Bug Fixes and Security Improvements</a></h3>
-<p>This release includes a significant number of bug fixes and security improvements from both maintainers and new contributors. Highlights include elicitation ID rewriting fixes, session token expiry handling, transport timeout enforcement on upstream connections, race-free routing config updates, log output obfuscation of session IDs, and cookie/proxy header stripping for user-specific upstreams. See the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.8.0">release notes</a> for the full list.</p>
+<p>Entries are emitted both when a call reaches the backend and when the router rejects it early (for example on a session init failure or unknown server). Because the log is produced inside the router, the audit trail is self-contained and does not depend on the Envoy or Istio telemetry pipeline. This matters on platforms where the Istio configuration is managed externally and a custom telemetry <code>extensionProvider</code> cannot be relied on.</p>
+<p>It also supplements what Istio can see. Istio telemetry records the HTTP request to the gateway (method, path, status, latency, and the authenticated peer), but the MCP method and tool name live inside the JSON-RPC request body (or headers for 2026 protocol), which the proxy treats as opaque. The router parses that body and makes the routing decision, so it can attribute each call to a specific tool and the upstream server it resolved to, tied to the calling user. The audit log adds that MCP-level detail on top of Istio's transport-level view.</p>
+<h3 id="2026-protocol-streaming-and-protocol-handlers" tabindex="-1"><a class="header-anchor" href="#2026-protocol-streaming-and-protocol-handlers">2026 Protocol: Streaming and Protocol Handlers</a></h3>
+<p>The 2026 stateless protocol support added in 0.8 continues to mature. The router can now use Envoy's streamed request body mode for 2026 protocol requests, avoiding full-body buffering on that path. Inside the broker, routing was restructured behind a <code>ProtocolHandler</code> interface with per-version implementations, and tool and prompt responses now carry cache-scope metadata (public or private) so the broker can handle them correctly per protocol version.</p>
+<p>This support remains alpha and will keep evolving as the 2026 specification settles. See the <a href="https://github.com/Kuadrant/mcp-gateway/blob/main/docs/guides/multi-protocol-support.md">multi-protocol support guide</a> for how version negotiation works.</p>
+<h3 id="production-readiness-and-hardening" tabindex="-1"><a class="header-anchor" href="#production-readiness-and-hardening">Production Readiness and Hardening</a></h3>
+<p>Several smaller changes improve behavior in Kubernetes and tighten the supply chain: graceful <code>SIGTERM</code> shutdown so in-flight work drains on pod termination, rejection of non-CA certificates in <code>caCertBundleRef</code>, prefix-uniqueness validation for <code>MCPServerRegistration</code>, <code>ppc64le</code> image builds, and GitHub Actions pinned to commit SHAs.</p>
+<p>This release also carries a range of concurrency, correctness, and security fixes from maintainers and a growing group of new contributors. See the <a href="https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0">release notes</a> for the full list.</p>
 <h2 id="whats-next" tabindex="-1"><a class="header-anchor" href="#whats-next">What's Next</a></h2>
-<p>The project continues to track the evolving <a href="https://modelcontextprotocol.io/">MCP specification</a> and work toward production readiness. MCP resource federation, additional 2026 protocol features, and further observability improvements are on the roadmap.</p>
+<p>Resource federation is in progress: the gateway can already merge <code>resources/list</code> across upstream servers, and routing <code>resources/read</code> calls back to the owning server is the next piece to land, bringing MCP <a href="https://modelcontextprotocol.io/specification/2025-11-25/server/resources">resources</a> alongside the existing tool and prompt federation.</p>
+<p>A <a href="https://github.com/Kuadrant/mcp-gateway/blob/main/docs/design/guardrails/guardrails-design.md">design for guardrails integration</a> has landed, wiring NeMo Guardrails into the router with configuration flowing from the gateway down to individual <code>MCPServerRegistration</code> resources. It is a design at this stage, with implementation to follow.</p>
+<p>Install is moving toward the Kuadrant umbrella operator model (<a href="https://github.com/Kuadrant/architecture/blob/main/rfcs/0019-olmv1-operator-consolidation.md">RFC 0019</a>), where <code>kuadrant-operator</code> renders and applies the MCP Gateway chart at runtime so the gateway is deployed and managed as part of a Kuadrant instance rather than as a standalone component. 0.9 does the groundwork on the chart: opt-in <code>NetworkPolicy</code> templates, a stable controller <code>ClusterRole</code> name, and dropping the standalone OLM bundle dependency.</p>
 <h2 id="get-involved" tabindex="-1"><a class="header-anchor" href="#get-involved">Get Involved</a></h2>
 <ul>
 <li>Try the <a href="https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/getting-started/">getting started guide</a>.</li>
@@ -158,7 +98,7 @@ spec:
 <li>Engage with the <a href="https://kuadrant.io/community/">community</a>.</li>
 </ul>
 
-<ul class="links-nextprev"><li>Previous: <a href="/blog/envoy-native-mcp-filter/">Replacing ext-proc with Envoy&#39;s Native MCP Filter (Almost)</a></li><li>Next: <a href="/blog/mcp-gateway-0.9/">MCP Gateway 0.9 Release</a></li>
+<ul class="links-nextprev"><li>Previous: <a href="/blog/mcp-gateway-0.8/">MCP Gateway 0.8 Release (2026-07-28 protocol support)</a></li>
 </ul>
     </div>
     
