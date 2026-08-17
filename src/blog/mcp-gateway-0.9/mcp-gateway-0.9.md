@@ -40,7 +40,7 @@ Resource federation is in progress: the gateway can already merge `resources/lis
 
 A [design for guardrails integration](https://github.com/Kuadrant/mcp-gateway/blob/main/docs/design/guardrails/guardrails-design.md) has landed, wiring NeMo Guardrails into the router with configuration flowing from the gateway down to individual `MCPServerRegistration` resources. It is a design at this stage, with implementation to follow.
 
-Install is moving toward the Kuadrant umbrella operator model ([RFC 0019](https://github.com/Kuadrant/architecture)), where `kuadrant-operator` renders and applies the MCP Gateway chart at runtime so the gateway is deployed and managed as part of a Kuadrant instance rather than as a standalone component. 0.9 does the groundwork on the chart: opt-in `NetworkPolicy` templates, a stable controller `ClusterRole` name, and dropping the standalone OLM bundle dependency.
+Install is moving toward the Kuadrant umbrella operator model ([RFC 0019](https://github.com/Kuadrant/architecture/blob/main/rfcs/0019-olmv1-operator-consolidation.md)), where `kuadrant-operator` renders and applies the MCP Gateway chart at runtime so the gateway is deployed and managed as part of a Kuadrant instance rather than as a standalone component. 0.9 does the groundwork on the chart: opt-in `NetworkPolicy` templates, a stable controller `ClusterRole` name, and dropping the standalone OLM bundle dependency.
 
 ## Get Involved
 
