@@ -4,23 +4,11 @@ date: 2026-08-14
 author: David Martin
 ---
 
-The [MCP Gateway](https://github.com/kuadrant/mcp-gateway) has reached its [0.9 release](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0). This release adds MCP resource federation and structured audit logging. It also continues maturing the 2026 stateless protocol support introduced in 0.8. The project remains a tech preview. For the full list of changes, check the [0.9.0 release page](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0) on GitHub.
+The [MCP Gateway](https://github.com/kuadrant/mcp-gateway) has reached its [0.9 release](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0). This release adds structured audit logging and continues maturing the 2026 stateless protocol support introduced in 0.8. The project remains a tech preview. For the full list of changes, check the [0.9.0 release page](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0) on GitHub.
 
 For background on the MCP Gateway, see the previous [0.8 release announcement](/blog/mcp-gateway-0.8/) or the [overview documentation](https://docs.kuadrant.io/dev/mcp-gateway/docs/guides/overview/).
 
 ## What's New in 0.9
-
-### Resource Federation
-
-The gateway now federates MCP [resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) from upstream servers. A `resources/list` request fans out to all registered upstreams concurrently and merges the results, with the server prefix injected into the resource URI so clients can address resources unambiguously.
-
-For a server registered with prefix `myserver`, a `ui://` resource is rewritten on the way out to the client:
-
-```
-ui://dashboard/main   ->   ui://myserver_dashboard/main
-```
-
-Unlike tools and prompts, resources are fetched live per request rather than cached, so `resources/list` always reflects the current state of each upstream. Upstreams that error or time out are skipped, producing an observable partial list rather than failing the whole call. This release covers listing; routing `resources/read` calls back to the owning server (longest-prefix match on the URI) lands as a follow-up.
 
 ### Structured Audit Logging
 
@@ -47,6 +35,8 @@ Several smaller changes improve behavior in Kubernetes and tighten the supply ch
 This release also carries a range of concurrency, correctness, and security fixes from maintainers and a growing group of new contributors. See the [release notes](https://github.com/Kuadrant/mcp-gateway/releases/tag/v0.9.0) for the full list.
 
 ## What's Next
+
+Resource federation is in progress: the gateway can already merge `resources/list` across upstream servers, and routing `resources/read` calls back to the owning server is the next piece to land, bringing MCP [resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) alongside the existing tool and prompt federation.
 
 A [design for guardrails integration](https://github.com/Kuadrant/mcp-gateway/blob/main/docs/design/guardrails/guardrails-design.md) has landed, wiring NeMo Guardrails into the router with configuration flowing from the gateway down to individual `MCPServerRegistration` resources. It is a design at this stage, with implementation to follow.
 
