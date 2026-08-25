@@ -30,7 +30,7 @@ This is the problem that AccessPolicy is designed to address.
 
 Traditional infrastructure already has many ways to control access.
 
-Kubernetes has RBAC for controlling access to Kubernetes resources. NetworkPolicy can restrict which workloads can communicate at the network layer. Identity systems can establish who a caller is.But agentic systems introduce another dimension.Suppose an agent can reach an MCP server that exposes the following tools:
+Kubernetes has RBAC for controlling access to Kubernetes resources. NetworkPolicy can restrict which workloads can communicate at the network layer. Identity systems can establish who a caller is. But agentic systems introduce another dimension. Suppose an agent can reach an MCP server that exposes the following tools:
 
 ```text
 add
@@ -39,7 +39,7 @@ delete_database
 send_email
 ```
 
-Saying that the agent is allowed to communicate with that server is not enough. An agent might legitimately need `add` and `subtract` while having no reason to invoke `delete_database` or `send_email`.This distinction becomes important because the authorization decision needs to correspond to the action actually being requested, rather than simply to the fact that the caller can reach the service.
+Saying that the agent is allowed to communicate with that server is not enough. An agent might legitimately need `add` and `subtract` while having no reason to invoke `delete_database` or `send_email`. This distinction becomes important because the authorization decision needs to correspond to the action actually being requested, rather than simply to the fact that the caller can reach the service.
 
 AccessPolicy provides a declarative way to express that relationship: a particular identity can access a particular target using particular methods or tools. The upstream [`kube-agentic-networking`](https://github.com/kubernetes-sigs/kube-agentic-networking) project is designed around this idea of treating agents as composable units of work and providing a standardized, protocol-aware way to govern communication between agents, tools, and LLMs.
 
@@ -67,7 +67,7 @@ rules:
     verbs: ["add", "subtract"]
 ```
 
-Then Why not use RBAC? Because Roles and RoleBindings are only half of the story. You still need an enforcement point. The Kubernetes API server will only enforce authorization for the verbs it knows, such as `get`, `create`, and `update`. Other verbs require a special enforcer. The `AccessPolicy` is the API that makes the connection to that special enforcer.
+Then Why not use RBAC? Because Roles and RoleBindings are only half of the story. You still need an enforcement point. The Kubernetes API server will only enforce authorization for the verbs it knows, such as `get`, `create`, and `update`. Other verbs require a special enforcer. The `XAccessPolicy` is the API that makes the connection to that special enforcer.
 
 Kubernetes `NetworkPolicy` has a similar limitation, although at another layer. NetworkPolicy is useful for restricting L3/L4 connectivity, but knowing that an agent pod can connect to a tool-server pod does not tell us whether the agent is allowed to invoke `add`, `subtract`, or `delete_database`.
 
@@ -119,16 +119,16 @@ The important difference from ordinary connectivity policy is that AccessPolicy 
 
 ## My Implementation
 
-I have been working on an implementation of AccessPolicy as part of an LFX mentorship, with the help of my two amazing mentors [@guicassolato](https://github.com/guicassolato) and [@david-martin](https://github.com/david-martin). 
+I have been working on an implementation of XAccessPolicy as part of an LFX mentorship, with the help of my two amazing mentors [@guicassolato](https://github.com/guicassolato) and [@david-martin](https://github.com/david-martin). 
 
 The upstream AccessPolicy specification is deliberately designed to support multiple implementations, in much the same way that standards such as Ingress or Gateway API can be implemented by different projects. The reference implementation takes one path, translating policy into Envoy RBAC filters and using SPIFFE-based mTLS for identity.
 
-My implementation takes a different approach. Instead of building another authorization engine, it translates AccessPolicy into Kuadrant `AuthPolicy` resources and relies on Authorino and MCP Gateway. [Authorino](https://github.com/Kuadrant/authorino) is Kuadrant's external authorization component, while [MCP Gateway](https://github.com/Kuadrant/mcp-gateway) is an Envoy-based gateway extension for MCP servers that handles MCP-specific routing and request processing. This approach lets the project reuse capabilities Kuadrant and Authorino already provide for ordinary HTTP APIs, including identity handling, conditional authorization, and Envoy integration, while adding an AI-native abstraction on top. **_This is a proof of concept, not meant for production use._**
+My implementation takes a different approach. Instead of building another authorization engine, it translates `XAccessPolicy` into Kuadrant `AuthPolicy` resources and relies on Authorino and MCP Gateway. [Authorino](https://github.com/Kuadrant/authorino) is Kuadrant's external authorization component, while [MCP Gateway](https://github.com/Kuadrant/mcp-gateway) is an Envoy-based gateway extension for MCP servers that handles MCP-specific routing and request processing. This approach lets the project reuse capabilities Kuadrant and Authorino already provide for ordinary HTTP APIs, including identity handling, conditional authorization, and Envoy integration, while adding an AI-native abstraction on top. **_This is a proof of concept, not meant for production use._**
 
 The basic idea is:
 
 ```text
-AccessPolicy
+XAccessPolicy
 	 ↓
 Controller
 	 ↓
@@ -174,7 +174,7 @@ type AuthorizationRule struct {
     Hosts   []Hostname
     Ports   []PortNumber
     MCP     MCPAttributes
-    CEL     *AccessPolicyCELRule
+    CEL     *XAccessPolicyCELRule
 }
 ```
 
@@ -192,32 +192,32 @@ The second is `CEL`, which acts as an escape hatch. Instead of adding a new CRD 
 
 There are two parts to understand:
 
-1. **Control plane:** turns `AccessPolicy` into an enforceable authorization policy.
+1. **Control plane:** turns `XAccessPolicy` into an enforceable authorization policy.
     
 2. **Data plane:** uses that generated policy to authorize requests when an agent actually calls an MCP tool.
 
 ### Control Plane
 
-The control plane is where the controller watches `AccessPolicy` and `Gateway` resources, reconciles them, and generates the corresponding Kuadrant `AuthPolicy`.
+The control plane is where the controller watches `XAccessPolicy` and `Gateway` resources, reconciles them, and generates the corresponding Kuadrant `AuthPolicy`.
 
 #### 1. Reconciliation
 
 The controller's primary watch is on `Gateway` resources:
 
 ```go
-func (r *AccessPolicyReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *XAccessPolicyReconciler) SetupWithManager(mgr ctrl.Manager) error {
     return ctrl.NewControllerManagedBy(mgr).
         For(&gatewayapiv1.Gateway{}).
-        Watches(&agenticv1alpha1.AccessPolicy{},
+        Watches(&agenticv1alpha1.XAccessPolicy{},
             handler.EnqueueRequestsFromMapFunc(r.findGatewaysForPolicy)).
         Owns(&kuadrantv1.AuthPolicy{}).
         Complete(r)
 }
 ```
 
-The important detail here is that the controller cannot build a correct merged `AuthPolicy` by looking at only one `AccessPolicy`. Multiple policies may target the same Gateway, so every reconciliation needs to consider the complete set of policies targeting that Gateway.
+The important detail here is that the controller cannot build a correct merged `AuthPolicy` by looking at only one `XAccessPolicy`. Multiple policies may target the same Gateway, so every reconciliation needs to consider the complete set of policies targeting that Gateway.
 
-When an `AccessPolicy` changes, `findGatewaysForPolicy` maps the policy to the Gateway or Gateways it targets. The controller then recomputes the generated `AuthPolicy` using the collection of policies that currently apply. The generated `AuthPolicy` is also owned by the Gateway. This means that if the generated resource is modified directly, that change triggers reconciliation and the controller restores the state derived from the actual `AccessPolicy` objects.
+When an `XAccessPolicy` changes, `findGatewaysForPolicy` maps the policy to the Gateway or Gateways it targets. The controller then recomputes the generated `AuthPolicy` using the collection of policies that currently apply. The generated `AuthPolicy` is also owned by the Gateway. This means that if the generated resource is modified directly, that change triggers reconciliation and the controller restores the state derived from the actual `XAccessPolicy` objects.
 
 Policies are currently ordered by `CreationTimestamp`, which acts as the conflict-resolution mechanism: earlier policies are evaluated first. This is simple and works for the current scale of the implementation, although an explicit priority mechanism may make more sense as multiple teams begin sharing the same Gateway.
 
@@ -302,7 +302,7 @@ The controller therefore builds the authentication configuration based on the id
 
 The resulting `AuthPolicy` is then created or patched on the Gateway, and the controller updates the status of the source policies to indicate whether they were successfully accepted or failed translation.
 
-At this point, the control plane is done. It has taken the declarative `AccessPolicy` and turned it into an authorization policy attached to the Gateway. The data plane is where that policy is actually used.
+At this point, the control plane is done. It has taken the declarative `XAccessPolicy` and turned it into an authorization policy attached to the Gateway. The data plane is where that policy is actually used.
 
 ### Data Plane
 
@@ -372,11 +372,11 @@ The controller therefore does not authorize MCP requests itself. It prepares the
 
 ## A worked out example and demo 
 
-Lets take an example, this `AccessPolicy` allows the `default` ServiceAccount to call the `get-sum` and `echo` tools, as well as the selected MCP base protocol methods:
+Lets take an example, this `XAccessPolicy` allows the `default` ServiceAccount to call the `get-sum` and `echo` tools, as well as the selected MCP base protocol methods:
 
 ```yaml
 apiVersion: agentic.networking.x-k8s.io/v1alpha1
-kind: AccessPolicy
+kind: XAccessPolicy
 metadata:
   name: demo-access-policy
   namespace: quickstart-ns
@@ -480,7 +480,7 @@ spec:
         when:
         - predicate: size(auth.authorization) == 0
         - predicate: auth.identity.principal == 'system:serviceaccount:quickstart-ns:default'
-        - predicate: request.headers['x-mcp-method'] in ['initialize', 'tools/list','completion', 'logging', 'notifications', 'ping'] || request.method in ['GET', 'DELETE']
+        - predicate: request.headers['x-mcp-method'] in ['initialize', 'tools/list', 'completion', 'logging', 'notifications', 'ping'] || request.method in ['GET', 'DELETE']
       fail-close:
         metrics: false
         opa:
@@ -497,7 +497,7 @@ spec:
 
 You can see the translation features we mentioned in the Control Plane very clearly working in the translated AuthPolicy.  
 
-Following is a demo showing AccessPolicy working with MCP-gateway in real time, initially you can see the `get-tiny-image` tool is not allowed and it throws an error when called on in mcp-inspector and after applying a new policy `get-tiny-image` returns the expected output and `echo` tool gets blocked :
+Following is a demo showing `XAccessPolicy` working with MCP-gateway in real time, initially you can see the `get-tiny-image` tool is not allowed and it throws an error when called on in mcp-inspector and after applying a new policy `get-tiny-image` returns the expected output and `echo` tool gets blocked :
 
 <video controls width="600">
   <source src="../demo.mp4" type="video/mp4">
@@ -513,7 +513,7 @@ I also want to support additional MCP methods and explore more granular authoriz
 
 External authorization is another area for future work.
 
-Finally, I want to continue working toward conformance with the upstream AccessPolicy specification as it develops. Alongside the controller, I am also working on an extension to `kuadrant-operator` so that AccessPolicy can be used more directly by users already running Kuadrant rather than being tied to a separate controller.
+Finally, I want to continue working toward conformance with the upstream AccessPolicy specification as it develops. Alongside the controller, I am also working on an extension to `kuadrant-operator` so that `XAccessPolicy` can be used more directly by users already running Kuadrant rather than being tied to a separate controller.
 
 More broadly, development around Kubernetes agentic networking is moving quite quickly, and it’s been really nice to see how active the community is. The people involved are also very welcoming and helpful, so if you’re even remotely interested in the space or want to help out, I’d definitely recommend joining one of the [weekly meetings](https://github.com/kubernetes-sigs/kube-agentic-networking#community-discussion-contribution-and-support).
 
