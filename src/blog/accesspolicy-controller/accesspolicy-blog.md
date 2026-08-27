@@ -155,13 +155,16 @@ The implementation is intentionally narrower than the full upstream model at thi
 | Area                         | My implementation                                | Reference implementation      |
 | ---------------------------- | ------------------------------------------------ | ----------------------------- |
 | Policy target                | `Gateway`                                        | `Gateway` and `XBackend`      |
-| Identity                     | Kubernetes `ServiceAccount` or SPIFFE            | SPIFFE-based identity         |
+| Identity                     | Kubernetes `ServiceAccount` or SPIFFE            | SPIFFE-based identity*        |
 | Authorization engine         | Kuadrant `AuthPolicy` + Authorino                | Envoy RBAC filters            |
 | MCP authorization            | MCP tool names                                   | Broader upstream policy model |
 | `Action`                     | `Allow` implemented; `ExternalAuth` out of scope | Full upstream model           |
 | Number of policies per target| Unlimited                                        | <=5                           |
 
 These limitations are important because this is not yet a fully conformant implementation of the upstream AccessPolicy specification. It is an implementation of the core authorization path with additional work still required as the specification evolves.
+
+> [!NOTE]
+> \* **Note on SPIFFE & ServiceAccount Identity Matching**: Although the reference implementation authenticates clients via SPIFFE IDs extracted from mTLS certificates (rather than validating ServiceAccount bearer tokens), its quickstart demonstrates `XAccessPolicy` rules referencing `ServiceAccount` as a source. Under the hood, the certificate issuer encodes the pod's `ServiceAccount` identity into the client certificate as a SPIFFE ID (via the `PodCertificateRequest` API), so the `ServiceAccount` reference in the policy is effectively a convenience mapping to the same SPIFFE-based principal matching.
 
 ---
 
