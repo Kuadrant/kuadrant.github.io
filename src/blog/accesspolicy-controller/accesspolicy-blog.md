@@ -67,7 +67,7 @@ rules:
     verbs: ["add", "subtract"]
 ```
 
-Then Why not use RBAC? Because Roles and RoleBindings are only half of the story. You still need an enforcement point. The Kubernetes API server will only enforce authorization for the verbs it knows, such as `get`, `create`, and `update`. Other verbs require a special enforcer. The `XAccessPolicy` is the API that makes the connection to that special enforcer.
+Then why not use RBAC? Because Roles and RoleBindings are only half of the story. You still need an enforcement point. The Kubernetes API server will only enforce authorization for the verbs it knows, such as `get`, `create`, and `update`. Other verbs require a special enforcer.
 
 Kubernetes `NetworkPolicy` has a similar limitation, although at another layer. NetworkPolicy is useful for restricting L3/L4 connectivity, but knowing that an agent pod can connect to a tool-server pod does not tell us whether the agent is allowed to invoke `add`, `subtract`, or `delete_database`.
 
@@ -123,7 +123,10 @@ I have been working on an implementation of XAccessPolicy as part of an LFX ment
 
 The upstream AccessPolicy specification is deliberately designed to support multiple implementations, in much the same way that standards such as Ingress or Gateway API can be implemented by different projects. The reference implementation takes one path, translating policy into Envoy RBAC filters and using SPIFFE-based mTLS for identity.
 
-My implementation takes a different approach. Instead of building another authorization engine, it translates `XAccessPolicy` into Kuadrant `AuthPolicy` resources and relies on Authorino and MCP Gateway. [Authorino](https://github.com/Kuadrant/authorino) is Kuadrant's external authorization component, while [MCP Gateway](https://github.com/Kuadrant/mcp-gateway) is an Envoy-based gateway extension for MCP servers that handles MCP-specific routing and request processing. This approach lets the project reuse capabilities Kuadrant and Authorino already provide for ordinary HTTP APIs, including identity handling, conditional authorization, and Envoy integration, while adding an AI-native abstraction on top. **_This is a proof of concept, not meant for production use._**
+My implementation takes a different approach. Instead of building another authorization engine, it translates `XAccessPolicy` custom resources into Kuadrant `AuthPolicy` custom resources and relies on Authorino and MCP Gateway. [Authorino](https://github.com/Kuadrant/authorino) is Kuadrant's external authorization component, while [MCP Gateway](https://github.com/Kuadrant/mcp-gateway) is an Envoy-based gateway extension for MCP servers that handles MCP-specific routing and request processing. This approach lets the project reuse capabilities Kuadrant and Authorino already provide for ordinary HTTP APIs, including identity handling, conditional authorization, and Envoy integration, while adding an AI-native abstraction on top.
+
+> [!WARNING]
+> The implementation is a proof of concept, meant for exploring the possibilities of leveraging [kube-agentic-networking](https://kube-agentic-networking.sigs.k8s.io)'s AccessPolicy API powered by Kuadrant, not for production use. Use it with caution.
 
 The basic idea is:
 
@@ -149,13 +152,14 @@ The rest of the implementation is essentially about making this translation corr
 
 The implementation is intentionally narrower than the full upstream model at this stage. It currently targets `Gateway` resources and supports Kubernetes `ServiceAccount` and SPIFFE identities. Authorization is focused on MCP tool names; other MCP methods such as `prompts/get` and `resources/read` are not yet supported. Only `Allow` is implemented, while `ExternalAuth` is out of scope. CEL can be used for more complex rules, with the controller validating the syntax only.
 
-| Area                 | My implementation                                | Reference implementation      |
-| -------------------- | ------------------------------------------------ | ----------------------------- |
-| Policy target        | `Gateway`                                        | `Gateway` and `XBackend`      |
-| Identity             | Kubernetes `ServiceAccount` or SPIFFE            | SPIFFE-based identity         |
-| Authorization engine | Kuadrant `AuthPolicy` + Authorino                | Envoy RBAC filters            |
-| MCP authorization    | MCP tool names                                   | Broader upstream policy model |
-| `Action`             | `Allow` implemented; `ExternalAuth` out of scope | Full upstream model           |
+| Area                         | My implementation                                | Reference implementation      |
+| ---------------------------- | ------------------------------------------------ | ----------------------------- |
+| Policy target                | `Gateway`                                        | `Gateway` and `XBackend`      |
+| Identity                     | Kubernetes `ServiceAccount` or SPIFFE            | SPIFFE-based identity         |
+| Authorization engine         | Kuadrant `AuthPolicy` + Authorino                | Envoy RBAC filters            |
+| MCP authorization            | MCP tool names                                   | Broader upstream policy model |
+| `Action`                     | `Allow` implemented; `ExternalAuth` out of scope | Full upstream model           |
+| Number of policies per target| Unlimited                                        | <=5                           |
 
 These limitations are important because this is not yet a fully conformant implementation of the upstream AccessPolicy specification. It is an implementation of the core authorization path with additional work still required as the specification evolves.
 
@@ -372,7 +376,7 @@ The controller therefore does not authorize MCP requests itself. It prepares the
 
 ## A worked out example and demo 
 
-Lets take an example, this `XAccessPolicy` allows the `default` ServiceAccount to call the `get-sum` and `echo` tools, as well as the selected MCP base protocol methods:
+Let's take an example, this `XAccessPolicy` allows the `default` ServiceAccount to call the `get-sum` and `echo` tools, as well as the selected MCP base protocol methods:
 
 ```yaml
 apiVersion: agentic.networking.x-k8s.io/v1alpha1
