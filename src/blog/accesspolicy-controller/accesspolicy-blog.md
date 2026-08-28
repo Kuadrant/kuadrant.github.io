@@ -506,9 +506,10 @@ You can see the translation features we mentioned in the Control Plane very clea
 
 Following is a demo showing `XAccessPolicy` working with MCP-gateway in real time, initially you can see the `get-tiny-image` tool is not allowed and it throws an error when called on in mcp-inspector and after applying a new policy `get-tiny-image` returns the expected output and `echo` tool gets blocked :
 
-<video controls width="600">
-  <source src="../demo.mp4" type="video/mp4">
-</video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gvCLgzajjv8?si=S5-o4Q_XflgmlCO8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</br>
+
+
 
 ## What's Next?
 
