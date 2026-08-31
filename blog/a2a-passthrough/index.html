@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Teaching an MCP gateway to speak Agent2Agent</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Teaching an MCP gateway to speak Agent2Agent</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Aman Kumar (@Aman-Cool) | <time datetime="2026-09-01">01 September 2026</time></li>
+</ul>
+</h4>
+<p>When two of your agents talk to each other, who's watching?</p>
+<p>That question is where this whole piece of work started, and it turns out to be more uncomfortable than it sounds. We spend a lot of care putting a gateway in front of the tools our agents call.., auth on every request, rate limits, an audit trail, traces that stitch a call together end to end. And then two agents delegate work to each other over A2A, and all of that just… isn't there. The request goes agent to agent, straight past the gateway, outside the policy perimeter. No auth. No rate limit. No log line. Nothing.</p>
+<p>I spent my CNCF LFX mentorship with the Kuadrant team closing a first piece of that gap, and the MCP Gateway now speaks a little bit of A2A. This is the story of the smallest useful version of that... what it does, why we deliberately built <em>less</em> than I first wanted to, and what you can do with it today.</p>
+<h3 id="two-axes" tabindex="-1"><a class="header-anchor" href="#two-axes">Two axes</a></h3>
+<p>Here's the way I ended up thinking about it. MCP is the <strong>vertical axis</strong> of an agentic system: one client reaching down into many tools, federated behind a single endpoint, every call wrapped in policy. That's what the MCP Gateway already does well.</p>
+<p>But agentic architectures don't stay vertical. Agents start delegating to <em>other</em> agents ; a planner handing a long running research task to a specialist, agents discovering each other's capabilities, work that runs for seconds or days and streams results back. That's the <strong>horizontal axis</strong>, and that's what <a href="https://a2a-protocol.org">A2A</a> standardizes: an open protocol (originally Google's, now under the Linux Foundation) for opaque agents to collaborate without sharing their internals.</p>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph vertical[&quot;MCP, the vertical axis (today)&quot;]
+        C1[Client] --&gt;|tools/call| G1[Gateway]
+        G1 --&gt; S1[MCP Server A]
+        G1 --&gt; S2[MCP Server B]
+    end
+</code></pre>
+<pre><code class="language-mermaid">flowchart LR
+    subgraph horizontal[&quot;A2A, the horizontal axis (this work)&quot;]
+        A1[Agent] --&gt;|SendMessage| G2[Gateway]
+        G2 --&gt; A2[Weather Agent]
+        G2 --&gt; A3[Search Agent]
+        A2 -.long running task.-&gt; A1
+    end
+</code></pre>
+<p>A gateway that already routes one axis is halfway to routing both. The trick is doing it without turning A2A into a second, bolted on thing that the mature MCP path has to worry about.</p>
+<h3 id="the-temptation-to-build-everything" tabindex="-1"><a class="header-anchor" href="#the-temptation-to-build-everything">The temptation to build everything</a></h3>
+<p>I'll be honest about where I started, because the interesting part of this project was <em>not</em> building what I first designed.</p>
+<p>I spent the early weeks proving out the whole thing in a fork.., agent registration via a CRD, the gateway serving each agent's card, a discovery catalog, routing requests to the right agent, tracking who owns which task, observing streamed task updates. It worked, end to end, on a real cluster. It was genuinely satisfying to watch a full A2A invocation flow through the gateway with policy attached.</p>
+<p>And then, reviewing the upstreaming plan with my mentors, we pulled almost all of it back out.</p>
+<p>The reasoning was better than my instinct to ship everything. A new CRD is a long term commitment, and where A2A support ultimately <em>lives</em> wasn't settled yet... locking in an API too early is how you end up maintaining something you regret. The broker was still churning on a new MCP spec version, so piling A2A changes on top meant rebasing against a moving target. And the mature MCP surface has real users ; the last thing anyone wanted was an experimental A2A feature introducing a regression into a path people depend on.</p>
+<p>So we asked a sharper question: what is the <em>smallest</em> slice that delivers real value and touches almost nothing? The answer named itself: <strong>A2A passthrough with auditing, auth and observability.</strong> Router only. No CRD, no broker changes, no routing decisions. Just enough for the traffic to become <em>visible</em> to the policy plane.</p>
+<p>That reframing is the part I'm proudest of, more than any code. It's easy to build a lot. It's harder to build the one piece that earns its place and defer the rest honestly.</p>
+<h3 id="what-the-smallest-useful-version-actually-does" tabindex="-1"><a class="header-anchor" href="#what-the-smallest-useful-version-actually-does">What the smallest useful version actually does</a></h3>
+<p>When you enable it (a single experimental flag, <code>--enable-a2a</code>, off by default) the router does one small thing for traffic on an <code>/a2a</code> path: it reads the A2A protocol metadata and lifts it into request headers.</p>
+<p>Two headers, specifically:</p>
+<ul>
+<li><code>x-a2a-agent</code> : which agent is being addressed, taken from the first path segment after <code>/a2a/</code>. The A2A request body doesn't name an agent, so the path is the only honest source, and it becomes a documented convention.</li>
+<li><code>x-a2a-method</code> : the JSON-RPC method the caller is invoking (<code>SendMessage</code>, <code>GetTask</code>, <code>CancelTask</code>, and friends), read from the request envelope.</li>
+</ul>
+<p>That's it. The router doesn't route the request, doesn't rewrite the body, doesn't touch the task ; your own HTTPRoute still carries the call to the agent. It just makes the two facts that matter, <em>which agent, which method</em>, available to everything downstream.</p>
+<p>And once those facts are ordinary request headers, the entire Kuadrant policy plane wakes up for free. An <code>AuthPolicy</code> can authenticate the caller and authorize per agent.., the exact same pattern MCP already uses for per tool access. A <code>Telemetry</code> resource can put the agent and method into your access logs, so you finally have an audit trail of who called what. A <code>RateLimitPolicy</code> can throttle by agent. None of that needs a line of gateway code per policy ; it's all just Kuadrant reacting to headers, the way it already does for MCP.</p>
+<h3 id="the-details-that-took-the-most-thought" tabindex="-1"><a class="header-anchor" href="#the-details-that-took-the-most-thought">The details that took the most thought</a></h3>
+<p>The headline is simple. A few of the corners were not, and they're worth pulling out because they're where the design earns its keep.</p>
+<p><strong>Nobody gets to forge these headers.</strong> If a client could just <em>set</em> <code>x-a2a-agent</code> itself, the whole thing would be theatre ; a policy keying on that header would be trusting the attacker. So the router strips any client supplied <code>x-a2a-*</code> on the way in and sets its own. What a policy or an access log sees is always the router's value, derived from the request, never something the caller planted. (The client still <em>chooses</em> the path and method the router reads them from... so it's route matching and the AuthPolicy that decide what a given caller is <em>allowed</em> to reach. The headers describe the request ; they don't by themselves authorize it.)</p>
+<p><strong>The method label is a bounded set, on purpose.</strong> <code>x-a2a-method</code> is normalized: the known A2A methods pass through verbatim, and anything unrecognized collapses to <code>other</code>. That's not fussiness.., a client controlled string that becomes a metric dimension is an unbounded cardinality footgun, and <code>'; DROP TABLE tasks; --</code> has no business being a label value. Known, or <code>other</code>, keeps it safe to graph.</p>
+<p><strong>It fails closed, not open.</strong> Every request on an <code>/a2a</code> route is meant to be JSON-RPC. If a POST arrives that the router can't label (an unparseable body, or valid JSON with no method) it's rejected right there with a JSON-RPC error, rather than passed through unlabelled. A request that slipped to the agent <em>without</em> headers would quietly dodge exactly the auditing and authorization this feature exists to provide. Failing closed is the whole point.</p>
+<p><strong>The hot path stays cheap.</strong> The router only ever parses the JSON-RPC envelope, the method and the id, and never the params or the payload. On a streaming task carrying megabytes of artifacts, it reads a few dozen bytes and moves on. The broker and router are hot paths in this project, and this had to cost proportional to the envelope, not the body.</p>
+<h3 id="trying-it" tabindex="-1"><a class="header-anchor" href="#trying-it">Trying it</a></h3>
+<p>The shape is: point an HTTPRoute at your agent under an <code>/a2a/{agent}</code> path, turn on the flag, and attach the policies you already know how to write.</p>
+<p>One thing that trips people up, so I'll say it plainly: the router lifts headers but does <strong>not</strong> rewrite the path. Your agent almost certainly serves its A2A endpoint at its own path (commonly <code>/a2a</code>), so your route needs a <code>URLRewrite</code> from <code>/a2a/{agent}</code> down to it ; the same rewrite the gateway will eventually do itself in a later phase. With that in place, a <code>SendMessage</code> to <code>/a2a/weather</code> traverses the router (which sets <code>x-a2a-agent: weather</code> and <code>x-a2a-method: SendMessage</code>), your route rewrites and forwards it, and your <code>AuthPolicy</code> gets to decide whether this caller may talk to <code>weather</code> before the request ever leaves the gateway.</p>
+<p>The full walkthrough (the HTTPRoute, an AuthPolicy scoped to <code>/a2a/</code> POSTs, and a Telemetry that surfaces the headers in your logs) lives in the <a href="https://github.com/Kuadrant/mcp-gateway/blob/main/docs/guides/a2a-passthrough.md">A2A passthrough guide</a>.</p>
+<p>And this is the whole point, really.., the line you get out the other end. With a JSON access log that includes the two headers, a <code>SendMessage</code> to <code>/a2a/weather</code> shows up as:</p>
+<pre><code class="language-json">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;path&quot;: &quot;/a2a/weather&quot;,
+  &quot;a2a_agent&quot;: &quot;weather&quot;,
+  &quot;a2a_method&quot;: &quot;SendMessage&quot;,
+  &quot;user_id&quot;: &quot;planner-agent@acme.example&quot;,
+  &quot;response_code&quot;: 200,
+  &quot;duration_ms&quot;: 34
+}
+</code></pre>
+<p><em>which agent, which method, which caller, what happened</em>.., one structured line per inter agent call, in the same log stream as the rest of your gateway traffic. That's the audit trail that simply didn't exist before, and there was no gateway code written to produce it ; just Kuadrant reading headers.</p>
+<h3 id="what-this-is-and-what-it-isnt" tabindex="-1"><a class="header-anchor" href="#what-this-is-and-what-it-isnt">What this is, and what it isn't</a></h3>
+<p>This is experimental, off by default, and deliberately small. It doesn't discover agents, doesn't serve cards, doesn't route, doesn't own tasks. Those are real, and they're the next phases.., registration and discovery, then gateway side task ownership and streamed lifecycle observation. They already exist, proven, in the fork ; they land upstream as their own honest slices when the questions gating them (where A2A lives long term, the broker settling) are answered.</p>
+<p>But even this smallest version changes something concrete: agent to agent traffic is no longer invisible. It picks up the same auth, the same audit trail, the same observability that the rest of your gateway traffic already has ; which, back at the question this started with, means <em>someone is watching</em> when two of your agents talk.</p>
+<p>If you're running agents that delegate to each other and you'd like them inside the policy perimeter instead of outside it, I'd genuinely love to hear how it goes.., what works, what's awkward, what you'd want from the phases still to come.</p>
+<hr>
+<p><em>This work was done as part of a CNCF LFX mentorship with the Kuadrant team. Huge thanks to my mentors for the guidance.., especially for the review that talked me out of building too much at once.</em></p>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/accesspolicy-controller/accesspolicy-blog/">Authorization for Agentic Systems with AccessPolicy</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
