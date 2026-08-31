@@ -23,6 +23,10 @@ flowchart LR
         G1 --> S1[MCP Server A]
         G1 --> S2[MCP Server B]
     end
+```
+
+```mermaid
+flowchart LR
     subgraph horizontal["A2A, the horizontal axis (this work)"]
         A1[Agent] -->|SendMessage| G2[Gateway]
         G2 --> A2[Weather Agent]
