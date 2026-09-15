@@ -12,7 +12,7 @@ The bug itself was in how the TCP proxy handled non-2xx responses to HTTP CONNEC
 
 The reviewer was looking at the full behavior of the system. My fix recorded the response status, but that status still was not crossing the internal listener boundary back to the caller. I had been staring so hard at where the information got lost that I never stepped back and asked whether recording it was actually enough. We agreed to keep my change as a small improvement, and handle the deeper response propagation problem separately.
 
-A contribution, as it turned out, was not just writing code and opening a pull request. It's about understanding the problem and finding the right place to change it, then testing what I have done. It meant explaining the fix under review, and sometimes discovering my understanding of the problem was wrong from the start. That experience made me want to spend more time contributing to open source.
+A contribution meant understanding the problem and finding the right place to change it, then testing what I'd done. It meant explaining the fix under review, and sometimes discovering my understanding of the problem was wrong from the start. That experience made me want to spend more time contributing to open source.
 
 ### I Wanted to Go Deeper
 
@@ -42,7 +42,7 @@ None of these failures were exotic, which is what made them dangerous: the code 
 
 ### What Changed
 
-Looking back at that first Envoy pull request next to the later MCP Gateway work, the biggest change wasn't that I got better at writing code. I got better at figuring out what code should be written, and that story about coding agents changed more than how I reviewed its code, it changed how I worked with it in the first place. I started building a workflow around the idea that agents should have to show their work, staying grounded in truth instead of assuming a function exists or a test covers something without checking, and treating "this should work" and "I traced this and it works" as two different claims.
+Looking back at that first Envoy pull request next to the later MCP Gateway work, the real change was in figuring out what code should be written, not just writing it. That shift changed how I worked with a coding agent, not just how I reviewed its output. I started treating "this should work" and "I traced this and it works" as two different claims, and building a workflow where the agent had to show its work instead of assuming a function exists or a test covers something without checking.
 
 AI is useful because it can accelerate understanding. It becomes a problem when it replaces understanding. Agents can generate a function, but that doesn't remove your responsibility to know where that function lives in the system and what assumptions surround it. At the beginning I was mostly asking *how do I make this work?* Later I was asking where a behavior should live, what happens if an upstream fails, whether something fits the existing architecture, and how it would affect the next person who touched it. My first instinct was usually to start changing code; the internship slowly taught me to resist that instinct and ask what I was actually solving first, and to get comfortable saying "I don't know yet" and investigating before asking for help.
 
