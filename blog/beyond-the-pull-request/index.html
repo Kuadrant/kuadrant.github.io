@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Beyond the Pull Request: What I Learned From My First Open Source Internship</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <a href="/" class="logo me-auto"><img src="/static/img/kuadrant_logo_horizontal_reverse_rgb_600px.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link " href="/"><i class="bx bx-home"></i> &nbsp;Home</a></li>
+          
+            <li>
+              <a class="nav-link " href="/blog/"><i class="bx bx-notepad"></i> &nbsp;Blog</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/community/"><i class="bx bx-user-circle"></i> &nbsp;Community</a>
+            </li>
+            <li>
+              <a class="nav-link " href="/contributing/"><i class="bx bx-user-plus"></i> &nbsp;Contributing</a>
+            </li>
+          <li><a class="nav-link btn-get-started" href="https://docs.kuadrant.io"><i class="bx bx-book"></i> &nbsp;Documentation</a></li>
+          <li><a class="nav-link btn-get-started" href="https://github.com/Kuadrant/"><i class="bx bxl-github"></i> &nbsp;GitHub</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main" class="other-page">
+
+    
+    <div class="container">
+      <h1>Beyond the Pull Request: What I Learned From My First Open Source Internship</h1>
+<h4>
+<ul class="post-metadata">
+	<li>By: Krishna Kukadia | <time datetime="2026-09-15">15 September 2026</time></li>
+</ul>
+</h4>
+<p>A reviewer pointed out that although my change recorded the response status, it did not actually solve the larger problem behind the issue. I thought I had fixed the bug. I hadn't.</p>
+<p>That was my first Envoy <a href="https://github.com/envoyproxy/envoy/pull/44157">pull request</a>, back when I was just trying to figure out what working on a large open source project actually looked like. I had written plenty of code before, but mostly for classes and personal projects. <a href="https://github.com/envoyproxy/envoy">Envoy</a> was different. I was working in a codebase I did not design, trying to understand behavior I did not write, and submitting changes to people who knew the project far better than I did.</p>
+<p>The bug itself was in how the TCP proxy handled non-2xx responses to HTTP CONNECT requests. The response status was being consumed before Envoy recorded the transport failure reason, so useful information about why a tunnel was rejected was lost. I traced where the status disappeared and stored it before the response was reset. Then I added unit and integration tests. The code change was small, it was the review where I learned the most.</p>
+<p>The reviewer was looking at the full behavior of the system. My fix recorded the response status, but that status still was not crossing the internal listener boundary back to the caller. I had been staring so hard at where the information got lost that I never stepped back and asked whether recording it was actually enough. We agreed to keep my change as a small improvement, and handle the deeper response propagation problem separately.</p>
+<p>A contribution meant understanding the problem and finding the right place to change it, then testing what I'd done. It meant explaining the fix under review, and sometimes discovering my understanding of the problem was wrong from the start. That experience made me want to spend more time contributing to open source.</p>
+<h3 id="i-wanted-to-go-deeper" tabindex="-1"><a class="header-anchor" href="#i-wanted-to-go-deeper">I Wanted to Go Deeper</a></h3>
+<p>That led me to the LFX Mentorship <a href="https://mentorship.lfx.linuxfoundation.org">program</a>, which ran from June to August with Kuadrant's <a href="https://github.com/Kuadrant/mcp-gateway">MCP Gateway</a>. My internship was not with Envoy directly, but my earlier Envoy work turned out to be directly relevant. I'm grateful to the Linux Foundation and the Cloud Native Computing Foundation for creating programs like LFX that give students the opportunity to get involved in real open source projects and take their first steps into the open source community.</p>
+<p>MCP Gateway extends Envoy to work with the Model Context Protocol. MCP messages use JSON-RPC payloads, which a standard layer-7 proxy cannot easily use for routing or policy decisions. The existing architecture used an <code>ext_proc</code> filter to parse MCP traffic, pulling out things like the tool name and method, and making them available to Envoy as HTTP headers. That information could then drive routing, stateful sessions, and authorization through Kuadrant's <a href="https://github.com/Kuadrant/authorino">Authorino</a>.</p>
+<p>Before touching the main project, I needed to understand how all of these pieces fit together. My first contribution was a small documentation change covering the development environment and Make targets, which was mostly an excuse to poke around the codebase without breaking anything. Soon after, the real question of the internship took shape: could some of the MCP parsing be moved into Envoy itself using its native MCP filter?</p>
+<h3 id="the-answer-was-almost" tabindex="-1"><a class="header-anchor" href="#the-answer-was-almost">The Answer Was &quot;Almost&quot;</a></h3>
+<p>My original brief was blunt: native Envoy MCP filter as a replacement for <code>ext_proc</code> parsing.</p>
+<p>I spent a long time understanding the existing flow: what <code>ext_proc</code> and the native filter each provided, and where the boundaries between Envoy and MCP Gateway should sit. It was not as simple as swapping one component for another, and I wrote about that investigation for Kuadrant in <a href="https://kuadrant.io/blog/envoy-native-mcp-filter/">Replacing ext-proc with Envoy's Native MCP Filter (Almost)</a>. The &quot;almost&quot; mattered. Moving functionality into Envoy was possible in some places, but it did not mean every responsibility could just disappear from MCP Gateway. This was the first time I felt the difference between implementing something and making an architectural decision.</p>
+<h3 id="designing-before-implementing" tabindex="-1"><a class="header-anchor" href="#designing-before-implementing">Designing Before Implementing</a></h3>
+<p>Later, resource federation was added to the scope: letting MCP resources from multiple servers get exposed through a single gateway. That sounds simple until you ask what happens when two upstream servers both expose a resource at <code>/docs</code>. The gateway needed to know which server <code>/docs</code> actually belonged to. That meant rewriting resource URIs, validating prefixes, and making sure authorization still worked after the rewrite. And that's before you even get to ask what happens when one of the upstreams fails.</p>
+<p>I started with a design <a href="https://github.com/Kuadrant/mcp-gateway/pull/1261">document</a>, and for the first time I wasn't just hunting for the right function to modify. A lot of that design got hashed out with my mentors: URI rewriting, resource prefixes, authorization handling, and how it should all fit the existing architecture. I would propose an approach, get feedback, change it, defend a decision when I had a reason, or realize I'd missed something entirely. The design review was part of the implementation, not something bolted on afterward.</p>
+<h3 id="coding-agent-couldnt-solve-this-one" tabindex="-1"><a class="header-anchor" href="#coding-agent-couldnt-solve-this-one">Coding Agent Couldn't Solve This One</a></h3>
+<p>Not every problem got solved by reading enough code. While implementing resource federation, I hit an end-to-end test that kept failing for reasons I could not figure out, and the coding agent could read the code faster than I could and suggest fixes, but it still couldn't tell me why the test was wrong. That wasn't the only place the coding agent's confidence outran its accuracy. It once wrote a test named <code>TestFetchResourcesFromServer_NilResult</code> that passed easily and tested absolutely nothing: the mock behind it had a fallthrough case that meant the guard it claimed to check never actually ran, and a human reviewer caught it, not the test.</p>
+<p>None of these failures were exotic, which is what made them dangerous: the code was good enough that skipping the step where I actually understood it was easy to do. When I got stuck on the resource federation test, I brought it to my mentors (David Martin and Patryk Stefanski), and the useful part wasn't the answer, it was working through what the test was actually exercising and where the failure was really coming from. That context is what got me unstuck, not another generated diff. The resulting work included JWT authorization, resource URI rewriting and prefix validation, and end-to-end coverage against a real Kind-based environment, and it reshaped how I think about coding agents: they make exploration and implementation faster, but when a problem depends on project-specific context, someone who actually knows the system beats another generated fix.</p>
+<h3 id="what-changed" tabindex="-1"><a class="header-anchor" href="#what-changed">What Changed</a></h3>
+<p>Looking back at that first Envoy pull request next to the later MCP Gateway work, the real change was in figuring out what code should be written, not just writing it. That shift changed how I worked with a coding agent, not just how I reviewed its output. I started treating &quot;this should work&quot; and &quot;I traced this and it works&quot; as two different claims, and building a workflow where the agent had to show its work instead of assuming a function exists or a test covers something without checking.</p>
+<p>AI is useful because it can accelerate understanding. It becomes a problem when it replaces understanding. Agents can generate a function, but that doesn't remove your responsibility to know where that function lives in the system and what assumptions surround it. At the beginning I was mostly asking <em>how do I make this work?</em> Later I was asking where a behavior should live, what happens if an upstream fails, whether something fits the existing architecture, and how it would affect the next person who touched it. My first instinct was usually to start changing code; the internship slowly taught me to resist that instinct and ask what I was actually solving first, and to get comfortable saying &quot;I don't know yet&quot; and investigating before asking for help.</p>
+<h3 id="beyond-the-pull-request" tabindex="-1"><a class="header-anchor" href="#beyond-the-pull-request">Beyond the Pull Request</a></h3>
+<p>The pull requests are the easiest part of the internship to point to. But what I'll actually remember is everything around them: an unfamiliar codebase, a bug traced through Envoy, a reviewer showing me I'd only solved part of the problem, architecture hashed out with my mentors, an E2E test I couldn't crack, a feature designed before a line of it existed.</p>
+<p>None of that would have happened without my mentors, David and Patryk. I'm grateful for the time they spent reviewing my work, checking in, and pushing back when my assumptions didn't hold up. They taught me how to think about the problems behind the code, not just how to get a PR merged.</p>
+<p>I used to think contributing meant finding an issue and writing code until something merged. Now I know the pull request is the least interesting part of it.</p>
+
+<ul class="links-nextprev"><li>Previous: <a href="/blog/a2a-passthrough/">Teaching an MCP gateway to speak Agent2Agent</a></li>
+</ul>
+    </div>
+    
+    
+    
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 footer-contact">
+            <p>
+              <a href="https://www.cncf.io/sandbox-projects/"><img src="/static/img/cncf-color.png" class="logo" alt="CNCF logo"></a>
+            </p>
+            <p>
+              We are a Cloud Native Computing Foundation sandbox project.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/blog/">Blog</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/community/">Community</a>
+                </li>
+                <li>
+                  <i class="bx bx-chevron-right"></i> <a href="/contributing/">Contributing</a>
+                </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Our Social Networks</h4>
+            <div class="social-links mt-3">
+              <a href="https://groups.google.com/g/kuadrant" class="envelope"><i class="bx bx-envelope"></i></a>
+              <a href="https://github.com/Kuadrant/" class="github"><i class="bx bxl-github"></i></a>
+              <a href="https://twitter.com/kuadrantio" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="https://www.youtube.com/channel/UCCZ0ByQA06jn9aB7YFL1Z6w" class="youtube"><i class="bx bxl-youtube"></i></a>
+              <a href="https://stackoverflow.com/questions/tagged/kuadrant+authorino+limitador" class="stack-overflow"><i class="bx bxl-stack-overflow"></i></a>
+              <a href="https://kubernetes.slack.com/archives/C05J0D0V525" class="slack"><i class="bx bxl-slack"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer-bottom clearfix">
+      <div class="copyright">
+        <p>Copyright <strong><span>The Kuadrant Contributors</span></strong>.</p>
+        <p>The Linux Foundation® (TLF) has registered trademarks and uses trademarks. For a list of TLF trademarks, see <a href="https://www.linuxfoundation.org/trademark-usage/">Trademark Usage</a></p>
+        <p>Kuadrant was originally created by <a href="https://www.redhat.com">Red Hat</a></p>
+      </div>
+      
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: false });
+    document.querySelectorAll('code.language-mermaid').forEach(el => {
+      const pre = el.parentElement;
+      const div = document.createElement('div');
+      div.classList.add('mermaid');
+      div.textContent = el.textContent;
+      pre.replaceWith(div);
+    });
+    await mermaid.run();
+  </script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>
