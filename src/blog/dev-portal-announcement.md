@@ -181,14 +181,12 @@ The Kuadrant Developer Portal will be available for **Developer Preview at the e
 
 The plugins work with existing Red Hat Developer Hub or Backstage instances. You'll need a Kubernetes cluster with the Kuadrant operator installed and Gateway API CRDs.
 
-Visit our [Installation Guide](docs/installation.md) for step-by-step setup instructions including Kubernetes RBAC configuration, frontend setup, and catalog integration.
+Visit our [Installation Guide](https://docs.kuadrant.io/latest/kuadrant-backstage-plugin/docs/installation/) for step-by-step setup instructions including Kubernetes RBAC configuration, frontend setup, and catalog integration.
 
-Follow our [Getting Started Tutorial](docs/getting-started.md) for an end-to-end walkthrough. The tutorial demonstrates the complete workflow from platform engineer setup to API consumer usage, showing all key capabilities of the developer portal.
+Follow our [Getting Started Tutorial](https://docs.kuadrant.io/latest/kuadrant-backstage-plugin/docs/getting-started/) for an end-to-end walkthrough. The tutorial demonstrates the complete workflow from platform engineer setup to API consumer usage, showing all key capabilities of the developer portal.
 
 For questions or to give feedback join the Kuadrant [Slack channel](https://kubernetes.slack.com/archives/C05J0D0V525)
 
 ## Additional Resources
-
-- **[RBAC Permissions Guide](docs/rbac-permissions.md)**: Detailed permission model and role definitions
 - **[Kuadrant Documentation](https://docs.kuadrant.io/)**: Full Kuadrant operator documentation
 - **[GitHub Repository](https://github.com/kuadrant/kuadrant-backstage-plugin)**: Source code and issue tracking
