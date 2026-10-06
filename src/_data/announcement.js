@@ -1,6 +1,12 @@
-// Homepage announcement banner. Date visibility is evaluated at build time.
-// Change `id` for each new announcement; it keys the "dismissed" state in visitors' localStorage.
-// Leave a date empty to skip that bound.
+// Homepage announcement banner — holds one announcement at a time.
+//
+// To publish a new announcement, edit the object below in place (don't duplicate it):
+//   - id:        new unique slug. Keys the "dismissed" flag in visitors' localStorage,
+//                so a new id re-shows the banner to people who closed the previous one.
+//   - text/link: the new content.
+//   - startDate/endDate (YYYY-MM-DD): visibility window, evaluated at build time.
+//                Leave either empty ("") to skip that bound. The banner disappears on
+//                the first deploy after endDate.
 const announcement = {
   id: "kubecon-na-2026",
   text: "Join us at KubeCon + CloudNativeCon North America on Nov 9-12 🎉",
