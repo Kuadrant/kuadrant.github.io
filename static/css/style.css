@@ -101,6 +101,45 @@ h6 {
 }
 
 /*--------------------------------------------------------------
+# Announcement Banner
+--------------------------------------------------------------*/
+#header .announcement-banner {
+  position: relative;
+  margin: -15px 0 15px;
+  padding: 8px 40px;
+  background: #f3f5fa;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#header .announcement-banner a {
+  color: #37517e;
+}
+
+#header .announcement-banner a:hover {
+  text-decoration: underline;
+}
+
+#header .announcement-close {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  padding: 4px;
+  border: 0;
+  background: none;
+  color: #37517e;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#header .announcement-close:hover {
+  color: #47b2e4;
+}
+
+/*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
 /**

@@ -34,6 +34,16 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top ">
+    
+    <div class="announcement-banner" id="announcement-banner" data-dismiss-key="announcement-dismissed:kubecon-na-2026">
+      <a href="https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/register/?utm_source=kuadrant&amp;utm_medium=ribbon-banner&amp;utm_campaign=KubeCon-CloudNativeCon-NA-2026&amp;utm_content=hero" target="_blank" rel="noopener">Join us at KubeCon + CloudNativeCon North America on Nov 9-12 🎉</a>
+      <button type="button" class="announcement-close" aria-label="Dismiss announcement"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <!-- Inline on purpose: must run before first paint to avoid the banner flashing for visitors who dismissed it -->
+    <script>
+      if (localStorage.getItem("announcement-dismissed:kubecon-na-2026")) document.getElementById("announcement-banner").remove();
+    </script>
+    
     <div class="container d-flex align-items-center">
 
       <!-- <h1 class="logo me-auto"><a href="index.html">Kuadrant</a></h1> -->

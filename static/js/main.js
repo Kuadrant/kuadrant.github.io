@@ -92,6 +92,17 @@
   }
 
   /**
+   * Announcement banner dismissal
+   */
+  let announcementBanner = select('#announcement-banner')
+  if (announcementBanner) {
+    on('click', '#announcement-banner .announcement-close', function() {
+      localStorage.setItem(announcementBanner.dataset.dismissKey, '1')
+      announcementBanner.remove()
+    })
+  }
+
+  /**
    * Back to top button
    */
   let backtotop = select('.back-to-top')
