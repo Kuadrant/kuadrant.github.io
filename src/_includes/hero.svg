@@ -1,0 +1,122 @@
+<svg id="kuadrant-hero" class="hero-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 646" role="img" aria-label="Clients reach a Gateway carrying DNS, TLS and Telemetry policies; on each route, policies stand in front of the HTTPRoute: rate limit and plan before /api, token rate limit before /v1/chat, auth and OIDC before /checkout">
+<style>
+#kuadrant-hero{--kh-ink:#ffffff;--kh-muted:#c3cfe3;--kh-line:rgba(255,255,255,.22);--kh-faint:rgba(255,255,255,.08);--kh-surface:#2b4168;--kh-stroke:rgba(255,255,255,.38);--kh-blue:#47b2e4;--kh-accent:#ffb547;--kh-accent-ink:#2b1c00}
+#kuadrant-hero .kh-bgdot{fill:var(--kh-faint)}
+#kuadrant-hero .kh-base{fill:none;stroke:var(--kh-line);stroke-width:2}
+#kuadrant-hero .kh-flow{fill:none;stroke:var(--kh-blue);stroke-width:5;stroke-linecap:round;stroke-dasharray:0 20;animation:kh-flow 1.4s linear infinite}
+#kuadrant-hero .kh-slow{stroke-dasharray:0 46;animation-name:kh-flow-slow;animation-duration:2.8s}
+#kuadrant-hero .kh-ref{fill:none;stroke:var(--kh-accent);stroke-width:1.6;stroke-dasharray:4 5}
+#kuadrant-hero .kh-card{fill:var(--kh-surface);stroke:var(--kh-stroke);stroke-width:1.5}
+#kuadrant-hero .kh-gw{fill:var(--kh-surface);stroke:var(--kh-blue);stroke-width:2.5}
+#kuadrant-hero .kh-pill{fill:var(--kh-accent)}
+#kuadrant-hero .kh-pilltx{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:600;fill:var(--kh-accent-ink);text-anchor:middle;dominant-baseline:central}
+#kuadrant-hero .kh-lbl{font-family:'Jost',system-ui,sans-serif;font-size:18px;font-weight:600;fill:var(--kh-ink)}
+#kuadrant-hero .kh-svc{font-family:'Jost',system-ui,sans-serif;font-size:16px;font-weight:500;fill:var(--kh-ink);text-anchor:middle;dominant-baseline:central}
+#kuadrant-hero .kh-kind{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;fill:var(--kh-muted);text-anchor:middle;dominant-baseline:central}
+#kuadrant-hero .kh-glyph{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:600;fill:var(--kh-ink);text-anchor:middle;dominant-baseline:central}
+#kuadrant-hero .kh-mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;fill:var(--kh-muted)}
+#kuadrant-hero .kh-mid{text-anchor:middle}
+#kuadrant-hero .kh-lockInk{fill:var(--kh-accent-ink)}
+#kuadrant-hero .kh-lockLine{fill:none;stroke:var(--kh-accent-ink);stroke-width:1.6}
+#kuadrant-hero .kh-badge{transform-box:fill-box;transform-origin:center;animation:kh-pulse 3s ease-in-out infinite}
+#kuadrant-hero .kh-ring{fill:none;stroke:var(--kh-accent);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:kh-ring 2.6s ease-out infinite}
+@keyframes kh-flow{to{stroke-dashoffset:-20}}
+@keyframes kh-flow-slow{to{stroke-dashoffset:-46}}
+@keyframes kh-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes kh-ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+@media (prefers-reduced-motion: reduce){ #kuadrant-hero *{animation:none !important}}
+</style>
+<defs>
+<pattern id="kh-dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" class="kh-bgdot"></circle></pattern>
+</defs>
+<rect width="780" height="646" fill="url(#kh-dots)"></rect>
+
+<path class="kh-ref" d="M180 90 L 180 228"></path>
+<path class="kh-ref" d="M180 418 L 180 560"></path>
+
+<path class="kh-base" d="M64 250 C 96 250, 96 290, 120 290"></path>
+<path class="kh-base" d="M64 323 L 120 323"></path>
+<path class="kh-base" d="M64 396 C 96 396, 96 356, 120 356"></path>
+<path class="kh-base" d="M240 290 C 285 290, 285 180, 330 180 L 660 180"></path>
+<path class="kh-base" d="M240 323 L 660 323"></path>
+<path class="kh-base" d="M240 356 C 285 356, 285 466, 330 466 L 660 466"></path>
+
+<path class="kh-flow" style="animation-duration: 1.5s" d="M64 250 C 96 250, 96 290, 120 290"></path>
+<path class="kh-flow" style="animation-duration: 1.2s" d="M64 323 L 120 323"></path>
+<path class="kh-flow" style="animation-duration: 1.7s" d="M64 396 C 96 396, 96 356, 120 356"></path>
+
+<rect class="kh-gw" x="120" y="228" width="120" height="190" rx="20"></rect>
+<text class="kh-lbl kh-mid" x="180" y="262">Gateway</text>
+<text class="kh-mono kh-mid" x="180" y="400">HTTPS :443</text>
+<path class="kh-flow" style="animation-duration: 1.5s" d="M120 290 L 240 290"></path>
+<path class="kh-flow" style="animation-duration: 1.2s" d="M120 323 L 240 323"></path>
+<path class="kh-flow" style="animation-duration: 1.7s" d="M120 356 L 240 356"></path>
+
+<path class="kh-flow" style="animation-duration: 1.5s" d="M240 290 C 285 290, 285 180, 330 180 L 338 180"></path>
+<path class="kh-flow" style="animation-duration: 1.5s" d="M594 180 L 604 180"></path>
+<path class="kh-flow kh-slow" d="M622 180 L 660 180"></path>
+<path class="kh-flow" style="animation-duration: 1.2s" d="M240 323 L 414 323"></path>
+<path class="kh-flow" style="animation-duration: 1.2s" d="M594 323 L 604 323"></path>
+<path class="kh-flow kh-slow" style="animation-duration: 3.4s" d="M622 323 L 660 323"></path>
+<path class="kh-flow" style="animation-duration: 1.7s" d="M240 356 C 285 356, 285 466, 330 466 L 370 466"></path>
+<path class="kh-flow" style="animation-duration: 1.7s" d="M624 466 L 660 466"></path>
+
+<circle class="kh-ring" cx="612" cy="180" r="12"></circle>
+<rect class="kh-pill" x="608" y="162" width="8" height="36" rx="4"></rect>
+<circle class="kh-ring" style="animation-delay: .9s" cx="612" cy="323" r="12"></circle>
+<rect class="kh-pill" x="608" y="305" width="8" height="36" rx="4"></rect>
+<circle class="kh-ring" style="animation-delay: 1.8s" cx="612" cy="466" r="14"></circle>
+<circle class="kh-pill" cx="612" cy="466" r="12"></circle>
+<rect class="kh-lockInk" x="607" y="465" width="10" height="8" rx="1.5"></rect>
+<path class="kh-lockLine" d="M609 465 L 609 462 A 3 3 0 0 1 615 462 L 615 465"></path>
+
+<circle class="kh-card" cx="44" cy="250" r="20"></circle>
+<text class="kh-glyph" x="44" y="250">&lt;/&gt;</text>
+<circle class="kh-card" cx="44" cy="323" r="20"></circle>
+<text class="kh-glyph" x="44" y="323">{ }</text>
+<circle class="kh-card" cx="44" cy="396" r="20"></circle>
+<text class="kh-glyph" x="44" y="396">&gt;_</text>
+
+<rect class="kh-card" x="660" y="148" width="100" height="64" rx="14"></rect>
+<text class="kh-kind" x="710" y="168">HTTPRoute</text>
+<text class="kh-svc" x="710" y="190">/api</text>
+<rect class="kh-card" x="660" y="291" width="100" height="64" rx="14"></rect>
+<text class="kh-kind" x="710" y="311">HTTPRoute</text>
+<text class="kh-svc" x="710" y="333">/v1/chat</text>
+<rect class="kh-card" x="660" y="434" width="100" height="64" rx="14"></rect>
+<text class="kh-kind" x="710" y="454">HTTPRoute</text>
+<text class="kh-svc" x="710" y="476">/checkout</text>
+
+<g class="kh-badge">
+<rect class="kh-pill" x="112" y="60" width="136" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="180" y="75">DNSPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: .4s">
+<rect class="kh-pill" x="116" y="100" width="128" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="180" y="115">TLSPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: .8s">
+<rect class="kh-pill" x="98" y="560" width="164" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="180" y="575">TelemetryPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: 1.2s">
+<rect class="kh-pill" x="338" y="165" width="140" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="408" y="180">RateLimitPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: 1.6s">
+<rect class="kh-pill" x="486" y="165" width="108" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="540" y="180">PlanPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: 2s">
+<rect class="kh-pill" x="414" y="308" width="180" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="504" y="323">TokenRateLimitPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: 2.4s">
+<rect class="kh-pill" x="370" y="451" width="108" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="424" y="466">AuthPolicy</text>
+</g>
+<g class="kh-badge" style="animation-delay: 2.8s">
+<rect class="kh-pill" x="486" y="451" width="108" height="30" rx="15"></rect>
+<text class="kh-pilltx" x="540" y="466">OIDCPolicy</text>
+</g>
+</svg>

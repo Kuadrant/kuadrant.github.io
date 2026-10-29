@@ -489,6 +489,14 @@ h6 {
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
 }
 
+#hero .hero-img .hero-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
 @media (max-width: 991px) {
   #hero {
     height: 100vh;
@@ -505,6 +513,10 @@ h6 {
 
   #hero .hero-img img {
     width: 50%;
+  }
+
+  #hero .hero-img .hero-svg {
+    width: 80%;
   }
 }
 
@@ -523,11 +535,19 @@ h6 {
   #hero .hero-img img {
     width: 70%;
   }
+
+  #hero .hero-img .hero-svg {
+    width: 100%;
+  }
 }
 
 @media (max-width: 575px) {
   #hero .hero-img img {
     width: 80%;
+  }
+
+  #hero .hero-img .hero-svg {
+    width: 100%;
   }
 
   #hero .btn-get-started {
